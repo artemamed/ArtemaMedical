@@ -3,7 +3,7 @@
 import { Mail } from "lucide-react";
 import React, { useState } from "react";
 
-const SigninForm = () => {
+const OtpVerify = () => {
   const [formData, setFormData] = useState({
     email: "",
   });
@@ -50,4 +50,4 @@ const SigninForm = () => {
   );
 };
 
-export default SigninForm;
+export default OtpVerify;

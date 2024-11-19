@@ -1,7 +1,7 @@
 import React from "react";
-import SignupForm from "./form";
 import Image from "next/image";
 import logo1 from "@/public/assets/Signin_Logo.png";
+import SigninForm from "./form";
 
 const SigninPage = () => {
   return (
@@ -24,11 +24,11 @@ const SigninPage = () => {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Sign In to your Account
           </h2>
-          <SignupForm />
+          <SigninForm />
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
             <a
-              href="/auth/login"
+              href="/auth/signup"
               className="text-[#008080] hover:underline"
             >
               Sign up here

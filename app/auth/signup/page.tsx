@@ -28,7 +28,7 @@ const SignupPage = () => {
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
             <a
-              href="/auth/login"
+              href="/auth/signin"
               className="text-[#008080] hover:underline"
             >
               Sign In here

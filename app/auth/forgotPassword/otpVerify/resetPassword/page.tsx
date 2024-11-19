@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import logo1 from "@/public/assets/Enter_Email_Logo.png";
-import OtpVerify from "./form";
+import ResetPassword from "./form";
 
 const SigninPage = () => {
   return (
@@ -21,13 +21,10 @@ const SigninPage = () => {
 
         {/* Form Section */}
         <div className="w-full md:w-1/2 p-6 lg:p-[4rem] z-10 rounded-3xl bg-white shadow-lg content-center">
-          <h2 className="text-2xl font-semibold text-gray-800 ">
-            Enter Email
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+            Reset your Password
           </h2>
-          <p className="text-gray-500 text-sm mb-6 mt-1">
-          Forgot your password? We&apos;ll help you reset it!
-          </p>
-          <OtpVerify />
+          <ResetPassword />
         </div>
 
       </div>
