@@ -1,62 +1,41 @@
-"use client";
+import React from "react";
+import Image from "next/image";
+import logo1 from "@/public/assets/Otp_Verification.png";
+import OtpVerify from "./form";
 
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-
-const OTPVerification = () => {
-  const [otp, setOtp] = useState<string[]>(["", "", "", "", ""]);
-
-  const handleChange = (value: string, index: number) => {
-    const newOtp = [...otp];
-    newOtp[index] = value.slice(0, 1); // Ensure only one character is entered
-    setOtp(newOtp);
-  };
-
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    if (event.key === "Backspace" && !otp[index] && index > 0) {
-      const prevInput = document.getElementById(`otp-${index - 1}`);
-      prevInput?.focus();
-    }
-  };
-
-  const handlePaste = (event: React.ClipboardEvent<HTMLInputElement>) => {
-    const pasteData = event.clipboardData.getData("text").slice(0, 6).split("");
-    setOtp(pasteData);
-  };
-
+const SigninPage = () => {
   return (
-    <div className="flex items-center justify-center h-screen ">
-      <div className="p-[5rem] rounded-2xl shadow-xl w-[30rem] bg-[#CFE7E7] ">
-        <h1 className="text-xl font-semibold text-center mb-2">
-          OTP Verification
-        </h1>
-        <p className="text-sm text-gray-600 text-center mb-6">
-          Enter the OTP sent to your email
-        </p>
-        <div className="flex gap-2 justify-center mb-6">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              id={`otp-${index}`}
-              type="text"
-              value={digit}
-              onChange={(e) => handleChange(e.target.value, index)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-              onPaste={(e) => handlePaste(e)}
-              className="w-10 h-10 text-center border rounded-md focus:ring focus:ring-teal-500 focus:outline-none"
-              maxLength={1}
-              autoFocus={index === 0}
+    <section className="min-h-screen flex items-center justify-center p-4">
+      <div className="flex flex-col md:flex-row w-full max-w-4xl 2xl:max-w-5xl bg-[#CFE7E7] rounded-3xl shadow-2xl overflow-hidden">
+        {/* Logo Section - Shows at top on mobile, left side on desktop */}
+        <div className="flex md:w-1/2 bg-[#CFE7E7] p-8 md:p-[7rem]">
+          <div className="relative w-full flex justify-center items-center">
+            <Image
+              src={logo1}
+              alt="Company Logo"
+              className="object-contain w-full h-[250px] max-h-[200px] md:max-h-none"
+              priority
             />
-          ))}
+          </div>
         </div>
-        <Button className="bg-[#008080] mx-auto block">Verify</Button>
+
+        {/* Form Section */}
+        <div className="w-full md:w-1/2 p-6 lg:p-[4rem] z-10 rounded-3xl bg-white shadow-lg content-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              OTP Verification
+            </h2>
+            <p className="text-gray-500 text-sm mb-6 mt-1">
+              Enter the OTP Sent to Your Email
+            </p>
+            <OtpVerify />
+          </div>
+        </div>
+
 
       </div>
-    </div>
+    </section>
   );
 };
 
-export default OTPVerification;
+export default SigninPage;
