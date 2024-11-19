@@ -1,7 +1,7 @@
 import React from "react";
 import SignupForm from "./form";
 import Image from "next/image";
-import logo1 from "@/public/assets/Signin_Logo.png";
+import logo1 from "@/public/assets/Login_Logo.png";
 
 const SignupPage = () => {
   return (
@@ -20,18 +20,18 @@ const SignupPage = () => {
         </div>
 
         {/* Form Section */}
-        <div className="w-full md:w-1/2 p-6 lg:p-[4rem] z-10 rounded-3xl bg-white shadow-lg content-center">
+        <div className="w-full md:w-1/2 p-6 lg:p-[4rem] z-10 rounded-3xl bg-white shadow-lg">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-            Sign In to your Account
+            Create Account
           </h2>
           <SignupForm />
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
             <a
               href="/auth/login"
-              className="text-[#008080] hover:underline"
+              className="text-teal-500 hover:underline font-semibold"
             >
-              Sign up here
+              Sign In here
             </a>
           </p>
         </div>

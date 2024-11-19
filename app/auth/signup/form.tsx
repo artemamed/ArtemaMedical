@@ -1,15 +1,18 @@
 "use client";
 
-import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
 import React, { useState } from "react";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,6 +29,19 @@ const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+      <div className="relative w-full">
+        <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className={inputClass}
+        />
+      </div>
+
       <div className="relative w-full">
         <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
         <input
@@ -61,12 +77,29 @@ const SignupForm = () => {
           }
         </button>
       </div>
-            <a
-              href="/auth/login"
-              className="text-[#008080] hover:underline text-sm m-1"
-            >
-              Forgot password?
-            </a>
+
+      <div className="relative w-full">
+        <LockKeyhole className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
+        <input
+          type={showConfirmPassword ? "text" : "password"}
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required
+          className={inputClass}
+        />
+        <button
+          type="button"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        >
+          {showConfirmPassword ?
+            <Eye className={iconClass} /> :
+            <EyeOff className={iconClass} />
+          }
+        </button>
+      </div>
 
       <button
         type="submit"
