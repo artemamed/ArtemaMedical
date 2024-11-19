@@ -1,15 +1,13 @@
 "use client";
 
-import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import React, { useState } from "react";
 
 const SigninForm = () => {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,13 +19,12 @@ const SigninForm = () => {
     console.log("Form data submitted:", formData);
   };
 
-  const iconClass = "h-4 w-4 ";
   const inputClass = "w-full pl-10 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
       <div className="relative w-full">
-        <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
+        <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4`} />
         <input
           type="email"
           name="email"
@@ -39,40 +36,15 @@ const SigninForm = () => {
         />
       </div>
 
-      <div className="relative w-full">
-        <LockKeyhole className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-        <input
-          type={showPassword ? "text" : "password"}
-          name="password"
-          placeholder="Enter Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          className={inputClass}
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        >
-          {showPassword ?
-            <Eye className={iconClass} /> :
-            <EyeOff className={iconClass} />
-          }
-        </button>
-      </div>
-            <a
-              href="/auth/login"
-              className="text-[#008080] hover:underline text-sm m-1"
-            >
-              Forgot password?
-            </a>
+      <p className="text-center text-sm text-gray-600">
+        Check your inbox to get OTP Code to reset your password
+      </p>
 
       <button
         type="submit"
         className="w-full bg-[#008080] text-white py-2.5 sm:py-3 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base font-medium"
       >
-        Sign Up
+        Get OTP Code
       </button>
     </form>
   );

@@ -29,7 +29,7 @@ const SignupPage = () => {
             Already have an account?{" "}
             <a
               href="/auth/login"
-              className="text-teal-500 hover:underline font-semibold"
+              className="text-[#008080] hover:underline"
             >
               Sign In here
             </a>
