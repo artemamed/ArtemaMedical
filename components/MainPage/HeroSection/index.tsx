@@ -6,9 +6,7 @@ import heroSection from "@/public/images/heroSection1.png";
 export default function HeroSection() {
     return (
         <div className="container mx-auto min-h-screen flex items-center px-4">
-            {/* Grid container for layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8">
-                {/* Left Section - Text Content */}
                 <div className="text-center md:text-left leading-tight">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 leading-tight">
                         Revolutionizing <span className="text-[#008080]">Healthcare</span>, One Innovation at a Time

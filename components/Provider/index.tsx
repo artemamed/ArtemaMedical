@@ -2,11 +2,11 @@
 import { NextPage } from "next";
 import React from "react";
 // import { Toaster } from "react-hot-toast";
-import Footer from "../Footer";
 // import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // import NextTopLoader from 'nextjs-toploader';
 import Header from "../Header";
+import Footer from "../Footer";
 // Types
 interface Props {
   children: React.ReactNode;
