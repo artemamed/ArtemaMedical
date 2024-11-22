@@ -1,29 +1,58 @@
-"use client";
-import React from "react";
-import { NextPage } from "next";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "../ui/scroll-area";
+// "use client";
 
-const ProductDropDown: NextPage = () => {
+import React from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import Link from "next/link";
+
+
+
+export default function CustomDropdownMenu() {
+  const menuData = [
+    {
+      category: "General Instruments",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "Orthopedic Instruments",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "Scissors",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "Dental Instruments",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "ENT Instruments",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "Cardiovascular",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "Gynecology",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+    {
+      category: "Plastic Surgery",
+      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
+    },
+  ];
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        asChild
-        className="inline-flex items-center overflow-hidden rounded-md bg-white"
-      >
-        <button className="flex justify-between items-center h-full ">
-        <span className="transition hover:text-green-600">
-            Products
-          </span>
+    <div className="">
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className="flex justify-between items-center w-full transition hover:text-[#008080]"
+          aria-label="Support Menu"
+        >
+          <span className="transition">Products</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
+            className="h-4 w-4 ml-2"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -33,26 +62,32 @@ const ProductDropDown: NextPage = () => {
               clipRule="evenodd"
             />
           </svg>
-        </button>
-      </DropdownMenuTrigger>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent>
-        <ScrollArea className="h-30">
-          <div className="p-2 rounded-lg">
-            <a href="/ifu">
-              <DropdownMenuItem>IFU</DropdownMenuItem>
-            </a>
-            <a href="/blogs">
-              <DropdownMenuItem>Blogs</DropdownMenuItem>
-            </a>
-            <a href="/certification">
-              <DropdownMenuItem>Certification</DropdownMenuItem>
-            </a>
-          </div>
-        </ScrollArea>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <DropdownMenuContent className="mt-5 grid grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] py-[3rem] lg:px-[4rem] xl:pl-[8rem]  bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
+          {menuData.map((category, index) => (
+            <div key={index} className="space-y-1">
+              <h3 className="text-lg font-semibold text-[#004040]">
+                {category.category}
+              </h3>
+              {category.items.map((item, idx) => (
+                <h2 key={idx} className="text-[#666666] hover:text-[#008080]">
+                  {item}
+                </h2>
+              ))}
+              <Link
+                href="#"
+                className="text-[#008080] font-medium hover:underline"
+              >
+                View All
+              </Link>
+            </div>
+          ))}
+          <button className="bg-teal-600 text-md  text-white py-3 w-[12rem] mt-3 rounded-lg hover:bg-teal-700 transition">
+            Browse Categories
+          </button>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
-};
-
-export default ProductDropDown;
+}

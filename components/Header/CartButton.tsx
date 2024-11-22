@@ -9,7 +9,7 @@ const CartButton = () => {
         <>
             <div className="">
                 <Link href={"/cart"} className="hover:text-gray-500">
-                    <ShoppingCart className="w-7 h-7" />
+                    <ShoppingCart className="w-6 h-6 hover:text-[#008080]" />
                 </Link>
             </div>
         </>

@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import HeroSection from './HeroSection';
+import MedicalEquipment from './MedicalEquipment';
 
 export default function MainPageData() {
     return (
@@ -8,6 +9,7 @@ export default function MainPageData() {
             <header>
                 <HeroSection />
             </header>
+            <MedicalEquipment />
         </>
     );
 }

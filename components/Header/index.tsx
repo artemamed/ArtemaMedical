@@ -13,7 +13,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
   return (
-    <nav className="bg-white shadow">
+    <nav className="">
       <div className="container mx-auto flex items-center justify-between py-4 px-5">
         {/* Logo */}
         <div className="flex items-center space-x-2">
@@ -24,19 +24,19 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex lg:space-x-[2.5rem] xl:space-x-[4rem] bg-[#F7F7F7] pl-8 p-3 pr-8 rounded-2xl">
-          <Link href="/" className="text-teal-700 font-medium hover:underline">
+          <Link href="/" className="text-teal-700 font-medium ">
             Home
           </Link>
           <div>
             <ProductDropDown />
           </div>
-          <Link href="#" className="text-gray-700 font-medium hover:underline">
+          <Link href="#" className="text-[#2B2B2B] hover:text-[#008080] font-medium ">
             Certification
           </Link>
           <div>
             <Support />
           </div>
-          <Link href="#" className="text-gray-700 font-medium hover:underline">
+          <Link href="#" className="text-[#2B2B2B] hover:text-[#008080] font-medium ">
             About Us
           </Link>
         </div>
@@ -47,14 +47,14 @@ export default function Navbar() {
           <CartButton />
           <Link
             href="#"
-            className="hidden lg:block bg-[#F7F7F7] text-teal-600 border border-teal-600 py-2 px-4 rounded hover:bg-teal-800 hover:text-white"
+            className="hidden lg:block text-[#008080] border font-semibold border-[#008080] py-2 px-4 rounded-lg hover:bg-[#008080] hover:text-white"
           >
             Contact Us
           </Link>
         </div>
         {/* Hamburger Menu Button */}
         <button
-          className="lg:hidden text-gray-700 focus:outline-none"
+          className="lg:hidden text-[#2B2B2B] hover:text-[#008080] focus:outline-none"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <svg
@@ -81,19 +81,19 @@ export default function Navbar() {
         <div className="lg:hidden bg-white shadow-md">
           <Link
             href="/"
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-[#2B2B2B] hover:text-[#008080] hover:bg-gray-100"
           >
             Home
           </Link>
           <Link
             href="#"
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-[#2B2B2B] hover:text-[#008080] hover:bg-gray-100"
           >
             Certification
           </Link>
           <Link
             href="#"
-            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            className="block px-4 py-2 text-[#2B2B2B] hover:text-[#008080] hover:bg-gray-100"
           >
             About Us
           </Link>
