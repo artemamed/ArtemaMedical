@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
-import sustainability from "@/public/images/Sustainability.svg";
+import sustainability from "@/public/images/Sustainability.png";
 
 export default function Sustainability() {
     return (
         <div className="container mx-auto py-[5rem] flex items-center px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8 ">
-                <div className="text-center md:text-left leading-tight md:pr-12 lg:pr-20 ">
+                <div className="text-center md:text-left leading-tight ">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 leading-tight">
                         Committed to Sustainability in Healthcare
                     </h1>
@@ -29,7 +29,7 @@ export default function Sustainability() {
                     <Image
                         src={sustainability}
                         alt="Surgical Tools"
-                        className="w-full h-[20rem]"
+                        className="w-full h-[20rem] object-contain"
                         priority
                     />
                 </motion.div>

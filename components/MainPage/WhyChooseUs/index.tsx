@@ -3,7 +3,7 @@ import React from 'react';
 
 const WhyChooseUs = () => {
     return (
-        <div className="bg-teal-900 px-4 py-[6rem] sm:px-6 lg:px-[6rem] text-white rounded-xl transition-all duration-300 ">
+        <div className="bg-[#004040] px-4 py-[6rem] sm:px-6 lg:px-[6rem] text-white rounded-xl transition-all duration-300 ">
             <h2 className="text-3xl md:text-4xl font-bold mb-12 animate-fade-in">
                 Why Choose Us
             </h2>

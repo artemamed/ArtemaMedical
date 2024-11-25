@@ -6,6 +6,9 @@ import TrustedStandard from './TrustedStandard';
 import BestSellingProduct from './BestSellingProduct';
 import Sustainability from './Sustainability';
 import WhyChooseUs from './WhyChooseUs';
+import ReliableInstrumnet from './ReliableInstrument';
+import TrustedUser from './TrustedUser';
+import BlogSection from './BlogSection';
 
 export default function MainPageData() {
     return (
@@ -20,6 +23,9 @@ export default function MainPageData() {
             <div className='py-[6rem]'>
                 <WhyChooseUs />
             </div>
+            <ReliableInstrumnet />
+            <TrustedUser />
+            <BlogSection />
         </>
     );
 }

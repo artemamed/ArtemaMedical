@@ -9,13 +9,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gray-900 text-gray-50 hover:bg-gray-900/90 ",
+        default: "bg-[#008080] text-white hover:bg-[#008080]/90 ",
         destructive:
           "bg-red-500 text-gray-50 hover:bg-red-500/90 ",
         outline:
           "border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 ",
         secondary:
-          "bg-gray-100 text-gray-900 hover:bg-gray-100/80",
+          "text-[#008080] border font-semibold border-[#008080] py-2 px-4 rounded-lg hover:bg-[#008080] hover:text-white",
         ghost: "hover:bg-gray-100 hover:text-gray-900 ",
         link: "text-gray-900 underline-offset-4 hover:underline",
       },
