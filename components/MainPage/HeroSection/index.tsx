@@ -25,7 +25,7 @@ export default function HeroSection() {
     const shortText = fullText.slice(0, 145) + "...";
 
     return (
-        <div className="container mx-auto min-h-screen flex items-center px-4 -mt-[5rem] -mb-[3rem]">
+        <div className="container mx-auto min-h-screen flex items-center px-4  -mb-[3rem]">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8">
                 {/* Left Section - Text Content */}
                 <div className="text-left">
