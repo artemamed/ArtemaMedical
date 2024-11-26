@@ -1,33 +1,47 @@
 import { MoveLeft, MoveRight } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const TrustedUser = () => {
   const testimonials = [
     {
-        stars: 5,
-        text: "Whenever precision and reliability are paramount in medical instruments, my first thought is Artema Medical. Products are topnotch.",
-        name: "Cindy Edrington",
-        role: "Medical Superintendent at Evercare",
-        image: "/images/trusted/test1.png",
+      stars: 5,
+      text: "Whenever precision and reliability are paramount in medical instruments, my first thought is Artema Medical. Products are topnotch.",
+      name: "Cindy Edrington",
+      role: "Medical Superintendent at Evercare",
+      image: "/images/trusted/test1.png",
     },
     {
-        stars: 5,
-        text: "Artema Medical immediately comes to mind for ophthalmic instruments. Their products have always met our expectations.",
-        name: "Jennifer Chura",
-        role: "Director OPD at AHD",
-        image: "/images/trusted/test1.png",
+      stars: 5,
+      text: "Artema Medical immediately comes to mind for ophthalmic instruments. Their products have always met our expectations.",
+      name: "Jennifer Chura",
+      role: "Director OPD at AHD",
+      image: "/images/trusted/test1.png",
     },
     {
-        stars: 4,
-        text: "Reliable and efficient services every single time. I highly recommend them.",
-        name: "John Doe",
-        role: "Head of Procurement",
-        image: "/images/trusted/test2.png",
+      stars: 4,
+      text: "Reliable and efficient services every single time. I highly recommend them.",
+      name: "John Doe",
+      role: "Head of Procurement",
+      image: "/images/trusted/test2.png",
     },
-];
+  ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isWideScreen, setIsWideScreen] = useState(false);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setIsWideScreen(window.innerWidth >= 768);
+    };
+
+    updateWidth(); // Set initial value
+    window.addEventListener("resize", updateWidth);
+
+    return () => {
+      window.removeEventListener("resize", updateWidth);
+    };
+  }, []);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -50,18 +64,18 @@ const TrustedUser = () => {
 
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
           {testimonials
-            .slice(currentIndex, currentIndex + (window.innerWidth >= 768 ? 2 : 1))
+            .slice(currentIndex, currentIndex + (isWideScreen ? 2 : 1))
             .map((testimonial, index) => (
               <div
                 key={index}
-                className="w-full md:max-w-md p-4 md:p-6 border rounded-xl shadow-md bg-white"
+                className="w-full md:max-w-md p-4 md:p-10 border rounded-xl shadow-md bg-white"
               >
-                <div className="flex mb-4">
+                <div className="flex mb-4 md:p-4 ">
                   {Array.from({ length: testimonial.stars }, (_, i) => (
                     <svg
                       key={i}
                       xmlns="http://www.w3.org/2000/svg"
-                      className="w-4 h-4 md:w-5 md:h-5 text-yellow-400"
+                      className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 md:-mt-5"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >

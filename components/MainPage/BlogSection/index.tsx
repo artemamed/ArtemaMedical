@@ -26,14 +26,14 @@ const BlogSection = () => {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="group relative flex flex-col overflow-hidden"
+              className="group relative flex flex-col "
             >
-              <div className="relative aspect-[3/2] w-full">
+              <div className="relative aspect-[3/2] w-full ">
                 <Image
                   src={card.image}
                   alt={card.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300 rounded-2xl"
                 />
               </div>
 
