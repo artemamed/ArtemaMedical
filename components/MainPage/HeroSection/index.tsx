@@ -20,7 +20,7 @@ export default function HeroSection() {
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const fullText = "At Artema Medical, we are driven by a mission to revolutionize the surgical tool industry while promoting eco-friendly practices. Our dedicated team works tirelessly to integrate sustainable solutions into every aspect of our operations, ensuring we leave a positive impact on both healthcare and the environment. Join us in our journey toward a greener future.";
+    const fullText = "We represent first-rate surgical instruments that provide the customers with the quality they demand, the price they can afford, and the fidelity they expect.We are proud of our 40 years of success in helping thousands of patients and healthcare industries around the world";
 
     const shortText = fullText.slice(0, 145) + "...";
 
@@ -46,7 +46,7 @@ export default function HeroSection() {
                         </button>
                     )}
                 </div>
-                    <button className="bg-[#008080] text-sm sm:text-base lg:text-lg text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300 ease-in-out transform hover:scale-105 mt-2">
+                    <button className="bg-[#008080] lg:mt-5 text-sm sm:text-base lg:text-lg text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition duration-300 ease-in-out transform hover:scale-105 mt-2">
                         Explore More →
                     </button>
                 </div>
