@@ -7,14 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "../ui/scroll-area";
 import Link from "next/link";
 
 const Support: NextPage = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="inline-flex items-center overflow-hidden "
+        className="inline-flex items-center overflow-hidden hover:text-[#008080]"
       >
         <span className="transition hover:text-[#008080]">Support</span>
         <svg
@@ -31,20 +30,18 @@ const Support: NextPage = () => {
         </svg>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="z-50 w-[15rem] rounded-2xl bg-[#F7F7F7] mt-5">
-        <ScrollArea className="h-30">
-          <div className="p-2 rounded-lg">
-            <Link href="/ifu">
-              <DropdownMenuItem>IFU</DropdownMenuItem>
-            </Link>
-            <Link href="/blogs">
-              <DropdownMenuItem>Blogs</DropdownMenuItem>
-            </Link>
-            <Link href="/certification">
-              <DropdownMenuItem>Certification</DropdownMenuItem>
-            </Link>
-          </div>
-        </ScrollArea>
+      <DropdownMenuContent className="lg:w-[15rem] rounded-2xl border-none bg-[#F7F7F7] lg:mt-5 w-screen">
+        <div className="rounded-lg px-[5rem] lg:px-1 text-[#666666] text-sm mb-2">
+          <Link href="/ifu">
+            <DropdownMenuItem>IFU</DropdownMenuItem>
+          </Link>
+          <Link href="/blogs">
+            <DropdownMenuItem>Blogs</DropdownMenuItem>
+          </Link>
+          <Link href="/certification">
+            <DropdownMenuItem>Certification</DropdownMenuItem>
+          </Link>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

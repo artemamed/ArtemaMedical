@@ -21,9 +21,9 @@ const products = [
 
 const BestSellingProduct = () => {
     return (
-        <div className="px-4 md:px-[5rem]">
-            <div className="px-4 py-[4rem] lg:py-[8rem]">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-10 leading-tight">Best-Selling Products</h1>
+        <div className="px-4 md:px-[2rem] lg:px-[5rem]">
+            <div className="px-[1rem] py-[4rem] lg:py-[8rem]">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-10 px-[1rem] leading-tight">Best-Selling Products</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {products.map((product, index) => (
                         <div
@@ -35,7 +35,7 @@ const BestSellingProduct = () => {
                                 height={300}
                                 src={product.imageUrl}
                                 alt={product.title}
-                                className="w-full h-[20rem] p-5 object-contain mb-4 border shadow-md rounded-xl"
+                                className="w-full h-[15rem] lg:h-[20rem] p-5 object-contain mb-4 border shadow-md rounded-xl"
                             />
                             <h3 className="text-lg mb-2">{product.title}</h3>
                             <p className="text-xl font-bold mb-4">${product.price}</p>

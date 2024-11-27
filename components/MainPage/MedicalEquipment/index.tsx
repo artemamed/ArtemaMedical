@@ -3,14 +3,14 @@ import ProductSlider from "./ProductSlider";
 
 const MedicalEquipment: React.FC = () => {
   return (
-    <section className="px-4 md:px-[5rem]">
+    <section className="px-4 md:px-[2rem] lg:px-[5rem] md:-mt-[20rem] lg:-mt-1">
     <div className=" px-4 sm:px-6 lg:px-8 sm:py-8">
       <div className="mb-8 sm:mb-12">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-6 leading-tight">
           Explore Our Range of Medical Equipment
         </h2>
         
-        <p className="text-[#666666] text-base sm:text-lg max-w-3xl">
+        <p className="text-[#666666] text-base sm:text-lg max-w-3xl text-justify">
           With a devotion to quality, we provide a broad range of surgical instruments, which include surgical forceps, scalpels, needle holders, retractors, and many more.
         </p>
 

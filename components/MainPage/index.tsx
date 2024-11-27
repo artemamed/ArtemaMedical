@@ -20,7 +20,7 @@ export default function MainPageData() {
             <TrustedStandard />
             <BestSellingProduct />
             <Sustainability />
-            <div className='py-[6rem]'>
+            <div className='pt-[6rem]'>
                 <WhyChooseUs />
             </div>
             <ReliableInstrumnet />

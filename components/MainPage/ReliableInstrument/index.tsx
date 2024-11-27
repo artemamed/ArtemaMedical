@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const CardWithStethoscope = () => {
   return (
-    <div className="px-4 md:px-[5rem]">
+    <div className="px-4 md:px-[2rem] lg:px-[5rem]">
       <div className=" px-4 my-8 md:my-[4rem]">
         <div className="flex flex-col md:flex-row items-center justify-between rounded-3xl shadow-lg bg-[#EDF8F833] p-6 md:p-8">
           <div className="w-full md:w-auto mb-6 md:mb-0">
@@ -18,7 +18,7 @@ const CardWithStethoscope = () => {
             />
           </div>
 
-          <div className="flex-1 text-center md:text-left md:ml-[4rem]">
+          <div className="flex-1 text-center md:text-left lg:ml-[4rem] ">
             <h1 className="text-2xl md:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-teal-900">
               Reliable Instruments, Exceptional Care!
             </h1>

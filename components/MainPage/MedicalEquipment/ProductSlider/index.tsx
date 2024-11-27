@@ -107,8 +107,8 @@ const MedicalCardSlider: React.FC = () => {
                   alt={card.title}
                   className={`p-3 sm:p-4 lg:p-[1rem] object-contain w-full transition-all duration-300 ${
                     currentIndex % initialCards.length === index % initialCards.length
-                      ? "transform -translate-y-4 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[7rem] "
-                      : "h-[150px] sm:h-[175px] md:h-[200px]"
+                      ? "transform -translate-y-2 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[9rem] "
+                      : "h-[100px] sm:h-[175px] md:h-[250px]"
                   }`}
                 />
               </div>

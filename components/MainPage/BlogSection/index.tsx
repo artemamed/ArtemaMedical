@@ -21,8 +21,8 @@ const BlogSection = () => {
 
   return (
     <section className="w-full px-4 py-16 sm:py-24 md:py-[6rem]">
-      <div className="px-4 md:px-[5rem]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8">
+      <div className="px-4 md:px-[3rem] lg:px-[5rem]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {cards.map((card, index) => (
             <div
               key={index}

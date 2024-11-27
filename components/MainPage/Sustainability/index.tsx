@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import sustainability from "@/public/images/Sustainability.png";
+import { Button } from "@/components/ui/button";
 
 export default function Sustainability() {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -23,7 +24,7 @@ export default function Sustainability() {
     const shortText = fullText.slice(0, 145) + "...";
 
     return (
-        <div className="px-4 md:px-[5rem]">
+        <div className="px-4 md:px-[2rem] lg:px-[5rem]">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-8 px-8">
                 <div className="text-left">
                     <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6">
@@ -31,7 +32,7 @@ export default function Sustainability() {
                     </h1>
 
                     <div className="relative">
-                        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 w-full">
+                        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 w-full text-justify">
                             {isMobile ? (isExpanded ? fullText : shortText) : fullText}
                         </p>
 
@@ -45,9 +46,9 @@ export default function Sustainability() {
                         )}
                     </div>
 
-                    <button className="bg-[#008080] text-sm sm:text-base lg:text-lg mt-2 lg:mt-5 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition">
+                    <Button className="bg-[#008080] text-sm sm:text-base lg:text-lg mt-2 lg:mt-5 text-white  py-3 rounded-lg hover:bg-teal-700 transition">
                         About Us →
-                    </button>
+                    </Button>
                 </div>
 
                 <motion.div
@@ -60,7 +61,7 @@ export default function Sustainability() {
                     <Image
                         src={sustainability}
                         alt="Surgical Tools"
-                        className="w-full h-[15rem] lg:h-[25rem] 2xl:h-[30rem] object-cover"
+                        className="w-full h-[15rem] lg:h-[25rem] object-contain"
                         priority
                     />
                 </motion.div>

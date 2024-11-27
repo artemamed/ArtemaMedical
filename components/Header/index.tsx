@@ -80,31 +80,47 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-white shadow-md z-50">
-          <div className="flex flex-col space-y-1 py-2">
-            <Link
-              href="/"
-              className="block px-4 py-2 text-[#2B2B2B] hover:text-[#008080] hover:bg-gray-100"
-            >
-              Home
-            </Link>
-            <Link
-              href="#"
-              className="block px-4 py-2 text-[#2B2B2B] hover:text-[#008080] hover:bg-gray-100"
-            >
-              Certification
-            </Link>
-            <Link
-              href="#"
-              className="block px-4 py-2 text-[#2B2B2B] hover:text-[#008080] hover:bg-gray-100"
-            >
-              About Us
-            </Link>
-          </div>
-        </div>
-      )}
+  <div className="lg:hidden absolute top-full left-0 w-full bg-[#F7F7F7] shadow-md rounded-2xl z-50">
+    <div className="flex flex-col space-y-1 py-5 px-10 text-[#666666]">
+      {/* Home */}
+      <Link
+        href="/"
+        className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100"
+      >
+        Home
+      </Link>
+
+      {/* Product Dropdown */}
+      <div className="block px-4 py-2">
+        <ProductDropDown />
+      </div>
+
+      {/* Certification */}
+      <Link
+        href="#"
+        className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100"
+      >
+        Certification
+      </Link>
+
+      {/* Support */}
+      <div className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
+        <Support />
+      </div>
+
+      {/* About Us */}
+      <Link
+        href="#"
+        className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100"
+      >
+        About Us
+      </Link>
+    </div>
+  </div>
+)}
+
+
     </nav>
   );
 }

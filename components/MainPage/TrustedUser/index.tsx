@@ -56,7 +56,7 @@ const TrustedUser = () => {
   };
 
   return (
-    <div className="px-4 md:px-[5rem]">
+    <div className="px-4 md:px-[3rem] lg:px-[5rem]">
       <div className=" px-4 py-12 md:py-20">
         <div className="flex flex-col space-y-8">
           <h2 className="text-3xl md:text-4xl lg:text-6xl text-gray-800 font-semibold text-center md:text-left">

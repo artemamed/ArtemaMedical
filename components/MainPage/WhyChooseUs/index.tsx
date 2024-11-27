@@ -8,22 +8,22 @@ const WhyChooseUs = () => {
         Why Choose Us
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 ">
         {[
           {
-            icon: <CircleDollarSign className="w-8 md:w-10 xl:w-12" />,
+            icon: <CircleDollarSign className="w-8 md:w-10 xl:w-12 md:h-8 lg:h-10 -mb-2" />,
             title: "Cost-Effective Excellence",
             description:
               "We prioritize delivering premium-quality medical instruments while ensuring budget-friendly solutions tailored to your needs.",
           },
           {
-            icon: <Microscope className="w-8 md:w-10 xl:w-12" />,
+            icon: <Microscope className="w-8 md:w-10 xl:w-12 lg:h-10 md:h-8 -mb-2" />,
             title: "Precision and Innovation",
             description:
               "Our team of biomedical experts continually pushes boundaries to design innovative tools that meet the highest standards.",
           },
           {
-            icon: <Leaf className="w-8 md:w-10 xl:w-12" />,
+            icon: <Leaf className="w-8 md:w-10 xl:w-12 lg:h-10 md:h-8 -mb-2" />,
             title: "Eco-Friendly Commitment",
             description:
               "We're passionate about sustainability, integrating green practices into our processes to protect the planet.",
@@ -36,12 +36,12 @@ const WhyChooseUs = () => {
                      shadow-lg border border-gray-400 hover:border-teal-400
                      transform hover:-translate-y-2 transition-all duration-300
                      hover:bg-teal-700 group cursor-pointer
-                     min-h-[250px] md:min-h-[300px]"
+                     min-h-[250px] lg:min-h-[300px]"
           >
             <div className="text-3xl md:text-4xl mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
               {item.icon}
             </div>
-            <h3 className="text-lg md:text-xl xl:text-2xl font-semibold mb-3 group-hover:text-teal-300">
+            <h3 className="text-lg md:text-xl xl:text-2xl font-semibold mb-1 group-hover:text-teal-300 ">
               {item.title}
             </h3>
             <p className="text-gray-200 leading-relaxed text-sm md:text-base">

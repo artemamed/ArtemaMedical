@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="bg-[#004040] py-6 sm:py-8 md:py-10 text-white">
         <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {/* Company Info */}
-          <div className="col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-1">
+          <div className="col-span-1 md:col-span-4 lg:col-span-1">
             <div className="flex flex-col items-center md:items-start">
               <Image 
                 src={image_logo} 
@@ -26,7 +26,7 @@ export default function Footer() {
               <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                 <Image src={image1} alt="image1" className="h-24 w-auto object-contain" />
                 <Image src={image2} alt="image2" className="h-12 mt-6 w-auto object-contain" />
-                <Image src={image3} alt="image3" className="h-12 w-auto object-contain md:ml-4" />
+                <Image src={image3} alt="image3" className="h-12 w-auto object-contain md:ml-4 md:mt-6 lg:-mt-[5.5rem] lg:ml-[12rem]" />
               </div>
             </div>
           </div>

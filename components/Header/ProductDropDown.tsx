@@ -1,52 +1,50 @@
-// "use client";
+"use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
-
-
+import { Button } from "../ui/button";
 
 export default function CustomDropdownMenu() {
   const menuData = [
-    {
-      category: "General Instruments",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "Orthopedic Instruments",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "Scissors",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "Dental Instruments",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "ENT Instruments",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "Cardiovascular",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "Gynecology",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
-    {
-      category: "Plastic Surgery",
-      items: ["Forceps", "Oral Maxillo Facial Surgery", "Scissors"],
-    },
+    { category: "General Instruments", items: ["Forceps", "Facial Surgery", "Scissors","Scissors","Scissors"] },
+    { category: "Orthopedic Instruments", items: ["Forceps", "Facial Surgery", "Scissors"] },
+    { category: "Scissors", items: ["Forceps", "Facial Surgery", "Scissors"] },
+    { category: "Dental Instruments", items: ["Forceps", "Facial Surgery", "Scissors"] },
+    { category: "ENT Instruments", items: ["Forceps", "Facial Surgery", "Scissors"] },
+    { category: "Cardiovascular", items: ["Forceps", "Facial Surgery", "Scissors"] },
+    { category: "Gynecology", items: ["Forceps", "Facial Surgery", "Scissors"] },
+    { category: "Plastic Surgery", items: ["Forceps", "Facial Surgery", "Scissors"] },
   ];
 
+  const [visibleItems, setVisibleItems] = useState(menuData.length); // Default: show all items
+
+  // Detect screen size and adjust visible items
+  useEffect(() => {
+    const updateVisibleItems = () => {
+      if (window.innerWidth < 768) {
+        // Mobile
+        setVisibleItems(2);
+      } else if (window.innerWidth < 1024) {
+        // Tablet
+        setVisibleItems(3);
+      } else {
+        // Desktop
+        setVisibleItems(4);
+      }
+    };
+
+    updateVisibleItems();
+    window.addEventListener("resize", updateVisibleItems);
+
+    return () => window.removeEventListener("resize", updateVisibleItems);
+  }, [menuData.length]);
+
   return (
-    <div className="">
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="flex justify-between items-center w-full transition hover:text-[#008080]"
+          className="inline-flex items-center overflow-hidden hover:text-[#008080]"
           aria-label="Support Menu"
         >
           <span className="transition">Products</span>
@@ -64,28 +62,28 @@ export default function CustomDropdownMenu() {
           </svg>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="mt-5 grid grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] py-[3rem] lg:px-[4rem] xl:pl-[8rem]  bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
-          {menuData.map((category, index) => (
-            <div key={index} className="space-y-1">
-              <h3 className="text-lg font-semibold text-[#004040]">
+        <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
+          {menuData.slice(0, visibleItems).map((category, index) => (
+            <div key={index} className="lg:space-y-1">
+              <h3 className="text-sm lg:text-lg font-semibold text-[#004040]">
                 {category.category}
               </h3>
-              {category.items.map((item, idx) => (
-                <h2 key={idx} className="text-[#666666] hover:text-[#008080]">
+              {category.items.slice(0, visibleItems).map((item, idx) => (
+                <h2 key={idx} className="text-[#666666] text-sm lg:text-base hover:text-[#008080]">
                   {item}
                 </h2>
               ))}
               <Link
                 href="#"
-                className="text-[#008080] font-medium hover:underline"
+                className="text-[#008080] text-sm lg:font-medium underline"
               >
                 View All
               </Link>
             </div>
           ))}
-          <button className="bg-teal-600 text-md  text-white py-3 w-[12rem] mt-3 rounded-lg hover:bg-teal-700 transition">
+          <Button className="w-[10rem] mb-5">
             Browse Categories
-          </button>
+          </Button>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
