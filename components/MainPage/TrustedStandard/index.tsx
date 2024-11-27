@@ -26,12 +26,12 @@ const products = [
 
 const TrustedStandard = () => {
   return (
-    <div className="px-4 md:px-[5rem]">
-      <div className=" px-4 py-8">
+    <div className="px-4 md:px-[5rem] absolu">
+      <div className="py-8">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-10 leading-tight">
           Trusted by Global Health Standards
         </h1>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
           {products.map((product, index) => (
             <div
               key={index}

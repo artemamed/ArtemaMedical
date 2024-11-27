@@ -26,7 +26,7 @@ export default function Footer() {
               <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                 <Image src={image1} alt="image1" className="h-24 w-auto object-contain" />
                 <Image src={image2} alt="image2" className="h-12 mt-6 w-auto object-contain" />
-                <Image src={image3} alt="image3" className="h-12 w-auto object-contain" />
+                <Image src={image3} alt="image3" className="h-12 w-auto object-contain md:ml-4" />
               </div>
             </div>
           </div>

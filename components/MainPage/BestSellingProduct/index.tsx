@@ -35,7 +35,7 @@ const BestSellingProduct = () => {
                                 height={300}
                                 src={product.imageUrl}
                                 alt={product.title}
-                                className="w-full h-[15rem] p-5 object-contain mb-4 border shadow-md rounded-xl"
+                                className="w-full h-[20rem] p-5 object-contain mb-4 border shadow-md rounded-xl"
                             />
                             <h3 className="text-lg mb-2">{product.title}</h3>
                             <p className="text-xl font-bold mb-4">${product.price}</p>

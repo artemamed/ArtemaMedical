@@ -60,7 +60,7 @@ export default function Sustainability() {
                     <Image
                         src={sustainability}
                         alt="Surgical Tools"
-                        className="w-full h-[15rem] lg:h-[25rem] object-cover"
+                        className="w-full h-[15rem] lg:h-[25rem] 2xl:h-[30rem] object-cover"
                         priority
                     />
                 </motion.div>
