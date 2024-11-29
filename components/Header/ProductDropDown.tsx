@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
-export default function CustomDropdownMenu() {
+export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => void }) {
   const menuData = [
-    { category: "General Instruments", items: ["Forceps", "Facial Surgery", "Scissors","Scissors","Scissors"] },
+    { category: "General Instruments", items: ["Forceps", "Facial Surgery", "Scissors"] },
     { category: "Orthopedic Instruments", items: ["Forceps", "Facial Surgery", "Scissors"] },
     { category: "Scissors", items: ["Forceps", "Facial Surgery", "Scissors"] },
     { category: "Dental Instruments", items: ["Forceps", "Facial Surgery", "Scissors"] },
@@ -17,20 +18,17 @@ export default function CustomDropdownMenu() {
     { category: "Plastic Surgery", items: ["Forceps", "Facial Surgery", "Scissors"] },
   ];
 
-  const [visibleItems, setVisibleItems] = useState(menuData.length); // Default: show all items
+  const [visibleItems, setVisibleItems] = useState(menuData.length);
 
   // Detect screen size and adjust visible items
   useEffect(() => {
     const updateVisibleItems = () => {
       if (window.innerWidth < 768) {
-        // Mobile
-        setVisibleItems(2);
+        setVisibleItems(2); // Mobile
       } else if (window.innerWidth < 1024) {
-        // Tablet
-        setVisibleItems(3);
+        setVisibleItems(3); // Tablet
       } else {
-        // Desktop
-        setVisibleItems(4);
+        setVisibleItems(4); // Desktop
       }
     };
 
@@ -39,6 +37,13 @@ export default function CustomDropdownMenu() {
 
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, [menuData.length]);
+
+  const router = useRouter();
+
+  const navigateToCategories = () => {
+    router.push("/productCategory");
+    closeMenu();
+  };
 
   return (
     <div>
@@ -73,15 +78,12 @@ export default function CustomDropdownMenu() {
                   {item}
                 </h2>
               ))}
-              <Link
-                href="#"
-                className="text-[#008080] text-sm lg:font-medium underline"
-              >
+              <Link href="#" className="text-[#008080] text-sm lg:font-medium underline">
                 View All
               </Link>
             </div>
           ))}
-          <Button className="w-[10rem] mb-5">
+          <Button className="w-[10rem] mb-5" onClick={navigateToCategories}>
             Browse Categories
           </Button>
         </DropdownMenuContent>
