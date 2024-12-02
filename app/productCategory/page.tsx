@@ -28,7 +28,7 @@ export default function PrecisionDriven() {
             src={stethoscopeImage}
             alt="Stethoscope"
             fill
-            className="hidden md:block object-contain md:ml-[5rem] lg:ml-[6rem] xl:ml-[5rem]"
+            className="hidden md:block object-contain md:ml-[5rem] lg:ml-[6rem] xl:ml-[5rem] 2xl:ml-[20rem]"
             priority
           />
           <Image
