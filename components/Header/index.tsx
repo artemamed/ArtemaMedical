@@ -21,19 +21,19 @@ export default function Navbar() {
 
   return (
     <nav className="relative bg-white ">
-      <div className="container mx-auto flex items-center justify-between py-4 px-5">
+      <div className="mx-auto xl:mx-[5rem] flex items-center justify-between py-4 px-5">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">
           <Image src={logo} alt="Artema Logo" width={150} height={150} />
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex lg:space-x-[2rem] xl:space-x-[4rem] bg-[#F7F7F7] pl-8 p-3 pr-8 rounded-2xl">
+        <div className="hidden lg:flex lg:space-x-[2rem] xl:space-x-[4rem] 2xl:space-x-[6rem] bg-[#F7F7F7] pl-8 p-3 pr-8 rounded-2xl">
           <Link href="/" className="text-teal-700 font-medium hover:text-[#008080]">
             Home
           </Link>
           <div>
-            <ProductDropDown closeMenu={() => setIsMenuOpen(false)}/>
+            <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
           </div>
           <Link href="#" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
             Certification
@@ -94,7 +94,7 @@ export default function Navbar() {
               Home
             </Link>
             <div className="block px-4 py-2">
-              <ProductDropDown closeMenu={() => setIsMenuOpen(false)}/>
+              <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
             </div>
             <Link href="#" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               Certification

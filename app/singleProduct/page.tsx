@@ -44,8 +44,9 @@ const SingleProduct: React.FC = () => {
     return (
         <div className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
             <div className="w-full">
+                <div className="2xl:mx-[6rem]">
                 <BreadcrumbComponent />
-
+                </div>
                 {/* Product Section */}
                 <div className="flex flex-col lg:flex-row py-8 lg:py-16 space-y-6 lg:space-y-0 lg:space-x-8">
                     {/* Image Section */}
@@ -135,7 +136,7 @@ const SingleProduct: React.FC = () => {
                 </div>
 
                 {/* Similar Products */}
-                <div className="mt-16">
+                <div className="mt-16 2xl:mx-[6rem]">
                     <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
                         Similar Products
                     </h2>
