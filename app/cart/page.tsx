@@ -1,17 +1,16 @@
-//  Do not chang ethe design of desktop mode , but change tablet and mobile mode like this image exactly
-
-
 "use client";
 import { Button } from "@/components/ui/button";
 import { Package, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 const Cart: React.FC = () => {
     const [selectedOption, setSelectedOption] = useState(0);
 
     const options = ["Free shipping", "Express shipping", "Pick Up"];
-    const shippingCosts = [0, 15, 15]; // Corresponding costs for each shipping option
+    const shippingCosts = [0, 15, 15]; 
 
     const [cartItems, setCartItems] = useState([
         { id: 1, name: "Tray Table", price: 19, quantity: 2, sku: "033-0591-02", image: "/images/productSubCategory/pic4.png" },
@@ -45,6 +44,12 @@ const Cart: React.FC = () => {
 
     const handleShippingChange = (index: number) => {
         setSelectedOption(index);
+    };
+
+    const router = useRouter();
+
+    const navigateToCheckOut = () => {
+        router.push("/cart/checkOut");
     };
 
     return (
@@ -110,10 +115,10 @@ const Cart: React.FC = () => {
                                                     </h2>
                                                     <p className="text-xs text-[#666666]">SKU: {item.sku}</p>
                                                     <button
-                                                        className="flex text-xs text-[#666666]"
+                                                        className="flex text-xs text-[#666666] hover:text-red-500"
                                                         onClick={() => handleRemoveItem(item.id)}
                                                     >
-                                                        <Trash2 className="h-2.5 w-2.5 mt-0.5" />
+                                                        <Trash2 className="h-3.5 w-3.5 mr-1" />
                                                         Remove
                                                     </button>
                                                 </div>
@@ -144,7 +149,7 @@ const Cart: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* set exactly align data according to the image */}
+                    {/* Mobilez */}
 
                     <div className="block lg:hidden space-y-4 md:w-[36rem]">
                         <h2 className="text-lg font-semibold mb-4">Product</h2>
@@ -238,22 +243,22 @@ const Cart: React.FC = () => {
 
                             <table className="w-full">
                                 <tbody>
-                                    <tr className="text-md border-b border-[#E8ECEF] space-y-4">
+                                    <tr className="text-md border-b border-[#E8ECEF] space-y-2">
                                         <td className="py-4">Subtotal</td>
                                         <td className="text-right py-4">${subtotal.toFixed(2)}</td>
                                     </tr>
-                                    <tr className="text-md border-b border-[#E8ECEF] space-y-4">
+                                    <tr className="text-md border-b border-[#E8ECEF] space-y-2">
                                         <td className="py-4">Shipping</td>
                                         <td className="text-right py-4">${shippingCosts[selectedOption].toFixed(2)}</td>
                                     </tr>
-                                    <tr className="font-semibold text-xl space-y-4">
+                                    <tr className="font-semibold text-xl space-y-2">
                                         <td className="py-4">Total</td>
                                         <td className="text-right py-4">${total.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
-                            <Button className="flex justify-center w-full">
+                            <Button className="flex justify-center w-full" onClick={navigateToCheckOut}>
                                 Checkout<Package className="ml-2" />
                             </Button>
                         </div>
