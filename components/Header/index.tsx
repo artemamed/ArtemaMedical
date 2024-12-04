@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import logo from "@/public/images/logo.svg";
 import SearchInput from "./SearchInput";
 import CartButton from "./CartButton";
@@ -12,12 +12,22 @@ import ProductDropDown from "./ProductDropDown";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname(); // Get the current pathname
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+  const router = useRouter();
 
-  // Close the menu on route change
+  // Check authentication status on mount
   useEffect(() => {
-    setIsMenuOpen(false); // Close the menu when the path changes
-  }, [pathname]);
+    const token = document.cookie.split("; ").find((row) => row.startsWith("userToken="));
+    setIsAuthenticated(!!token); // Set authenticated state based on token presence
+  }, []);
+
+  // Handle logout
+  const handleLogout = () => {
+    document.cookie = "userToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"; // Clear the cookie
+    setIsAuthenticated(false);
+    router.push("/auth/signin"); // Redirect to sign-in page
+  };
 
   return (
     <nav className="relative bg-white ">
@@ -47,7 +57,7 @@ export default function Navbar() {
         </div>
 
         {/* Icons & Contact Button */}
-        <div className="flex items-center space-x-6 md:space-x-4 lg:space-x-6">
+        <div className="flex items-center space-x-4 xl:space-x-6">
           {/* Search Input */}
           <div className="lg:ml-[1rem] xl:ml-[5rem] 2xl:ml-[12rem]">
             <SearchInput />
@@ -55,6 +65,35 @@ export default function Navbar() {
 
           {/* Cart Button */}
           <CartButton />
+
+
+
+          {/* User Avatar */}
+          {isAuthenticated && (
+            <div className="relative">
+              <button
+                onClick={() => setShowAvatarMenu(!showAvatarMenu)}
+                className="relative w-7 h-7 rounded-full overflow-hidden border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              >
+                <Image
+                  src="/assets/avatar.jpg"
+                  alt="User Avatar"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </button>
+              {showAvatarMenu && (
+                <div className="absolute right-0 w-48 mt-4 bg-[#F7F7F7] border border-gray-200 rounded-md shadow-lg z-50">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-teal-500"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Contact Us Button (Visible in Desktop) */}
           <Link
@@ -87,6 +126,7 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-[#F7F7F7] shadow-md rounded-2xl z-50">
           <div className="flex flex-col space-y-1 py-5 px-10 text-[#666666]">

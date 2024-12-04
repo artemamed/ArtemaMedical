@@ -49,8 +49,14 @@ const Cart: React.FC = () => {
     const router = useRouter();
 
     const navigateToCheckOut = () => {
-        router.push("/cart/checkOut");
-    };
+        const isAuthenticated = document.cookie.includes("userToken"); // Check if the user is authenticated
+        if (isAuthenticated) {
+          router.push("/cart/checkOut");
+        } else {
+          router.push("/auth/signin");
+        }
+      };
+      
 
     return (
         <div className="min-h-screen p-4 mx-4 md:mx-[5rem]">

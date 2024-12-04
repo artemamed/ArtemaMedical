@@ -1,7 +1,8 @@
 "use client";
 
-import { Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
 import React, { useState } from "react";
+import { Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
+import { mockRegister } from "@/utils/auth";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,8 @@ const SignupForm = () => {
     password: "",
     confirmPassword: "",
   });
-
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -19,13 +21,33 @@ const SignupForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
+    if (formData.password !== formData.confirmPassword) {
+      setMessage("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      const response = await mockRegister({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+      setMessage(response);
+    } catch (error) {
+      setMessage(error as string);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const iconClass = "h-4 w-4 ";
-  const inputClass = "w-full pl-10 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
+  const iconClass = "h-4 w-4";
+  const inputClass =
+    "w-full pl-10 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
@@ -71,10 +93,7 @@ const SignupForm = () => {
           onClick={() => setShowPassword(!showPassword)}
           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
         >
-          {showPassword ?
-            <Eye className={iconClass} /> :
-            <EyeOff className={iconClass} />
-          }
+          {showPassword ? <Eye className={iconClass} /> : <EyeOff className={iconClass} />}
         </button>
       </div>
 
@@ -94,18 +113,20 @@ const SignupForm = () => {
           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
         >
-          {showConfirmPassword ?
-            <Eye className={iconClass} /> :
-            <EyeOff className={iconClass} />
-          }
+          {showConfirmPassword ? <Eye className={iconClass} /> : <EyeOff className={iconClass} />}
         </button>
       </div>
 
+      {message && (
+        <p className="text-center text-sm text-red-500">{message}</p>
+      )}
+
       <button
         type="submit"
+        disabled={loading}
         className="w-full bg-[#008080] text-white py-2.5 sm:py-3 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base font-medium"
       >
-        Sign Up
+        {loading ? "Signing Up..." : "Sign Up"}
       </button>
     </form>
   );
