@@ -92,9 +92,8 @@ const ProductSubCategory: React.FC = () => {
 
   const Sidebar = () => (
     <aside
-      className={`fixed top-0 left-0 h-full bg-gray-100 shadow-lg z-40 p-4 transform transition-transform duration-300 ${
-        showSidebar ? "translate-x-0" : "-translate-x-full"
-      } lg:static lg:translate-x-0 lg:w-64 lg:rounded-2xl`}
+      className={`fixed top-0 left-0 h-full bg-gray-100 shadow-lg z-40 p-4 transform transition-transform duration-300 ${showSidebar ? "translate-x-0" : "-translate-x-full"
+        } lg:static lg:translate-x-0 lg:w-64 lg:rounded-2xl`}
     >
       <div className="flex justify-between items-center mb-4">
         <h2 className="font-semibold text-lg">Categories</h2>
@@ -150,10 +149,10 @@ const ProductSubCategory: React.FC = () => {
             onClick={() => setShowSidebar(false)}
           ></div>
         )}
-        <main className="flex-1 p-6">
+        <main className="flex-1 px-6 lg:-mt-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
             {instruments.map((instrument, index) => (
-              <div key={index} className="rounded-lg p-4 flex flex-col items-center ">
+              <div key={index} className="rounded-lg p-4 flex flex-col items-center">
                 <Image
                   width={300}
                   height={300}
@@ -161,7 +160,7 @@ const ProductSubCategory: React.FC = () => {
                   alt={instrument.name}
                   className="w-full h-full object-contain mb-4 border rounded-2xl"
                 />
-                <div className="flex items-center justify-between gap-8">
+                <div className="flex w-full justify-between items-center px-1">
                   <h3 className="text-lg font-semibold text-gray-800">{instrument.name}</h3>
                   <Button variant="secondary" className="px-8" onClick={handleViewClick}>
                     View
@@ -171,6 +170,7 @@ const ProductSubCategory: React.FC = () => {
             ))}
           </div>
         </main>
+
       </div>
     </div>
   );

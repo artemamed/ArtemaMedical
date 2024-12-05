@@ -5,8 +5,11 @@ import Image from "next/image";
 import heroSection from "@/public/images/heroSection1.png";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
 
 export default function HeroSection() {
+
     const [isExpanded, setIsExpanded] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -24,6 +27,12 @@ export default function HeroSection() {
     const fullText = "We represent first-rate surgical instruments that provide the customers with the quality they demand, the price they can afford, and the fidelity they expect.We are proud of our 40 years of success in helping thousands of patients and healthcare industries around the world";
 
     const shortText = fullText.slice(0, 145) + "...";
+
+    const router = useRouter();
+
+  const navigateToBlog = () => {
+    router.push("/blog");
+  };
 
     return (
         <div className="min-h-screen px-4 md:px-[2rem] lg:px-[5rem] -mb-[5rem] lg:-mt-[3rem]">
@@ -49,7 +58,7 @@ export default function HeroSection() {
                             )}
                         </div>
 
-                        <Button className="mt-5">
+                        <Button className="mt-5" onClick={navigateToBlog}>
                             Explore More →
                         </Button>
                     </div>

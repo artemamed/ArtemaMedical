@@ -30,8 +30,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative bg-white ">
-      <div className="mx-auto xl:mx-[5rem] flex items-center justify-between py-4 px-5">
+    <nav className="relative bg-white">
+      <div className="mx-auto flex items-center justify-between py-4 px-5 lg:px-[2rem] xl:px-[5rem] 2xl:px-[10rem]">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">
           <Image src={logo} alt="Artema Logo" width={150} height={150} />
@@ -59,14 +59,12 @@ export default function Navbar() {
         {/* Icons & Contact Button */}
         <div className="flex items-center space-x-4 xl:space-x-6">
           {/* Search Input */}
-          <div className="lg:ml-[1rem] xl:ml-[5rem] 2xl:ml-[12rem]">
+          <div className="lg:ml-[1rem] xl:ml-[5rem] ">
             <SearchInput />
           </div>
 
           {/* Cart Button */}
           <CartButton />
-
-
 
           {/* User Avatar */}
           {isAuthenticated && (
