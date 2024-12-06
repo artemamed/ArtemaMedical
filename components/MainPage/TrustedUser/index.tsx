@@ -1,3 +1,4 @@
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { MoveLeft, MoveRight } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
@@ -56,8 +57,8 @@ const TrustedUser = () => {
   };
 
   return (
-    <div className="px-4 md:px-[3rem] lg:px-[5rem]">
-      <div className=" px-4 py-12 md:py-20">
+    <LayoutWrapper>
+      <div className="py-12 md:py-20">
         <div className="flex flex-col space-y-8">
           <h2 className="text-3xl md:text-4xl lg:text-6xl text-gray-800 font-semibold text-center md:text-left">
             We are trusted by
@@ -126,7 +127,7 @@ const TrustedUser = () => {
           </div>
         </div>
       </div>
-    </div>
+    </LayoutWrapper>
   );
 };
 

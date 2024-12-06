@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import sustainability from "@/public/images/Sustainability.png";
 import { Button } from "@/components/ui/button";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
 export default function Sustainability() {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -24,10 +25,10 @@ export default function Sustainability() {
     const shortText = fullText.slice(0, 145) + "...";
 
     return (
-        <div className="px-4 md:px-[2rem] lg:px-[5rem]">
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-8 px-8">
-                <div className="text-left">
-                    <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6">
+        <LayoutWrapper className="mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-8">
+                <div className="xl:w-[50rem] 2xl:w-[60rem] md:w-[30rem] lg:w-[38rem]">
+                    <h1 className="text-xl sm:text-4xl lg:text-5xl  font-semibold mb-6">
                         Committed to Sustainability in Healthcare
                     </h1>
 
@@ -52,7 +53,7 @@ export default function Sustainability() {
                 </div>
 
                 <motion.div
-                    className="w-full h-full flex items-center justify-center"
+                    className="w-full h-full "
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
@@ -61,11 +62,11 @@ export default function Sustainability() {
                     <Image
                         src={sustainability}
                         alt="Surgical Tools"
-                        className="w-full h-[15rem] lg:h-[25rem] object-contain"
+                        className="w-full h-[15rem] lg:h-[25rem] object-cover xl:ml-[7rem] md:mt-[3rem] lg:mt-0 xl:-mt-[2rem] md:ml-[4rem]"
                         priority
                     />
                 </motion.div>
             </div>
-        </div>
+        </LayoutWrapper>
     );
 }

@@ -3,7 +3,6 @@ import React from 'react';
 import HeroSection from './HeroSection';
 import MedicalEquipment from './MedicalEquipment';
 import TrustedStandard from './TrustedStandard';
-import BestSellingProduct from './BestSellingProduct';
 import Sustainability from './Sustainability';
 import WhyChooseUs from './WhyChooseUs';
 import ReliableInstrumnet from './ReliableInstrument';
@@ -18,7 +17,6 @@ export default function MainPageData() {
             </header>
             <MedicalEquipment />
             <TrustedStandard />
-            <BestSellingProduct />
             <Sustainability />
             <div className='pt-[6rem]'>
                 <WhyChooseUs />

@@ -1,10 +1,10 @@
 import React from "react";
 import ProductSlider from "./ProductSlider";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
 const MedicalEquipment: React.FC = () => {
   return (
-    <section className="px-4 md:px-[2rem] lg:px-[5rem] md:-mt-[20rem] lg:-mt-1">
-    <div className=" px-4 sm:px-6 lg:px-8 sm:py-8">
+    <LayoutWrapper>
       <div className="mb-8 sm:mb-12">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-6 leading-tight">
           Explore Our Range of Medical Equipment
@@ -51,8 +51,7 @@ const MedicalEquipment: React.FC = () => {
       </div>
 
       <ProductSlider />
-      </div>
-    </section>
+    </LayoutWrapper>
   );
 };
 

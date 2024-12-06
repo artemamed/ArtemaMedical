@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { PackageCheck, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -70,7 +71,7 @@ const CheckOut: React.FC = () => {
     const total = subtotal + shippingCosts[selectedOption];
 
     return (
-        <div className="min-h-screen p-4 mx-4 lg:mx-[3rem] xl:mx-[5rem]">
+        <LayoutWrapper className="min-h-screen p-4">
             {/* Header */}
             <button className="text-gray-500 mb-4">&lt; Back</button>
             <h1 className="text-3xl md:text-4xl font-bold text-teal-800 text-center mb-5">Check Out</h1>
@@ -94,7 +95,7 @@ const CheckOut: React.FC = () => {
             {/* Checkout Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
                 {/* Shipping Address */}
-                <div className="border p-6 rounded-xl h-[35rem] bg-white 2xl:w-[60rem] md:w-[22rem] lg:w-[30rem] xl:w-[45rem]">
+                <div className="border p-6 rounded-xl h-[35rem] bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
                     <h2 className="text-2xl font-semibold mb-6 text-gray-800">Shipping Address</h2>
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         {/* Street Address */}
@@ -208,10 +209,10 @@ const CheckOut: React.FC = () => {
 
 
                 {/* Order Summary */}
-                <div className="space-y-4 border p-[2rem] rounded-xl 2xl:ml-[10rem] 2xl:w-[42rem] mb-[3rem] lg:-mr-[3rem] lg:ml-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
-                    <h2 className="text-2xl font-semibold -mt-2">Order summary</h2>
+                <div className="space-y-4 border p-[2rem] rounded-xl 2xl:ml-[10rem] lg:ml-[10rem] lg:w-[19rem] xl:w-[28rem] 2xl:w-[35rem] mb-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
+                    <h2 className="text-2xl font-semibold text-center mb-5">Order summary</h2>
                     {cartItems.map((item) => (
-                        <div key={item.id} className="flex flex-col -ml-6 border-b pb-4 lg:ml-5">
+                        <div key={item.id} className="flex flex-col -ml-6 border-b pb-4 xl:ml-5">
                             <div className="flex items-center space-x-4">
                                 <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain rounded-md" />
                                 <div className="flex-1 space-y-2 md:space-y-3">
@@ -266,7 +267,7 @@ const CheckOut: React.FC = () => {
                     </table>
                 </div>
             </div>
-        </div>
+        </LayoutWrapper>
     );
 };
 

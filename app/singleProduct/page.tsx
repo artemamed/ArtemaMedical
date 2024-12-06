@@ -3,6 +3,7 @@
 import BreadcrumbComponent from "@/components/Breadcrumb";
 import { ScrollAreaHorizontalDemo } from "@/components/Product/singleProductScroll";
 import { Button } from "@/components/ui/button";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { Plus, Ruler, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -42,9 +43,9 @@ const SingleProduct: React.FC = () => {
     ];
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
+        <LayoutWrapper className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
             <div className="w-full">
-                <div className="2xl:mx-[6rem]">
+                <div className="">
                 <BreadcrumbComponent />
                 </div>
                 {/* Product Section */}
@@ -174,7 +175,7 @@ const SingleProduct: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </LayoutWrapper>
     );
 };
 

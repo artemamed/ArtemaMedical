@@ -6,6 +6,7 @@ import heroSection from "@/public/images/heroSection1.png";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
 
 export default function HeroSection() {
@@ -35,8 +36,9 @@ export default function HeroSection() {
   };
 
     return (
-        <div className="min-h-screen px-4 md:px-[2rem] lg:px-[5rem] -mb-[5rem] lg:-mt-[3rem]">
-            <div className=" flex items-center px-4  ">
+        <LayoutWrapper>
+        <div className="min-h-screen ">
+            <div className=" flex items-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8 ">
                     {/* Left Section - Text Content */}
                     <div className="text-left">
@@ -75,12 +77,13 @@ export default function HeroSection() {
                             src={heroSection}
                             alt="Surgical Tools"
                             fill
-                            className="object-cover object-center md:mt-[4rem] lg:mt-10 -mt-5 xl:ml-[5rem]"
+                            className="object-cover object-center"
                             priority
                         />
                     </motion.div>
                 </div>
             </div>
         </div>
+        </LayoutWrapper>
     );
 }

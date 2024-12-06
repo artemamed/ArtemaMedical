@@ -11,8 +11,8 @@ import { House } from "lucide-react";
 
 export default function BreadcrumbComponent() {
   return (
-    <Breadcrumb className="mx-[1rem] lg:mx-[5rem] lg:-mb-[2rem] lg:mt-[2rem] ">
-      <BreadcrumbList>
+    <Breadcrumb>
+      <BreadcrumbList className="text-[11px] sm:text-base">
         <BreadcrumbItem>
           <BreadcrumbLink href="/"><House className="h-4 w-4" /></BreadcrumbLink>
         </BreadcrumbItem>

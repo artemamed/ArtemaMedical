@@ -4,6 +4,7 @@ import { Package, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
 
 const Cart: React.FC = () => {
@@ -59,7 +60,7 @@ const Cart: React.FC = () => {
       
 
     return (
-        <div className="min-h-screen p-4 mx-4 md:mx-[5rem]">
+        <LayoutWrapper className="min-h-screen p-4">
             <div>
                 <button className="text-[#7c7c7c]">&lt; back</button>
 
@@ -271,7 +272,7 @@ const Cart: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </LayoutWrapper>
     );
 };
 

@@ -1,4 +1,5 @@
 "use client";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -42,7 +43,7 @@ const About: React.FC = () => {
     }, [stats]);
 
     return (
-        <div className="min-h-screen flex-1 px-4 lg:px-[2rem] xl:px-[5rem] my-[2rem]">
+        <LayoutWrapper className="min-h-screen flex-1 lg:py-[5rem]">
             <div className="max-w-6xl">
                 <h1 className="text-2xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold md:text-left">
                     {heading.split(" ").map((word, index) =>
@@ -161,7 +162,7 @@ const About: React.FC = () => {
                     </p>
                 </div>
             </section>
-        </div>
+        </LayoutWrapper>
     );
 };
 

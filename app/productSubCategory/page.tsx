@@ -6,6 +6,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/navigation";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
 const instruments = [
   { name: "Screw Cate", imageUrl: "/images/productSubCategory/pic1.png" },
@@ -105,8 +106,8 @@ const ProductSubCategory: React.FC = () => {
         {categories.map((category, index) => (
           <li key={index}>
             <details className="cursor-pointer">
-              <summary className="hover:text-teal-600 flex items-center gap-2">
-                <Icon icon={category.icon} className="text-xl text-teal-600" />
+              <summary className="hover:text-teal-600 text-lg font-medium text-[#004040] flex items-center gap-2">
+                <Icon icon={category.icon} className="text-xl" />
                 {category.name}
               </summary>
               <ul className="ml-8 mt-2 space-y-1 text-sm text-gray-600">
@@ -128,14 +129,14 @@ const ProductSubCategory: React.FC = () => {
   );
 
   return (
-    <div>
-      <h1 className="text-2xl lg:text-5xl font-semibold text-center py-16">
+    <LayoutWrapper>
+      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-center py-16">
         Orthopedic Instruments
       </h1>
-      <div className="relative flex min-h-screen mx-4 lg:mx-20 my-8">
+      <div className="relative flex min-h-screen my-8">
         {showButton && (
           <Button
-            className="fixed top-[15rem] left-14 md:top-52 lg:top-60 lg:left-20"
+            className="fixed top-[15rem] left-9 md:top-[15rem] lg:top-60 lg:left-[1.5rem] xl:left-[7rem] 2xl:left-[14rem]"
             variant="secondary"
             onClick={() => setShowSidebar(!showSidebar)}
           >
@@ -149,8 +150,8 @@ const ProductSubCategory: React.FC = () => {
             onClick={() => setShowSidebar(false)}
           ></div>
         )}
-        <main className="flex-1 px-6 lg:-mt-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+        <main className="flex-1 lg:-mt-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
             {instruments.map((instrument, index) => (
               <div key={index} className="rounded-lg p-4 flex flex-col items-center">
                 <Image
@@ -172,7 +173,7 @@ const ProductSubCategory: React.FC = () => {
         </main>
 
       </div>
-    </div>
+    </LayoutWrapper>
   );
 };
 
