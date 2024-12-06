@@ -9,6 +9,7 @@ import SearchInput from "./SearchInput";
 import CartButton from "./CartButton";
 import Support from "./Support";
 import ProductDropDown from "./ProductDropDown";
+import LayoutWrapper from "../Wrapper/LayoutWrapper";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,8 +31,8 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="relative bg-white">
-      <div className="mx-auto flex items-center justify-between py-4 px-5 lg:px-[2rem] xl:px-[5rem] 2xl:px-[10rem]">
+    <LayoutWrapper className="relative">
+      <div className=" flex items-center justify-between py-4 ]">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">
           <Image src={logo} alt="Artema Logo" width={150} height={150} />
@@ -51,7 +52,7 @@ export default function Navbar() {
           <div>
             <Support />
           </div>
-          <Link href="#" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
+          <Link href="/about" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
             About Us
           </Link>
         </div>
@@ -95,7 +96,7 @@ export default function Navbar() {
 
           {/* Contact Us Button (Visible in Desktop) */}
           <Link
-            href="#"
+            href="/contact"
             className="hidden lg:block text-[#008080] border font-semibold border-[#008080] py-2 px-4 rounded-lg hover:bg-[#008080] hover:text-white"
           >
             Contact Us
@@ -140,12 +141,12 @@ export default function Navbar() {
             <div className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               <Support />
             </div>
-            <Link href="#" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
+            <Link href="/about" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               About Us
             </Link>
           </div>
         </div>
       )}
-    </nav>
+    </LayoutWrapper>
   );
 }
