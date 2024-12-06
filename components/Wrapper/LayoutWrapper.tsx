@@ -6,7 +6,7 @@ interface Props {
 }
 const LayoutWrapper: NextPage<Props> = ({ children, className }) => {
   return (
-    <div className={` md:container mx-auto px-2 ${className}`}>
+    <div className={` md:container mx-auto px-5 ${className}`}>
       {children}
     </div>
   );
