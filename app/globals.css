@@ -64,3 +64,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.radio:checked::after {
+  content: '✓';
+  color: white;
+  font-size: 10px;
+  position: absolute;
+  left: 3px;
+}
