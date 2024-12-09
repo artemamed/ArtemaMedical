@@ -19,6 +19,8 @@ const CheckOut: React.FC = () => {
         differentBillingAddress: false,
     });
 
+
+
     // Handler for form input changes
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -92,119 +94,195 @@ const CheckOut: React.FC = () => {
                 </div>
             </div>
 
+
+
             {/* Checkout Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-                {/* Shipping Address */}
-                <div className="border p-6 rounded-xl h-[35rem] bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Shipping Address</h2>
-                    <form className="space-y-4" onSubmit={handleSubmit}>
-                        {/* Street Address */}
-                        <div className="text-gray-700 text-sm">
-                            <label htmlFor="street" className="block mb-2 font-medium">
-                                Street Address <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                id="street"
-                                name="street"
-                                placeholder="Street Address"
-                                className="w-full p-3 border rounded-md"
-                                value={shippingAddress.street}
-                                onChange={handleAddressChange}
-                            />
-                        </div>
+                <div className="space-y-10">
+                    {/* Contact Information */}
+                    <div className="border p-6 rounded-xl h-[23rem] bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
+                        <form className="space-y-4" onSubmit={handleSubmit}>
+                            {/* First Name and Last Name */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-gray-700 text-sm">
+                                    <label htmlFor="First Name" className="block mb-2 font-medium">
+                                        First Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="First Name"
+                                        name="First Name"
+                                        placeholder="First Name"
+                                        className="w-full p-3 border rounded-md"
+                                        value={shippingAddress.state}
+                                        onChange={handleAddressChange}
+                                    />
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                    <label htmlFor="Last Name" className="block mb-2 font-medium">
+                                        Last Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="Last Name"
+                                        name="Last Name"
+                                        placeholder="Last Name"
+                                        className="w-full p-3 border rounded-md"
+                                        value={shippingAddress.zipCode}
+                                        onChange={handleAddressChange}
+                                    />
+                                </div>
+                            </div>
 
-                        {/* Country */}
-                        <div className="text-gray-700 text-sm">
-                            <label htmlFor="country" className="block mb-2 font-medium">
-                                Country <span className="text-red-500">*</span>
-                            </label>
-                            <select
-                                id="country"
-                                name="country"
-                                className="w-full p-3 border rounded-md"
-                                value={shippingAddress.country}
-                                onChange={handleAddressChange}
+
+
+                            {/* Phone Number  */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="city" className="block mb-2 font-medium">
+                                    Phone Number <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="Phone Number"
+                                    name="Phone Number"
+                                    placeholder="Phone Number"
+                                    className="w-full p-3 border rounded-md"
+                                    value={shippingAddress.city}
+                                    onChange={handleAddressChange}
+                                />
+                            </div>
+
+                            {/* Email Address */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="Email Address" className="block mb-2 font-medium">
+                                    Email Address <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="Email Address"
+                                    name="Email Address"
+                                    placeholder="Email Address"
+                                    className="w-full p-3 border rounded-md"
+                                    value={shippingAddress.city}
+                                    onChange={handleAddressChange}
+                                />
+                            </div>
+                        </form>
+                    </div>
+
+                    {/* Shipping Address */}
+                    <div className="border p-6 rounded-xl h-[35rem] bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Shipping Address</h2>
+                        <form className="space-y-4" onSubmit={handleSubmit}>
+                            {/* Street Address */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="street" className="block mb-2 font-medium">
+                                    Street Address <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="street"
+                                    name="street"
+                                    placeholder="Street Address"
+                                    className="w-full p-3 border rounded-md"
+                                    value={shippingAddress.street}
+                                    onChange={handleAddressChange}
+                                />
+                            </div>
+
+                            {/* Country */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="country" className="block mb-2 font-medium">
+                                    Country <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="country"
+                                    name="country"
+                                    className="w-full p-3 border rounded-md"
+                                    value={shippingAddress.country}
+                                    onChange={handleAddressChange}
+                                >
+                                    <option value="">Country</option>
+                                    <option value="USA">USA</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="UK">UK</option>
+                                </select>
+                            </div>
+
+                            {/* Town / City */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="city" className="block mb-2 font-medium">
+                                    Town / City <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="city"
+                                    name="city"
+                                    placeholder="Town / City"
+                                    className="w-full p-3 border rounded-md"
+                                    value={shippingAddress.city}
+                                    onChange={handleAddressChange}
+                                />
+                            </div>
+
+                            {/* State and Zip Code */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-gray-700 text-sm">
+                                    <label htmlFor="state" className="block mb-2 font-medium">
+                                        State
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="state"
+                                        name="state"
+                                        placeholder="State"
+                                        className="w-full p-3 border rounded-md"
+                                        value={shippingAddress.state}
+                                        onChange={handleAddressChange}
+                                    />
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                    <label htmlFor="zipCode" className="block mb-2 font-medium">
+                                        Zip Code
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="zipCode"
+                                        name="zipCode"
+                                        placeholder="Zip Code"
+                                        className="w-full p-3 border rounded-md"
+                                        value={shippingAddress.zipCode}
+                                        onChange={handleAddressChange}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Billing Address Checkbox */}
+                            <div className="flex items-center text-sm">
+                                <input
+                                    type="checkbox"
+                                    id="differentBillingAddress"
+                                    name="differentBillingAddress"
+                                    className="w-4 h-4 border rounded"
+                                    checked={shippingAddress.differentBillingAddress}
+                                    onChange={handleAddressChange}
+                                />
+                                <label htmlFor="differentBillingAddress" className="ml-2 text-gray-700 text-[9px] sm:text-xs lg:text-base">
+                                    Use a different billing address (optional)
+                                </label>
+                            </div>
+
+                            {/* Place Order Button */}
+                            <Button
+                                type="submit"
+                                className="flex gap-2"
+                                onClick={navigateToOrderComplete}
                             >
-                                <option value="">Country</option>
-                                <option value="USA">USA</option>
-                                <option value="Canada">Canada</option>
-                                <option value="UK">UK</option>
-                            </select>
-                        </div>
-
-                        {/* Town / City */}
-                        <div className="text-gray-700 text-sm">
-                            <label htmlFor="city" className="block mb-2 font-medium">
-                                Town / City <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                placeholder="Town / City"
-                                className="w-full p-3 border rounded-md"
-                                value={shippingAddress.city}
-                                onChange={handleAddressChange}
-                            />
-                        </div>
-
-                        {/* State and Zip Code */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="text-gray-700 text-sm">
-                                <label htmlFor="state" className="block mb-2 font-medium">
-                                    State
-                                </label>
-                                <input
-                                    type="text"
-                                    id="state"
-                                    name="state"
-                                    placeholder="State"
-                                    className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.state}
-                                    onChange={handleAddressChange}
-                                />
-                            </div>
-                            <div className="text-gray-700 text-sm">
-                                <label htmlFor="zipCode" className="block mb-2 font-medium">
-                                    Zip Code
-                                </label>
-                                <input
-                                    type="text"
-                                    id="zipCode"
-                                    name="zipCode"
-                                    placeholder="Zip Code"
-                                    className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.zipCode}
-                                    onChange={handleAddressChange}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Billing Address Checkbox */}
-                        <div className="flex items-center text-sm">
-                            <input
-                                type="checkbox"
-                                id="differentBillingAddress"
-                                name="differentBillingAddress"
-                                className="w-4 h-4 border rounded"
-                                checked={shippingAddress.differentBillingAddress}
-                                onChange={handleAddressChange}
-                            />
-                            <label htmlFor="differentBillingAddress" className="ml-2 text-gray-700 text-[9px] sm:text-xs lg:text-base">
-                                Use a different billing address (optional)
-                            </label>
-                        </div>
-
-                        {/* Place Order Button */}
-                        <Button
-                            type="submit"
-                            className="flex gap-2"
-                            onClick={navigateToOrderComplete}
-                        >
-                            Place Order<PackageCheck />
-                        </Button>
-                    </form>
+                                Place Order<PackageCheck />
+                            </Button>
+                        </form>
+                    </div>
                 </div>
 
 
@@ -267,6 +345,7 @@ const CheckOut: React.FC = () => {
                     </table>
                 </div>
             </div>
+
         </LayoutWrapper>
     );
 };

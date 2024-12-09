@@ -30,8 +30,8 @@ const Support: NextPage = () => {
         </svg>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="lg:w-[15rem] rounded-2xl border-none bg-[#F7F7F7] lg:mt-5 w-screen">
-        <div className="rounded-lg px-[5rem] lg:px-1 text-[#666666] text-sm mb-2">
+      <DropdownMenuContent className="lg:w-[15rem] rounded-2xl border-none bg-[#F7F7F7] lg:mt-5 w-screen ">
+        <div className="rounded-lg px-[5rem] lg:px-1 text-[#666666] text-sm mb-2 ">
           <Link href="/ifu">
             <DropdownMenuItem>IFU</DropdownMenuItem>
           </Link>
@@ -43,6 +43,9 @@ const Support: NextPage = () => {
           </Link>
           <Link href="/faqs">
             <DropdownMenuItem>FAQs</DropdownMenuItem>
+          </Link>
+          <Link href="/distributors">
+            <DropdownMenuItem>Our Distributors</DropdownMenuItem>
           </Link>
         </div>
       </DropdownMenuContent>
