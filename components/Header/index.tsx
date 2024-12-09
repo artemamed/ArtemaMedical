@@ -35,7 +35,9 @@ export default function Navbar() {
       <div className=" flex items-center justify-between py-4 ]">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">
+        <Link href="/">
           <Image src={logo} alt="Artema Logo" width={150} height={150} />
+        </Link>
         </div>
 
         {/* Desktop Menu */}

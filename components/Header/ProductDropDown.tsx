@@ -49,7 +49,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="inline-flex items-center overflow-hidden hover:text-[#008080]"
+          className="inline-flex items-center overflow-hidden hover:text-[#008080] focus:outline-none focus:ring-0"
           aria-label="Support Menu"
         >
           <span className="transition">Products</span>

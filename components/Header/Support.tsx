@@ -13,7 +13,7 @@ const Support: NextPage = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="inline-flex items-center overflow-hidden hover:text-[#008080]"
+        className="inline-flex items-center overflow-hidden hover:text-[#008080] focus:outline-none focus:ring-0"
       >
         <span className="transition hover:text-[#008080]">Support</span>
         <svg
@@ -35,11 +35,14 @@ const Support: NextPage = () => {
           <Link href="/ifu">
             <DropdownMenuItem>IFU</DropdownMenuItem>
           </Link>
-          <Link href="/blogs">
+          <Link href="/blog">
             <DropdownMenuItem>Blogs</DropdownMenuItem>
           </Link>
           <Link href="/certification">
             <DropdownMenuItem>Certification</DropdownMenuItem>
+          </Link>
+          <Link href="/faqs">
+            <DropdownMenuItem>FAQs</DropdownMenuItem>
           </Link>
         </div>
       </DropdownMenuContent>
