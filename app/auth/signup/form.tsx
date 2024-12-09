@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, Mail, Phone, User } from "lucide-react";
 import { mockRegister } from "@/utils/auth";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
   });
@@ -33,8 +35,9 @@ const SignupForm = () => {
 
     try {
       const response = await mockRegister({
-        name: formData.name,
+        name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
+        phone: parseInt(formData.phone, 10),
         password: formData.password,
       });
       setMessage(response);
@@ -44,20 +47,48 @@ const SignupForm = () => {
       setLoading(false);
     }
   };
-
   const iconClass = "h-4 w-4";
   const inputClass =
     "w-full pl-10 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+      <div className="flex gap-4">
+        <div className="relative w-1/2">
+          <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
+            className="w-full pl-10 pr-6 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+        </div>
+
+        <div className="relative w-1/2">
+          <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+            className="w-full pl-10 pr-6 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+
+          />
+        </div>
+      </div>
+
       <div className="relative w-full">
-        <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
+        <Phone className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
         <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          value={formData.phone}
           onChange={handleChange}
           required
           className={inputClass}
@@ -131,5 +162,4 @@ const SignupForm = () => {
     </form>
   );
 };
-
 export default SignupForm;

@@ -17,10 +17,6 @@ const trusted = [
   },
   {
     title: "Scalpels for Precision Surgery",
-    imageUrl: "/images/trusted/AUTH.svg",
-  },
-  {
-    title: "Scalpels for Precision Surgery",
     imageUrl: "/images/trusted/ASTM.svg",
   },
 ];
@@ -64,6 +60,13 @@ const TrustedStandard = () => {
             />
           </div>
         ))}
+        <Image
+          width={100}
+          height={100}
+          src="/images/trusted/AUTH.svg"
+          alt="Scalpels for Precision Surgery"
+          className="w-[150px] h-[80px] lg:h-[70px] lg:w-[300px] object-contain md:mt-[1rem] lg:mt-[2.5rem] ml-[1rem]"
+        />
       </div>
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-10 mt-10 leading-tight">Best-Selling Products</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
