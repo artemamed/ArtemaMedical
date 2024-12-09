@@ -1,10 +1,14 @@
+"use client";
 import { Button } from '@/components/ui/button'
 import LayoutWrapper from '@/components/Wrapper/LayoutWrapper'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import Image from 'next/image'
-import React from 'react'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
-const contact = () => {
+const Contact = () => {
+  const [isAcceptTerms, setIsAcceptTerms] = useState<boolean>(false);
+
   return (
     <LayoutWrapper>
       <div className="min-h-screen py-12">
@@ -47,7 +51,7 @@ const contact = () => {
 
             {/* Right Section (Form) */}
             <div className="px-8 py-2 md:py-8 w-full lg:w-2/3">
-              <form className="space-y-6 md:space-y-12 mt-4">
+              <form className="space-y-6 md:space-y-9 mt-4">
                 {/* Name Fields */}
                 <div className="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
                   <div className="w-full md:w-1/2">
@@ -112,10 +116,9 @@ const contact = () => {
                       />
                       <label htmlFor="general2" className="text-sm">Feedback</label>
                     </div>
+
                   </div>
                 </div>
-
-
 
                 {/* Message */}
                 <div>
@@ -127,9 +130,33 @@ const contact = () => {
                   ></textarea>
                 </div>
 
+                <div className="flex-1 items-center mb-4 flex-wrap sm:flex-nowrap">
+                  <input
+                    id="terms-checkbox"
+                    type="checkbox"
+                    checked={isAcceptTerms}
+                    onChange={() => setIsAcceptTerms(!isAcceptTerms)}
+                    className="radio mr-2 h-4 w-4 appearance-none border border-black rounded-full checked:bg-teal-700 checked:border-teal-700 relative"
+                  />
+                  <label
+                    htmlFor="terms-checkbox"
+                    className="text-xs sm:text-sm text-gray-600"
+                  >
+                    I agree that my personal information is used in accordance with the{" "}
+                    <Link href="/privacy-policy" className="font-semibold text-teal-800">
+                      Privacy
+                    </Link> and{" "}
+                    <Link href="/cookie-policy" className="font-semibold text-teal-800">
+                      Cookie Policy
+                    </Link>
+                  </label>
+                </div>
+
+
                 {/* Submit Button */}
-                <div className="flex justify-center sm:justify-end ">
-                  <Button type="submit" className="text-sm md:text-base py-2 md:py-3 ">
+
+                <div className={`flex justify-center sm:justify-end ${!isAcceptTerms ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                  <Button type="submit" className="text-sm md:text-base py-2 md:py-3" disabled={!isAcceptTerms}>
                     Send Message
                   </Button>
                 </div>
@@ -159,5 +186,4 @@ const contact = () => {
     </LayoutWrapper>
   )
 }
-
-export default contact
+export default Contact
