@@ -34,7 +34,7 @@ const Home = () => {
                     <h1 className="text-2xl md:text-4xl font-semibold text-teal-900">
                         Terms and Condition
                     </h1>
-                    <p className="text-gray-600 mt-2">
+                    <p className="text-[#666666] mt-2">
                         Please read our terms carefully before proceeding with any transactions.
                     </p>
                 </div>
