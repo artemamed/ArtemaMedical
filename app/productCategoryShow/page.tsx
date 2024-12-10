@@ -81,7 +81,7 @@ const ProductSubCategory: React.FC = () => {
   };
 
   const handleViewClick = () => {
-    router.push("/subCategoryListing");
+    router.push("/subCategory");
     setShowSidebar(false);
   };
 

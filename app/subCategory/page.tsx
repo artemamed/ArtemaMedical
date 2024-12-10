@@ -42,7 +42,7 @@ const SubCategoryListing = () => {
                     <main className="flex-1 pt-4">
                         <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
                             {instruments.map((instrument, index) => (
-                                <Link href="/singleProduct" key={index}>
+                                <Link href="/product" key={index}>
                                     <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer">
                                         <div className="relative w-full h-full">
                                             <Image
