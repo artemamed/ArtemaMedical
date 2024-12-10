@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import logo from "@/public/images/logo.svg";
 import SearchInput from "./SearchInput";
 import CartButton from "./CartButton";
@@ -16,12 +16,18 @@ export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); // This will give us the current pathname
 
   // Check authentication status on mount
   useEffect(() => {
     const token = document.cookie.split("; ").find((row) => row.startsWith("userToken="));
     setIsAuthenticated(!!token); // Set authenticated state based on token presence
   }, []);
+
+  // Close the menu when the pathname changes
+  useEffect(() => {
+    setIsMenuOpen(false); // Close the menu when the page changes
+  }, [pathname]);
 
   // Handle logout
   const handleLogout = () => {
@@ -32,12 +38,12 @@ export default function Navbar() {
 
   return (
     <LayoutWrapper className="relative">
-      <div className=" flex items-center justify-between py-4 ]">
+      <div className="flex items-center justify-between py-4">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">
-        <Link href="/">
-          <Image src={logo} alt="Artema Logo" width={150} height={150} />
-        </Link>
+          <Link href="/">
+            <Image src={logo} alt="Artema Logo" width={150} height={150} />
+          </Link>
         </div>
 
         {/* Desktop Menu */}
@@ -48,7 +54,7 @@ export default function Navbar() {
           <div>
             <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
           </div>
-          <Link href="#" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
+          <Link href="/certification" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
             Certification
           </Link>
           <div>
@@ -137,7 +143,7 @@ export default function Navbar() {
             <div className="block px-4 py-2">
               <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
             </div>
-            <Link href="#" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
+            <Link href="/certification" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               Certification
             </Link>
             <div className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
@@ -145,6 +151,9 @@ export default function Navbar() {
             </div>
             <Link href="/about" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               About Us
+            </Link>
+            <Link href="/contact" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
+              Contact Us
             </Link>
           </div>
         </div>

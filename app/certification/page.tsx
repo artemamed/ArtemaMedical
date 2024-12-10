@@ -8,7 +8,7 @@ const Distributors = () => {
             <div className="w-full max-w-screen-xl">
                 {/* Header Section */}
                 <div className="text-center mb-8 sm:mb-10">
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#004040]">
+                    <h1 className="text-xl md:text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#004040]">
                         Certifications: A Commitment to Excellence
                     </h1>
                 </div>

@@ -31,15 +31,12 @@ const Support: NextPage = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="lg:w-[15rem] rounded-2xl border-none bg-[#F7F7F7] lg:mt-5 w-screen ">
-        <div className="rounded-lg px-[5rem] lg:px-1 text-[#666666] text-sm mb-2 ">
-          <Link href="/ifu">
+        <div className="rounded-lg px-[5rem] lg:px-1 text-[#666666] text-sm mb-2">
+          <Link href="/ifu" >
             <DropdownMenuItem>IFU</DropdownMenuItem>
           </Link>
           <Link href="/blog">
             <DropdownMenuItem>Blogs</DropdownMenuItem>
-          </Link>
-          <Link href="/certification">
-            <DropdownMenuItem>Certification</DropdownMenuItem>
           </Link>
           <Link href="/faqs">
             <DropdownMenuItem>FAQs</DropdownMenuItem>

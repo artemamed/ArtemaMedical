@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
 export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => void }) {
@@ -83,9 +82,9 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
               </Link>
             </div>
           ))}
-          <Button className="w-[10rem] mb-5" onClick={navigateToCategories}>
+          <DropdownMenuItem className="bg-[#008080] text-white hover:bg-[#008080]/90 h-10 px-4 py-2 w-[10rem] focus:bg-[#378b8b] focus:text-white" onClick={navigateToCategories}>
             Browse Categories
-          </Button>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
