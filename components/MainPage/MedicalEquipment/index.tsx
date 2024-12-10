@@ -9,7 +9,7 @@ const MedicalEquipment: React.FC = () => {
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-6 leading-tight">
           Explore Our Range of Medical Equipment
         </h2>
-        
+
         <p className="text-[#666666] text-base sm:text-lg max-w-3xl text-justify">
           With a devotion to quality, we provide a broad range of surgical instruments, which include surgical forceps, scalpels, needle holders, retractors, and many more.
         </p>
@@ -37,7 +37,7 @@ const MedicalEquipment: React.FC = () => {
               </button>
             ))}
           </div>
-          
+
           <div className="mt-6 sm:mt-8">
             <a
               href="#"
@@ -49,8 +49,8 @@ const MedicalEquipment: React.FC = () => {
           </div>
         </div>
       </div>
+      <div><ProductSlider /></div>
 
-      <ProductSlider />
     </LayoutWrapper>
   );
 };

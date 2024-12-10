@@ -81,59 +81,60 @@ const MedicalCardSlider: React.FC = () => {
 
   return (
     <div className="relative py-8 sm:py-12 md:py-16 lg:py-[10rem] overflow-hidden">
-      <div
-        className="flex transition-transform duration-500 ease-in-out"
-        style={{
-          transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`,
-        }}
-      >
-        {extendedCards.map((card, index) => (
+    <div
+      className="flex transition-transform duration-200 md:duration-300 ease-in-out  h-[350px]"
+      style={{
+        transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`,
+      }}
+    >
+      {extendedCards.map((card, index) => (
+        <div
+          key={index}
+          className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 sm:px-3 md:px-4"
+        >
           <div
-            key={index}
-            className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 sm:px-3 md:px-4"
+            className={`rounded-xl hover:shadow-lg ${
+              currentIndex % initialCards.length === index % initialCards.length
+                ? "bg-[#CFE7E7] sm:py-6"
+                : "bg-[#F7F7F7]"
+            } transition-all duration-300`}
           >
-            <div
-              className={`rounded-xl hover:shadow-lg ${
-                currentIndex % initialCards.length === index % initialCards.length
-                  ? "bg-[#CFE7E7] sm:py-6"
-                  : "bg-[#F7F7F7]"
-              } transition-all duration-300`}
-            >
-              <div className="relative">
-                <Image
-                  width={500}
-                  height={500}
-                  src={card.imageSrc}
-                  alt={card.title}
-                  className={`p-3 sm:p-4 lg:p-[1rem] object-contain w-full transition-all duration-300 ${
-                    currentIndex % initialCards.length === index % initialCards.length
-                      ? "transform -translate-y-2 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[9rem] "
-                      : "h-[100px] sm:h-[175px] md:h-[250px]"
-                  }`}
-                />
-              </div>
-              <div
-                className={`p-3 sm:p-4 mx-auto ${
+            <div className="relative h-[250px]"> {/* Fixed height for consistency */}
+              <Image
+                width={500}
+                height={500}
+                src={card.imageSrc}
+                alt={card.title}
+                className={`p-3 sm:p-4 lg:p-[1rem] object-contain w-full h-full transition-all duration-300 ${
                   currentIndex % initialCards.length === index % initialCards.length
-                    ? "transform -translate-y-4 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[7rem]"
-                    : ""
+                    ? "transform -translate-y-10 sm:-translate-y-5 md:-translate-y-[6rem] lg:-translate-y-[9rem]"
+                    : "h-[100px] sm:h-[175px] md:h-[250px]"
                 }`}
-              >
-                <h3 className="text-base sm:text-lg font-semibold text-teal-700 flex justify-between items-center">
-                  {card.title}
-                  <CircleArrowRight className="text-teal-700 w-5 h-5 sm:w-6 sm:h-6" />
-                </h3>
-                {currentIndex % initialCards.length === index % initialCards.length && card.description && (
-                  <p className="text-gray-600 text-xs sm:text-sm mt-2 -mb-4 sm:-mb-[3rem] md:-mb-[4rem] lg:-mb-[5rem]">
-                    {card.description}
-                  </p>
-                )}
-              </div>
+              />
+            </div>
+            <div
+              className={`p-3 sm:p-4 mx-auto ${
+                currentIndex % initialCards.length === index % initialCards.length
+                  ? "transform -translate-y-4 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[7rem]"
+                  : ""
+              }`}
+            >
+              <h3 className="text-base sm:text-lg font-semibold text-teal-700 flex justify-between items-center">
+                {card.title}
+                <CircleArrowRight className="text-teal-700 w-5 h-5 sm:w-6 sm:h-6" />
+              </h3>
+              {currentIndex % initialCards.length === index % initialCards.length && card.description && (
+                <p className="text-gray-600 text-xs sm:text-sm mt-2 -mb-4 sm:-mb-[3rem] md:-mb-[4rem] lg:-mb-[5rem]">
+                  {card.description}
+                </p>
+              )}
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
+  </div>
+  
   );
 };
 
