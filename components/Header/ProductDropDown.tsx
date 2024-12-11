@@ -40,7 +40,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
   const router = useRouter();
 
   const navigateToCategories = () => {
-    router.push("/productCategory");
+    router.push("/category");
     closeMenu();
   };
 

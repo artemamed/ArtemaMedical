@@ -19,7 +19,7 @@ const SurgicalCatalog = () => {
     const router = useRouter();
 
   const navigateToSubCategories = () => {
-    router.push("/productCategoryShow");
+    router.push("/subCategory");
   };
 
     return (

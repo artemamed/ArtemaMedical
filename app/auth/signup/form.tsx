@@ -7,7 +7,7 @@ import { toast } from "react-toastify";  // Import React Toastify
 import { z } from "zod";  // Import Zod for form validation
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_KEY = "d2dc7fd4b580502694511b66b31e72ea420aef1f2f775d8d2b7f96282399856cf7b3af24b0cd8223103c93cc669c117b";
+const API_KEY = process.env.NEXT_PUBLIC_API;
 
 // Define Zod schema for validation
 const signupSchema = z.object({
@@ -53,7 +53,7 @@ const SignupForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY,
+          "x-api-key": API_KEY || '',
         },
         body: JSON.stringify({
           firstName: formData.firstName,

@@ -7,7 +7,7 @@ import { z } from "zod"; // Import Zod for schema validation
 import { toast } from "react-toastify"; // Import React Toastify
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_KEY = "d2dc7fd4b580502694511b66b31e72ea420aef1f2f775d8d2b7f96282399856cf7b3af24b0cd8223103c93cc669c117b";
+const API_KEY = process.env.NEXT_PUBLIC_API;
 
 // Zod schema for form validation
 const signinSchema = z.object({
@@ -35,12 +35,17 @@ const SigninForm = () => {
       signinSchema.parse(formData); // Will throw error if validation fails
       postMessage(null); // Reset message
 
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (API_KEY) {
+        headers["x-api-key"] = API_KEY;
+      }
+
       const response = await fetch(`${API_URL}/buyers/buyer-login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": API_KEY,
-        },
+        headers: headers,
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
@@ -70,7 +75,6 @@ const SigninForm = () => {
       setLoading(false);
     }
   };
-
   const iconClass = "h-4 w-4";
   const inputClass =
     "w-full pl-10 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
