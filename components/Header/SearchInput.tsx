@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Input } from "../ui/input";
 import { Search } from "lucide-react";
+import Input from "../ui/input";
 
 const SearchInput: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);

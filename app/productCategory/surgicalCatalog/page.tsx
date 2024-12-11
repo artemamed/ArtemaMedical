@@ -31,13 +31,13 @@ const SurgicalCatalog = () => {
                 {cards.map((card, index) => (
                     <div
                         key={index}
-                        className="p-4 sm:p-5 md:p-6 rounded-2xl border bg-white hover:bg-[#CFE7E7] transition-colors duration-300"
+                        className="p-4 sm:p-5 md:p-6 rounded-2xl border bg-white hover:bg-[#CFE7E7] transition-colors duration-300 hover:scale-105"
                     >
                         <div className="flex items-center justify-between">
                             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-2 sm:mb-3 md:mb-4 leading-snug">
                                 {card.title}
                             </h2>
-                            <CircleArrowRight className="text-[#008080] w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12" onClick={navigateToSubCategories}/>
+                            <CircleArrowRight className="text-[#008080] w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 cursor-pointer" onClick={navigateToSubCategories}/>
                         </div>
 
                         <ul className="space-y-2 sm:space-y-3 md:space-y-4 mt-[2rem] sm:mt-[3rem] md:mt-[5rem]">

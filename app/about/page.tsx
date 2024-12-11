@@ -86,7 +86,7 @@ const About: React.FC = () => {
                             height={800}
                             src="/images/About/building.png"
                             alt="World Map"
-                            className="w-[200px] object-contain"
+                            className="w-[200px] xl:w-[250px] object-contain"
                         />
                     </div>
                     <h2 className="text-2xl md:text-4xl font-semibold mt-4 text-[#004040]">1980</h2>
@@ -114,7 +114,7 @@ const About: React.FC = () => {
                 </div>
             </section>
 
-            <section className="flex flex-wrap px-4 md:px-16 py-8 ">
+            <section className="flex flex-wrap px-4 md:px-16 py-8  ">
                 <div className="flex flex-col items-center md:w-1/3 text-center">
                     <h2 className="text-2xl md:text-4xl font-semibold text-[#004040]">2000</h2>
                     <p className="text-[#666666] mt-4 text-sm md:text-base text-justify">
@@ -128,7 +128,7 @@ const About: React.FC = () => {
                         height={1200}
                         src="/images/About/map.png"
                         alt="World Map"
-                        className="w-[200px] md:w-[400px] md:ml-[5rem] object-contain"
+                        className="w-[200px] md:w-[400px] xl:w-[500px] md:ml-[5rem] xl:ml-[10rem] object-contain"
                     />
                 </div>
             </section>

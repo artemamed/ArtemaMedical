@@ -1,8 +1,26 @@
 "use client";
 
 import React, { useState } from "react";
-import { Eye, EyeOff, LockKeyhole, Mail, Phone, User } from "lucide-react";
-import { mockRegister } from "@/utils/auth";
+import { LockKeyhole, Mail, Phone, User } from "lucide-react";
+import Input from "@/components/ui/input";
+import { toast } from "react-toastify";  // Import React Toastify
+import { z } from "zod";  // Import Zod for form validation
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_KEY = "d2dc7fd4b580502694511b66b31e72ea420aef1f2f775d8d2b7f96282399856cf7b3af24b0cd8223103c93cc669c117b";
+
+// Define Zod schema for validation
+const signupSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(1, "Phone number is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters"),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -13,10 +31,9 @@ const SignupForm = () => {
     password: "",
     confirmPassword: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,141 +42,128 @@ const SignupForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setMessage("Passwords do not match.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage(null);
-
+  
+    // Validate form using Zod schema
     try {
-      const response = await mockRegister({
-        name: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        phone: parseInt(formData.phone, 10),
-        password: formData.password,
+      signupSchema.parse(formData);  // This will throw an error if validation fails
+      setLoading(true);
+      setMessage(null);
+  
+      const response = await fetch(`${API_URL}/buyers/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": API_KEY,
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phoneNumber: formData.phone,
+          password: formData.password,
+        }),
       });
-      setMessage(response);
-    } catch (error) {
-      setMessage(error as string);
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+  
+        // Show API error message in a toast if response is not ok
+        toast.error(errorData.message || "An error occurred");
+        throw new Error(errorData.message || "An error occurred.");
+      }
+  
+      setMessage("Account created successfully!");
+      toast.success("Account created successfully!");  // Show success toast
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+      });
+    } catch (error: unknown) {
+      if (error instanceof z.ZodError) {
+        // Show validation error toasts only for Zod errors
+        error.errors.forEach((err) => toast.error(err.message));
+      } else if (error instanceof Error) {
+        // Handle API errors and show one toast message for the error
+        if (!error.message.includes("already exists") && !error.message.includes("An error occurred")) {
+          toast.error(error.message);  // Show error toast for API errors
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
   };
-  const iconClass = "h-4 w-4";
-  const inputClass =
-    "w-full pl-10 pr-12 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
-
+  
+  
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-      <div className="flex gap-4">
-        <div className="relative w-1/2">
-          <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={formData.firstName}
-            onChange={handleChange}
-            required
-            className="w-full pl-10 pr-6 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-        </div>
-
-        <div className="relative w-1/2">
-          <User className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-          <input
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChange={handleChange}
-            required
-            className="w-full pl-10 pr-6 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-
-          />
-        </div>
-      </div>
-
-      <div className="relative w-full">
-        <Phone className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Phone Number"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          className={inputClass}
-        />
-      </div>
-
-      <div className="relative w-full">
-        <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className={inputClass}
-        />
-      </div>
-
-      <div className="relative w-full">
-        <LockKeyhole className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-        <input
-          type={showPassword ? "text" : "password"}
-          name="password"
-          placeholder="Enter Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          className={inputClass}
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        >
-          {showPassword ? <Eye className={iconClass} /> : <EyeOff className={iconClass} />}
-        </button>
-      </div>
-
-      <div className="relative w-full">
-        <LockKeyhole className={`absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 ${iconClass}`} />
-        <input
-          type={showConfirmPassword ? "text" : "password"}
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-          className={inputClass}
-        />
-        <button
-          type="button"
-          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-        >
-          {showConfirmPassword ? <Eye className={iconClass} /> : <EyeOff className={iconClass} />}
-        </button>
-      </div>
-
-      {message && (
-        <p className="text-center text-sm text-red-500">{message}</p>
-      )}
-
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <Input
+        name="firstName"
+        placeholder="First Name"
+        icon={<User className="text-gray-400" />}
+        value={formData.firstName}
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="lastName"
+        placeholder="Last Name"
+        icon={<User className="text-gray-400" />}
+        value={formData.lastName}
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="email"
+        type="email"
+        placeholder="Email"
+        icon={<Mail className="text-gray-400" />}
+        value={formData.email}
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="phone"
+        type="tel"
+        placeholder="Phone Number"
+        icon={<Phone className="text-gray-400" />}
+        value={formData.phone}
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="password"
+        type="password"
+        placeholder="Password"
+        icon={<LockKeyhole className="text-gray-400" />}
+        value={formData.password}
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="confirmPassword"
+        type="password"
+        placeholder="Confirm Password"
+        icon={<LockKeyhole className="text-gray-400" />}
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+      />
+      {message && <p className={`text-sm ${message.includes("successfully") ? "text-green-500" : "text-red-500"}`}>{message}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#008080] text-white py-2.5 sm:py-3 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base font-medium"
+        className="w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600 disabled:opacity-50"
       >
-        {loading ? "Signing Up..." : "Sign Up"}
+        {loading ? "Submitting..." : "Sign Up"}
       </button>
     </form>
   );
 };
+
 export default SignupForm;

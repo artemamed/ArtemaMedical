@@ -3,26 +3,23 @@
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { z } from "zod"; // Import Zod for schema validation
+import { toast } from "react-toastify"; // Import React Toastify
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_KEY = "d2dc7fd4b580502694511b66b31e72ea420aef1f2f775d8d2b7f96282399856cf7b3af24b0cd8223103c93cc669c117b";
+
+// Zod schema for form validation
+const signinSchema = z.object({
+  email: z.string().email("Invalid email address").nonempty("Email is required"),
+  password: z.string().min(6, "Password must be at least 6 characters").nonempty("Password is required"),
+});
 
 const SigninForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
-
-  // Mock Login Function
-  const mockLogin = (email: string, password: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (email === "ubaid@gmail.com" && password === "123456") {
-          resolve("Login successful!");
-        } else {
-          reject("Invalid email or password.");
-        }
-      }, 1000);
-    });
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,15 +29,43 @@ const SigninForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(null);
 
+    // Validate form data using Zod
     try {
-      const response = await mockLogin(formData.email, formData.password);
-      document.cookie = "userToken=12345; path=/"; // Set a mock cookie for authentication
-      setMessage(response); // Display success message
+      signinSchema.parse(formData); // Will throw error if validation fails
+      postMessage(null); // Reset message
+
+      const response = await fetch(`${API_URL}/buyers/buyer-login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": API_KEY,
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.errors?.[0]?.message || "An error occurred during login.");
+      }
+
+      const data = await response.json();
+      document.cookie = `userToken=${data.token}; path=/`; // Set authentication token
+      toast.success("Login successful!"); // Show success toast
       router.push("/cart"); // Redirect to the cart page
-    } catch (error) {
-      setMessage(error as string); // Display error message
+    } catch (error: unknown) {
+      if (error instanceof z.ZodError) {
+        // Show validation error toasts
+        error.errors.forEach((err) => toast.error(err.message));
+      } else if (error instanceof Error) {
+        // Show API error toast
+        toast.error(error.message);
+      } else {
+        toast.error("An error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -92,12 +117,6 @@ const SigninForm = () => {
       >
         {loading ? "Signing in..." : "Sign In"}
       </button>
-
-      {message && (
-        <p className={`text-center mt-4 ${message.includes("successful") ? "text-green-500" : "text-red-500"}`}>
-          {message}
-        </p>
-      )}
     </form>
   );
 };
