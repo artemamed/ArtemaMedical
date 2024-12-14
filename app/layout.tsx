@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Provider from "@/components/Provider";
-import { ToastContainer } from 'react-toastify';  // Import ToastContainer
-import 'react-toastify/dist/ReactToastify.css';    // Import Toastify CSS
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +33,6 @@ export default function RootLayout({
       >
         <Provider>
           {children}
-          {/* ToastContainer is now globally available */}
           <ToastContainer />
         </Provider>
       </body>
