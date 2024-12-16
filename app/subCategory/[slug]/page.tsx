@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import BreadcrumbComponent from "@/components/Breadcrumb";
+// import BreadcrumbComponent from "@/components/Breadcrumb";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -56,18 +56,18 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
     }, [fetchData]);
 
     if (loading) return <div className="flex justify-center items-center h-screen">
-    <div
-      className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
-      role="status"
-      aria-label="Loading"
-    ></div>
-  </div>
-  ;
+        <div
+            className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
+            role="status"
+            aria-label="Loading"
+        ></div>
+    </div>
+        ;
     if (error) return <div>Error: {error}</div>;
 
     return (
         <LayoutWrapper className="lg:py-[3rem]">
-            <BreadcrumbComponent />
+            {/* <BreadcrumbComponent /> */}
             <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold mb-6 text-center mt-[1rem] text-[#004040]">
                 {subCategoryName || "SubCategory"}
             </h1>
@@ -78,16 +78,22 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                 <main className="flex-1 pt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
                         {products.map((product) => (
-                            <Link href={`/products/${product.slug}`} key={product.slug}>
+                            <Link href={`/singleProduct/${product.slug}`} key={product.slug}>
                                 <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer">
                                     <div className="relative w-full h-full">
                                         <Image
                                             width={300}
                                             height={300}
-                                            src={product.attributes[0].image || "/assets/avatar.jpg"} // Fallback for missing image
-                                            alt={product.name}
+                                            // src={
+                                            //     product.attributes[0]?.image?.startsWith("http")
+                                            //         ? product.attributes[0].image
+                                            //         : `/uploads/${product.attributes[0]?.image || "/assets/avatar.jpg"}`
+                                            // }
+                                            src="/assets/avatar.jpg"
+                                            alt={product.name || "Product Image"}
                                             className="w-full h-full object-contain mb-4"
                                         />
+
                                         <ShoppingCart
                                             className="absolute top-2 right-2 text-[#008080] bg-[#F7F7F7] rounded-full p-2 h-[3rem] w-[2.5rem]"
                                         />
