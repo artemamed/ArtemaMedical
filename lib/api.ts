@@ -50,7 +50,6 @@ export const getSubCategoriesByCategorySlug = async (
   }
 };
 
-
 // Fetch all products by subcategory slug
 export const getProductsBySubCategorySlug = async (
   subCategorySlug: string,

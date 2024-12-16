@@ -10,13 +10,14 @@ import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { getCategories, getSubCategoriesByCategorySlug } from "@/lib/api";
 
 interface SubCategory {
+  categorySlug: string;
   slug: string;
   name: string;
   description: string;
   image: string | null;
 }
-
 interface Category {
+  slug: string;
   name: string;
   icon: string;
   subcategories: SubCategory[];
@@ -31,43 +32,60 @@ const ProductSubCategory: React.FC = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [page,] = useState(1);
+  const [page, setPage] = useState(1);
   const [showButton, setShowButton] = useState(true);
+
 
   const router = useRouter();
   const pathname = usePathname();
   const categorySlug = pathname?.split("/").pop();
 
-  const fetchData = useCallback(async () => {
+  /** Fetch categories once */
+  const fetchCategories = useCallback(async () => {
     try {
-      setLoading(true);
       const categoriesResponse = await getCategories();
       setCategories(categoriesResponse);
-
-      if (categorySlug) {
-        const subCategoryResponse = await getSubCategoriesByCategorySlug(categorySlug, page);
-
-        const subCategoriesData = subCategoryResponse?.data?.data?.subCategories || [];
-        if (subCategoriesData.length > 0) {
-          setSubCategories((prev) => [...prev, ...subCategoriesData]);
-          setCategoryName(subCategoryResponse?.data?.data?.category?.name || "");
-          setHasMore(subCategoriesData.length > 0);
-        } else {
-          setHasMore(false);
-        }
-      }
     } catch (error) {
-      setError("Failed to fetch data. Please try again later.");
-      console.error("Error during data fetching:", error);
+      setError("Failed to fetch categories. Please try again later.");
+      console.error("Error fetching categories:", error);
+    }
+  }, []);
+
+  /** Fetch subcategories for the current category slug */
+  const fetchSubCategories = useCallback(async () => {
+    if (!categorySlug) return;
+
+    try {
+      setLoading(true);
+      const subCategoryResponse = await getSubCategoriesByCategorySlug(categorySlug, page);
+
+      const subCategoriesData = subCategoryResponse?.data?.data?.subCategories || [];
+      setSubCategories((prev) => {
+        const merged = [...prev, ...subCategoriesData];
+        // Filter to remove duplicates based on `slug` or another unique identifier
+        const uniqueSubCategories = Array.from(
+          new Map(merged.map((item) => [item.slug, item])).values()
+        );
+        return page === 1 ? subCategoriesData : uniqueSubCategories;
+      });
+
+      setCategoryName(subCategoryResponse?.data?.data?.category?.name || "");
+      setHasMore(subCategoriesData.length > 0);
+    } catch (error) {
+      setError("Failed to fetch subcategories. Please try again later.");
+      console.error("Error fetching subcategories:", error);
     } finally {
       setLoading(false);
       setLoadingMore(false);
     }
   }, [categorySlug, page]);
 
+
+  /** Fetch categories on mount */
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchCategories();
+  }, [fetchCategories]);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,9 +104,60 @@ const ProductSubCategory: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        // Hide the button when user scrolls down more than 10px
+        setShowButton(false);
+      } else {
+        // Show the button when the user is at the top (scrollY <= 10)
+        setShowButton(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  /** Fetch subcategories when categorySlug or page changes */
+  useEffect(() => {
+    setPage(1); // Reset to the first page when the category slug changes
+    setSubCategories([]); // Clear subcategories when category changes
+    if (categorySlug) fetchSubCategories();
+  }, [categorySlug, fetchSubCategories]);
+
+  /** Infinite scrolling logic */
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 200 // Trigger 200px before reaching the bottom
+      ) {
+        if (hasMore && !loadingMore) {
+          setPage((prev) => prev + 1);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasMore, loadingMore]);
+
+  /** Watch page changes to fetch more subcategories */
+  useEffect(() => {
+    if (page > 1) {
+      setLoadingMore(true);
+      fetchSubCategories();
+    }
+  }, [fetchSubCategories, page]);
+
   const handleCategoryClick = useCallback(
     (subcategorySlug: string) => {
-      router.push(`/subCategory/${subcategorySlug}`); // Routing to the product page based on subcategory slug
+      router.push(`/subCategory/${subcategorySlug}`);
       setShowSidebar(false);
     },
     [router]
@@ -115,26 +184,33 @@ const ProductSubCategory: React.FC = () => {
                   {category.name}
                 </summary>
                 <ul className="ml-8 mt-2 space-y-1 text-sm text-gray-600">
-                  {subCategories.map((subcategory, subIndex) => (
-                    <li
-                      key={subIndex}
-                      className="hover:text-teal-600 cursor-pointer"
-                      onClick={() => handleCategoryClick(subcategory.slug)} // On click, navigate to subcategory product page
-                    >
-                      {subcategory.slug}
-                    </li>
-                  ))}
+                  {subCategories
+                    .filter((subcategory) => subcategory.categorySlug === category.slug) // Ensure filtered by the right category
+                    .map((subcategory, subIndex) => (
+                      <li
+                        key={subIndex}
+                        className="hover:text-teal-600 cursor-pointer"
+                        onClick={() => handleCategoryClick(subcategory.slug)}
+                      >
+                        {subcategory.slug}
+                      </li>
+                    ))}
                 </ul>
               </details>
             </li>
           ))}
+
         </ul>
       </aside>
     ),
     [categories, handleCategoryClick, showSidebar, subCategories]
   );
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="flex justify-center items-center h-screen">
+    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  </div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
@@ -144,6 +220,7 @@ const ProductSubCategory: React.FC = () => {
       </h1>
       <div className="relative flex min-h-screen my-8">
         {showButton && (
+
           <Button
             className="fixed top-[15rem] left-9 md:top-[15rem] lg:top-60 lg:left-[1.5rem] xl:left-[7rem] 2xl:left-[14rem] transition-opacity duration-300"
             variant="secondary"
@@ -152,21 +229,16 @@ const ProductSubCategory: React.FC = () => {
             {showSidebar ? "Hide Categories" : "Show Categories"} <Settings2 className="w-5 h-5 ml-2" />
           </Button>
         )}
+
         {showSidebar && Sidebar}
-        {showSidebar && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden"
-            onClick={() => setShowSidebar(false)}
-          ></div>
-        )}
-        <main className="flex-1 lg:-mt-3">
+        <main className="flex-1 lg:-mt-3 cursor-pointer">
           {subCategories.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
               {subCategories.map((subCategory, index) => (
                 <div
                   key={index}
                   className="rounded-lg p-4 flex flex-col items-center"
-                  onClick={() => handleCategoryClick(subCategory.slug)} // On click, navigate to subcategory product page
+                  onClick={() => handleCategoryClick(subCategory.slug)}
                 >
                   <Image
                     width={300}
