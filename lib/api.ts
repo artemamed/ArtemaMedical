@@ -74,3 +74,54 @@ export const getProductsBySubCategorySlug = async (
   }
 };
 
+// Fetch a single product by slug
+export const getProductBySlug = async (slug: string) => {
+  if (!slug) throw new Error("Product slug is required.");
+
+  try {
+    const response = await api.get(`products/get-single/${slug}`);
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error(response.data.message || "Failed to fetch product.");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    throw error;
+  }
+};
+
+// Fetch similar products by subCategorySlug and productSlug
+export const getSimilarProducts = async (
+  subCategorySlug: string,
+  productSlug: string,
+  limit: number = 4
+) => {
+  if (!subCategorySlug || !productSlug) {
+    throw new Error("Both subCategorySlug and productSlug are required.");
+  }
+
+  try {
+    const response = await api.get(`sub-categories/similar-products/${subCategorySlug}/${productSlug}`, {
+      params: { limit },
+    });
+    if (response.data.success) {
+      return response.data.data.products;
+    } else {
+      throw new Error(response.data.message || "Failed to fetch similar products.");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+    } else {
+      console.error("Unexpected error:", error);
+    }
+    throw error;
+  }
+};
+
+

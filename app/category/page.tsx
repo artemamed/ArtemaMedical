@@ -84,11 +84,14 @@ const PrecisionDriven = () => {
           Explore Our Complete Range of Surgical Tools
         </h1>
         {loading ? (
-         <div className="flex justify-center items-center h-screen">
-         <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-           <span className="visually-hidden">Loading...</span>
-         </div>
-       </div>
+          <div className="flex justify-center items-center h-screen">
+            <div
+              className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
+              role="status"
+              aria-label="Loading"
+            ></div>
+          </div>
+
         ) : error ? (
           <div className="text-red-500">{error}</div>
         ) : (

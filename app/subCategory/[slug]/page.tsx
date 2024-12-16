@@ -55,7 +55,14 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
         fetchData();
     }, [fetchData]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className="flex justify-center items-center h-screen">
+    <div
+      className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
+      role="status"
+      aria-label="Loading"
+    ></div>
+  </div>
+  ;
     if (error) return <div>Error: {error}</div>;
 
     return (
