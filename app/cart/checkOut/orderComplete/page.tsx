@@ -8,7 +8,7 @@ const OrderComplete: React.FC = () => {
     const router = useRouter();
 
     const navigateToMoreProducts = () => {
-        router.push("/productCategory");
+        router.push("/category");
     };
     return (
         <div className="min-h-screen p-4 mx-4 lg:mx-[3rem] xl:mx-[5rem]">

@@ -10,72 +10,17 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import axios from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMenuData } from "@/lib/api";
 
-interface SubCategory {
-  name: string;
-}
-
-interface Category {
-  name: string;
-  slug: string;
-  subCategories?: SubCategory[];
-}
-
-interface MenuDataItem {
-  category: Category;
-}
 
 export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => void }) {
-  const [menuData, setMenuData] = useState<MenuDataItem[]>([]);
   const [visibleItems, setVisibleItems] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false); // Track if the component is mounted
 
   const router = useRouter();
 
-  const fetchMenuData = async () => {
-    setLoading(true);
-    setError(null);
-
-    const cachedData = localStorage.getItem("menuData");
-    if (cachedData) {
-      setMenuData(JSON.parse(cachedData));
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await axios.get("/categories/mine", {
-        headers: {
-          "x-api-key": process.env.NEXT_PUBLIC_API,
-        },
-      });
-
-      if (response.data.success) {
-        const fetchedData = response.data.data;
-        setMenuData(fetchedData);
-
-        // Cache the data
-        localStorage.setItem("menuData", JSON.stringify(fetchedData));
-      } else {
-        throw new Error(response.data.message || "Failed to fetch menu data.");
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMenuData();
-  }, []);
-
+  // Handle window resize
   useEffect(() => {
     const updateVisibleItems = () => {
       if (window.innerWidth < 768) {
@@ -90,8 +35,33 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     updateVisibleItems();
     window.addEventListener("resize", updateVisibleItems);
 
+    // Set isClient to true after component mounts to avoid hydration mismatch
+    setIsClient(true);
+
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
+
+  // Use React Query to fetch the menu data
+  const { data: menuData, error, isLoading, isError } = useQuery({
+    queryKey: ["menuData"],
+    queryFn: fetchMenuData,
+    initialData: () => {
+      // Check if there's cached data in localStorage (only available in the browser)
+      if (typeof window !== "undefined") {
+        const cachedData = localStorage.getItem("menuData");
+        return cachedData ? JSON.parse(cachedData) : [];
+      }
+      return [];
+    },
+    staleTime: Infinity,
+  });
+
+  useEffect(() => {
+    if (menuData && typeof window !== "undefined") {
+      // Cache the data in localStorage after the fetch is successful
+      localStorage.setItem("menuData", JSON.stringify(menuData));
+    }
+  }, [menuData]);
 
   const navigateToCategories = () => {
     router.push("/category");
@@ -103,7 +73,12 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     closeMenu();
   };
 
-  if (loading && !menuData.length) {
+  // If the component is not mounted yet (to prevent SSR mismatch)
+  if (!isClient) {
+    return null; // Render nothing during SSR
+  }
+
+  if (isLoading && !menuData?.length) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-teal-500"></div>
@@ -111,12 +86,12 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     );
   }
 
-  if (error && !menuData.length) {
+  if (isError && !menuData?.length) {
     return (
       <div className="flex flex-col items-center text-red-500">
-        <p>{error}</p>
+        <p>{(error as Error).message}</p>
         <button
-          onClick={fetchMenuData}
+          onClick={() => window.location.reload()}
           className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
           Retry
@@ -125,7 +100,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     );
   }
 
-  if (!menuData.length && !loading && !error) {
+  if (!menuData?.length && !isLoading && !isError) {
     return <div className="text-gray-500">No categories available at this time.</div>;
   }
 
@@ -141,7 +116,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen ">
-          {menuData.slice(0, visibleItems).map((wrapper, index) => {
+          {menuData.slice(0, visibleItems).map((wrapper: { category: { name: string; slug: string; subCategories?: { name: string }[] } }, index: number) => {
             const { category } = wrapper;
             return (
               <div key={index} className="lg:space-y-1">
@@ -168,6 +143,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
               </div>
             );
           })}
+
           <DropdownMenuItem
             className="bg-[#008080] text-white hover:bg-[#008080]/90 h-10 px-4 py-2 w-[10rem] focus:bg-[#378b8b] focus:text-white"
             onClick={navigateToCategories}

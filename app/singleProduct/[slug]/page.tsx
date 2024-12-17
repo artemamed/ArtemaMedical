@@ -120,6 +120,12 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         );
     }
 
+    // Ensure the image path is absolute or has a leading slash
+    const getValidImageUrl = (imageUrl: string | null) => {
+        if (!imageUrl) return "/placeholder.png"; // fallback image
+        return imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
+    };
+
     return (
         <LayoutWrapper className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
             <div className="w-full">
@@ -130,14 +136,14 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                         <Image
                             width={300}
                             height={300}
-                            src={selectedImage || "/placeholder.png"}
+                            src={getValidImageUrl(selectedImage)}
                             alt={product.name}
                             className="h-48 sm:h-64 lg:h-[35rem] lg:w-[35rem] mix-blend-multiply"
                         />
                         {/* Pass images as a prop to ScrollArea */}
                         <ScrollAreaHorizontalDemo
                             onImageClick={handleImageClick}
-                            images={product.attributes.map((attr) => attr.image)}
+                            images={product.attributes.map((attr) => getValidImageUrl(attr.image))}
                         />
                     </div>
 
@@ -151,7 +157,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                             <p className="text-sm font-semibold flex">
                                 <Ruler className="mr-2 h-5 w-5" />Size
                             </p>
-                            <div className="flex-1 md:flex space-y-3 md:space-y-0 gap-4 mt-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2">
                                 {product.attributes.map((attr) => (
                                     <button
                                         key={attr.sku}
@@ -166,6 +172,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                 ))}
                             </div>
                         </div>
+
 
                         {/* Total Price Display */}
                         <div className="text-xl 2xl:text-3xl font-bold mt-4">
@@ -201,7 +208,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                     <Image
                                         width={300}
                                         height={300}
-                                        src={similar.attributes[0]?.image || "/placeholder.png"}
+                                        src={getValidImageUrl(similar.attributes[0]?.image)}
                                         alt={similar.name}
                                         className="w-full h-full object-contain mb-4"
                                     />

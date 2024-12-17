@@ -1,10 +1,12 @@
+// app/category/page.tsx
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CircleArrowRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { getCategories } from "@/lib/api";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import stethoscopeImage from "@/public/images/productCategory.png";
@@ -22,26 +24,10 @@ const PrecisionDriven = () => {
     subCategories: SubCategory[];
   }
 
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesData = await getCategories();
-        setCategories(categoriesData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An unexpected error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
+  const { data: categories = [], isLoading, isError, error } = useQuery<Category[], Error>({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
 
   return (
     <LayoutWrapper className="min-h-screen flex flex-col xl:-mt-[10rem] -mt-[3rem]">
@@ -83,7 +69,7 @@ const PrecisionDriven = () => {
         <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-4 sm:mb-6 md:mb-8 leading-tight">
           Explore Our Complete Range of Surgical Tools
         </h1>
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center h-screen">
             <div
               className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
@@ -91,13 +77,11 @@ const PrecisionDriven = () => {
               aria-label="Loading"
             ></div>
           </div>
-
-        ) : error ? (
-          <div className="text-red-500">{error}</div>
+        ) : isError ? (
+          <div className="text-red-500">{error.message}</div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-14">
-
-            {categories.map((category: Category, index: number) => (
+            {categories.map((category, index) => (
               <div
                 key={index}
                 className="p-4 sm:p-5 md:p-6 rounded-2xl border bg-white hover:bg-[#CFE7E7] transition-colors duration-300 hover:scale-105"
@@ -111,7 +95,7 @@ const PrecisionDriven = () => {
                   </Link>
                 </div>
                 <ul className="space-y-2 sm:space-y-3 md:space-y-4 mt-[2rem] sm:mt-[3rem] md:mt-[5rem]">
-                  {category.subCategories.map((subCategory: SubCategory, idx: number) => (
+                  {category.subCategories.map((subCategory, idx) => (
                     <li key={idx} className="flex items-center space-x-2 text-gray-700">
                       <span className="text-[#008080] text-lg sm:text-xl md:text-2xl lg:text-3xl">➜</span>
                       <span className="text-sm sm:text-base md:text-lg lg:text-xl">{subCategory.name}</span>

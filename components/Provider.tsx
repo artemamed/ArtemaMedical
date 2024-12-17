@@ -1,21 +1,20 @@
 "use client";
 
 import React from "react";
-// import { QueryClient, QueryClientProvider } from "react-query";
-import Footer from "./Footer";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Header from "./Header";
-
-
-// const queryClient = new QueryClient(); // Create a query client instance
+import Footer from "./Footer";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
+  const [queryClient] = React.useState(() => new QueryClient());
+
   return (
-    // <QueryClientProvider client={queryClient}>
-    <>
-      <Header />
-      <div>{children}</div>
-      <Footer />
-    </>
-    // </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
+      </div>
+    </QueryClientProvider>
   );
 }

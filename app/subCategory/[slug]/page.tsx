@@ -1,73 +1,51 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-// import BreadcrumbComponent from "@/components/Breadcrumb";
+import { use } from "react"; // Import React's `use` hook
+import { useQuery } from "@tanstack/react-query";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductsBySubCategorySlug } from "@/lib/api";
-import { Product } from "@/lib/types"; // Assuming you have types for Product
+import { Product } from "@/lib/types";
+
+const fetchProducts = async (slug: string) => {
+    const response = await getProductsBySubCategorySlug(slug);
+    if (!response.success) {
+        throw new Error(response.message || "Failed to fetch products.");
+    }
+    return response.data;
+};
 
 const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [subCategoryName, setSubCategoryName] = useState<string>("");
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [slug, setSlug] = useState<string | null>(null);
+    // Unwrap params with React `use`
+    const { slug } = use(params);
 
-    // Resolve the slug parameter from the route
-    useEffect(() => {
-        const fetchSlug = async () => {
-            try {
-                const resolvedParams = await params; // Unwrap the promise
-                setSlug(resolvedParams.slug); // Set the slug
-            } catch (err) {
-                console.error("Error resolving slug:", err);
-                setError("Failed to resolve the route slug.");
-            }
-        };
+    // Fetch products with React Query
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ["products", slug],
+        queryFn: () => fetchProducts(slug),
+        staleTime: 1000 * 60 * 5,
+    });
 
-        fetchSlug();
-    }, [params]);
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <div
+                    className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
+                    role="status"
+                    aria-label="Loading"
+                ></div>
+            </div>
+        );
 
-    // Fetch products for the given subcategory
-    const fetchData = useCallback(async () => {
-        if (!slug) return; // Wait until slug is available
-        try {
-            const response = await getProductsBySubCategorySlug(slug);
-            if (response.success) {
-                setProducts(response.data.products || []);
-                setSubCategoryName(response.data.subCategory?.name || "Unknown SubCategory");
-            } else {
-                setError(response.message || "Failed to fetch products.");
-            }
-        } catch (err) {
-            console.error("Error fetching data:", err);
-            setError("An error occurred while fetching products. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
-    }, [slug]);
+    if (isError) return <div>Error: {(error as Error).message}</div>;
 
-    // Trigger the data fetching once slug is resolved
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    if (loading) return <div className="flex justify-center items-center h-screen">
-        <div
-            className="w-12 h-12 border-4 border-teal-500 border-solid rounded-full animate-spin border-t-transparent shadow-md"
-            role="status"
-            aria-label="Loading"
-        ></div>
-    </div>
-        ;
-    if (error) return <div>Error: {error}</div>;
+    const products: Product[] = data.products || [];
+    const subCategoryName: string = data.subCategory?.name || "Unknown SubCategory";
 
     return (
         <LayoutWrapper className="lg:py-[3rem]">
-            {/* <BreadcrumbComponent /> */}
             <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold mb-6 text-center mt-[1rem] text-[#004040]">
                 {subCategoryName || "SubCategory"}
             </h1>
@@ -84,16 +62,10 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                         <Image
                                             width={300}
                                             height={300}
-                                            // src={
-                                            //     product.attributes[0]?.image?.startsWith("http")
-                                            //         ? product.attributes[0].image
-                                            //         : `/uploads/${product.attributes[0]?.image || "/assets/avatar.jpg"}`
-                                            // }
                                             src="/assets/avatar.jpg"
                                             alt={product.name || "Product Image"}
                                             className="w-full h-full object-contain mb-4"
                                         />
-
                                         <ShoppingCart
                                             className="absolute top-2 right-2 text-[#008080] bg-[#F7F7F7] rounded-full p-2 h-[3rem] w-[2.5rem]"
                                         />
