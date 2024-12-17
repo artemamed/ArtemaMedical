@@ -42,7 +42,7 @@ export default function HeroSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8 ">
                     {/* Left Section - Text Content */}
                     <div className="text-left">
-                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-semibold mb-4 md:mb-6 leading-tight mt-10 lg:-mt-[4rem]">
+                        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-semibold mb-4 md:mb-6 leading-tight mt-10 lg:-mt-[4rem]">
                             Revolutionizing <span className="text-[#008080]">Healthcare</span>, One Innovation at a Time
                         </h1>
                         <div className="relative">

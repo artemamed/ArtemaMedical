@@ -1,3 +1,4 @@
+//app/singleproduct/[slug]/page.tsx
 "use client";
 
 import { getProductBySlug, getSimilarProducts } from "@/lib/api"; // Add getSimilarProducts
@@ -8,6 +9,12 @@ import { Ruler, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { ScrollAreaHorizontalDemo } from "@/components/Product/singleProductScroll";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/features/cartSlice";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+
+
 
 type ProductAttribute = {
     size: number;
@@ -36,6 +43,9 @@ interface SingleProductProps {
 }
 
 const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
+    // Add this inside your SingleProduct Component
+    const dispatch = useDispatch();
+
     const [slug, setSlug] = useState<string | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
     const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
@@ -77,6 +87,56 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
             fetchProductData();
         }
     }, [slug]);
+
+
+    const handleAddToCart = () => {
+        if (!product) {
+            toast.error("Product data is not available.");
+            return;
+        }
+
+        if (!selectedSize) {
+            toast.error("Please select a size before adding to cart");
+            return;
+        }
+
+        // const cartItem = {
+        //     id: product.
+        //     slug: product.slug,
+        //     title: product.title,
+        //     image: selectedImage || "/placeholder.png",
+        //     price: selectedProduct?.price || product.attributes[0]?.price,
+        //     quantity,
+        //     size: selectedSize,
+        // };
+
+        // dispatch(addToCart(cartItem));
+
+        dispatch(addToCart({
+            id: uuidv4(), // Auto-generate a unique ID
+            slug: "product-slug",
+            size: "M",
+            quantity: 1,
+            price: 20,
+            title: "Product Title",
+            image: "/path-to-image.jpg",
+            sku: ""
+        }));
+
+        // Show a success toast notification
+        toast.success(`${product.title} added to cart!`, {
+            position: "top-right",
+            autoClose: 3000, // Toast disappears after 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    };
+
+
 
 
     // Increment and decrement quantity
@@ -186,10 +246,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                 <span>{quantity}</span>
                                 <button onClick={incrementQuantity}>+</button>
                             </div>
-                            <Button>
+                            <Button onClick={handleAddToCart}>
                                 Add to cart
                                 <ShoppingCart className="ml-2 h-5 w-5" />
                             </Button>
+
                         </div>
                     </div>
                 </div>

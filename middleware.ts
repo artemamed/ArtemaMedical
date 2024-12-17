@@ -5,11 +5,6 @@ export function middleware(request: NextRequest) {
   const isAuthenticated = request.cookies.get("userToken"); // Check for auth token or session cookie
   const url = request.nextUrl.clone();
 
-  // If the user is authenticated and trying to access /cart, redirect them to /cart/checkout
-  if (isAuthenticated && url.pathname === "/cart") {
-    url.pathname = "/cart/checkOut";
-    return NextResponse.redirect(url);
-  }
 
   // If the user is not authenticated and trying to access /cart/checkout, redirect to the sign-in page
   if (url.pathname.startsWith("/cart/checkOut") && !isAuthenticated) {

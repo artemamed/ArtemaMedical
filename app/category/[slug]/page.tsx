@@ -72,7 +72,7 @@ const ProductSubCategory: React.FC = () => {
   // Handle Sidebar
   const handleCategoryClick = useCallback(
     (subcategorySlug: string) => {
-      router.push(`/subCategory/${subcategorySlug}`);
+      router.push(`/subcategory/${subcategorySlug}`);
       setShowSidebar(false);
     },
     [router]

@@ -51,6 +51,9 @@ export default function Navbar() {
           <Link href="/" className="text-teal-700 font-medium hover:text-[#008080]">
             Home
           </Link>
+          <Link href="/about" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
+            About Us
+          </Link>
           <div>
             <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
           </div>
@@ -60,9 +63,7 @@ export default function Navbar() {
           <div>
             <Support />
           </div>
-          <Link href="/about" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
-            About Us
-          </Link>
+         
         </div>
 
         {/* Icons & Contact Button */}
@@ -140,6 +141,9 @@ export default function Navbar() {
             <Link href="/" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               Home
             </Link>
+            <Link href="/about" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
+              About Us
+            </Link>
             <div className="block px-4 py-2">
               <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
             </div>
@@ -149,9 +153,7 @@ export default function Navbar() {
             <div className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               <Support />
             </div>
-            <Link href="/about" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
-              About Us
-            </Link>
+            
             <Link href="/contact" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               Contact Us
             </Link>

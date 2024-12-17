@@ -6,6 +6,9 @@ import { PackageCheck, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart, updateQuantity } from "@/redux/features/cartSlice";
+import { RootState } from "@/app/store";
 
 
 
@@ -18,8 +21,6 @@ const CheckOut: React.FC = () => {
         zipCode: "",
         differentBillingAddress: false,
     });
-
-
 
     // Handler for form input changes
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -42,27 +43,22 @@ const CheckOut: React.FC = () => {
 
     const shippingCosts = [0, 15, 15];
 
-    const [cartItems, setCartItems] = useState([
-        { id: 1, name: "Tray Table", price: 19, quantity: 2, sku: "033-0591-02", image: "/images/productSubCategory/pic4.png" },
-        { id: 2, name: "Tray Table", price: 19, quantity: 1, sku: "033-0591-02", image: "/images/productSubCategory/pic2.png" },
-        { id: 3, name: "Table Lamp", price: 39, quantity: 1, sku: "033-0591-03", image: "/images/productSubCategory/pic3.png" },
-    ]);
 
-    const handleRemoveItem = (id: number) => {
-        setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    };
+    // Access cart items from Redux store
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    const dispatch = useDispatch();
 
     const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-    const handleQuantityChange = (id: number, action: "increment" | "decrement") => {
-        setCartItems((prevItems) =>
-            prevItems.map((item) =>
-                item.id === id
-                    ? { ...item, quantity: action === "increment" ? item.quantity + 1 : Math.max(1, item.quantity - 1) }
-                    : item
-            )
-        );
-    };
+      // Handle increment and decrement quantity
+        const handleQuantityChange = (id: string, increment: boolean) => {
+            dispatch(updateQuantity({ slug: id, size: '', quantity: increment ? 1 : -1 }));
+        };
+    
+        // Handle remove item from cart
+        const handleRemoveItem = (id: string) => {
+            dispatch(removeFromCart({ slug: id, size: '' }));
+        };
 
     const router = useRouter();
 
@@ -93,7 +89,6 @@ const CheckOut: React.FC = () => {
                     <span className="ml-2 text-gray-400">Order complete</span>
                 </div>
             </div>
-
 
 
             {/* Checkout Form */}
@@ -292,22 +287,22 @@ const CheckOut: React.FC = () => {
                     {cartItems.map((item) => (
                         <div key={item.id} className="flex flex-col -ml-6 border-b pb-4 xl:ml-5">
                             <div className="flex items-center space-x-4">
-                                <Image src={item.image} alt={item.name} width={80} height={80} className="object-contain rounded-md" />
+                                <Image src={item.image} alt={item.title} width={80} height={80} className="object-contain rounded-md" />
                                 <div className="flex-1 space-y-2 md:space-y-3">
-                                    <h3 className="font-semibold text-sm text-[#2B2B2B]">{item.name}</h3>
+                                    <h3 className="font-semibold text-sm text-[#2B2B2B]">{item.title}</h3>
                                     <p className="text-xs text-gray-600">Size: 19 cm</p>
                                     <p className="text-xs text-gray-600">SKU: {item.sku}</p>
                                     <div className="flex items-center space-x-2 border border-[#008080] w-[6.5rem] rounded-md px-2">
                                         <button
                                             className="px-3 py-1 text-[#008080]"
-                                            onClick={() => handleQuantityChange(item.id, "decrement")}
+                                            onClick={() => handleQuantityChange(item.id, false)}
                                         >
                                             -
                                         </button>
                                         <span className="text-xs">{item.quantity}</span>
                                         <button
                                             className="px-3 text-[#008080]"
-                                            onClick={() => handleQuantityChange(item.id, "increment")}
+                                            onClick={() => handleQuantityChange(item.id, true)}
                                         >
                                             +
                                         </button>

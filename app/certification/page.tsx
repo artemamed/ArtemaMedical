@@ -68,7 +68,7 @@ const Distributors = () => {
                     <h2 className="text-2xl lg:text-4xl font-bold text-[#2b2b2b] mb-6">
                         Our ISO Certifications
                     </h2>
-                    <p className="text-lg text-gray-600 mb-8 max-w-3xl">
+                    <p className="text-lg text-gray-600 mb-8 max-w-3xl text-justify">
                         At Artema, we take pride in our commitment to quality,
                         innovation, and safety. Our ISO certifications are a
                         testament to our dedication to meeting the highest

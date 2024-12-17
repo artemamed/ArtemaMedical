@@ -3,9 +3,13 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const OrderComplete: React.FC = () => {
     const router = useRouter();
+    // Access cart items from Redux store
+        const cartItems = useSelector((state: RootState) => state.cart.items);
 
     const navigateToMoreProducts = () => {
         router.push("/category");
@@ -51,17 +55,13 @@ const OrderComplete: React.FC = () => {
 
                     {/* Products */}
                     <div className="flex justify-center mt-6 gap-4">
-                        {[
-                            { src: "/images/productSubCategory/pic4.png", alt: "Black Stool", quantity: 2 },
-                            { src: "/images/productSubCategory/pic1.png", alt: "Red Stool", quantity: 2 },
-                            { src: "/images/productSubCategory/pic2.png", alt: "Lamp", quantity: 1 },
-                        ].map((product, index) => (
+                        {cartItems.map((product, index) => (
                             <div key={index} className="relative">
                                 <Image
                                     width={100}
                                     height={100}
-                                    src={product.src}
-                                    alt={product.alt}
+                                    src={product.image}
+                                    alt={product.title}
                                     className="w-16 h-16 md:w-20 md:h-20 object-contain rounded-md"
                                 />
                                 <span className="absolute -top-2 -right-2 bg-[#004040] text-white text-xs md:text-sm rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center">

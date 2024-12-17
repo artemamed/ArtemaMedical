@@ -56,7 +56,7 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                 <main className="flex-1 pt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
                         {products.map((product) => (
-                            <Link href={`/singleProduct/${product.slug}`} key={product.slug}>
+                            <Link href={`/singleproduct/${product.slug}`} key={product.slug}>
                                 <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer">
                                     <div className="relative w-full h-full">
                                         <Image
