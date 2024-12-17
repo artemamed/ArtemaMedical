@@ -5,60 +5,56 @@ import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { PackageCheck, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity } from "@/redux/features/cartSlice";
 import { RootState } from "@/app/store";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
+// Define Zod validation schema for the form
+const shippingAddressSchema = z.object({
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
+    phoneNumber: z.string().min(1, "Phone number is required"),
+    email: z.string().email("Invalid email address"),
+    street: z.string().min(1, "Street address is required"),
+    country: z.string().min(1, "Country is required"),
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(1, "State is required"),
+    zipCode: z.string().min(1, "Zip code is required"),
+    differentBillingAddress: z.boolean(),
+});
 
+type ShippingAddress = z.infer<typeof shippingAddressSchema>;
 
 const CheckOut: React.FC = () => {
-    const [shippingAddress, setShippingAddress] = useState({
-        street: "",
-        country: "",
-        city: "",
-        state: "",
-        zipCode: "",
-        differentBillingAddress: false,
+    // Set up form validation
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<ShippingAddress>({
+        resolver: zodResolver(shippingAddressSchema),
     });
-
-    // Handler for form input changes
-    const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type } = e.target;
-        const checked = (e.target as HTMLInputElement).checked;
-        setShippingAddress((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? checked : value,
-        }));
-    };
-
-    // Submit handler
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Shipping Address Submitted:", shippingAddress);
-
-    };
-
-    const [selectedOption,] = useState(0);
-
-    const shippingCosts = [0, 15, 15];
-
 
     // Access cart items from Redux store
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
 
-    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-      // Handle increment and decrement quantity
-        const handleQuantityChange = (id: string, increment: boolean) => {
-            dispatch(updateQuantity({ slug: id, size: '', quantity: increment ? 1 : -1 }));
-        };
-    
-        // Handle remove item from cart
-        const handleRemoveItem = (id: string) => {
-            dispatch(removeFromCart({ slug: id, size: '' }));
-        };
+    // Handle increment and decrement quantity
+    const handleQuantityChange = (id: string, increment: boolean) => {
+        dispatch(updateQuantity({ slug: id, size: "", quantity: increment ? 1 : -1 }));
+    };
+
+    // Handle remove item from cart
+    const handleRemoveItem = (id: string) => {
+        dispatch(removeFromCart({ slug: id, size: "" }));
+    };
 
     const router = useRouter();
 
@@ -66,7 +62,11 @@ const CheckOut: React.FC = () => {
         router.push("/cart/checkOut/orderComplete");
     };
 
-    const total = subtotal + shippingCosts[selectedOption];
+    const onSubmit = (data: ShippingAddress) => {
+        toast.success("Shipping Address Submitted");
+        console.log(data);
+        navigateToOrderComplete();
+    };
 
     return (
         <LayoutWrapper className="min-h-screen p-4">
@@ -90,86 +90,75 @@ const CheckOut: React.FC = () => {
                 </div>
             </div>
 
-
             {/* Checkout Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
                 <div className="space-y-10">
                     {/* Contact Information */}
-                    <div className="border p-6 rounded-xl h-[23rem] bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                    <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
                         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
-                        <form className="space-y-4" onSubmit={handleSubmit}>
+                        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                             {/* First Name and Last Name */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="text-gray-700 text-sm">
-                                    <label htmlFor="First Name" className="block mb-2 font-medium">
+                                    <label htmlFor="firstName" className="block mb-2 font-medium">
                                         First Name
                                     </label>
                                     <input
                                         type="text"
-                                        id="First Name"
-                                        name="First Name"
-                                        placeholder="First Name"
+                                        id="firstName"
+                                        {...register("firstName")}
                                         className="w-full p-3 border rounded-md"
-                                        value={shippingAddress.state}
-                                        onChange={handleAddressChange}
                                     />
+                                    {errors.firstName && <span className="text-red-500 text-xs">{errors.firstName.message}</span>}
                                 </div>
                                 <div className="text-gray-700 text-sm">
-                                    <label htmlFor="Last Name" className="block mb-2 font-medium">
+                                    <label htmlFor="lastName" className="block mb-2 font-medium">
                                         Last Name
                                     </label>
                                     <input
                                         type="text"
-                                        id="Last Name"
-                                        name="Last Name"
-                                        placeholder="Last Name"
+                                        id="lastName"
+                                        {...register("lastName")}
                                         className="w-full p-3 border rounded-md"
-                                        value={shippingAddress.zipCode}
-                                        onChange={handleAddressChange}
                                     />
+                                    {errors.lastName && <span className="text-red-500 text-xs">{errors.lastName.message}</span>}
                                 </div>
                             </div>
 
-
-
-                            {/* Phone Number  */}
+                            {/* Phone Number */}
                             <div className="text-gray-700 text-sm">
-                                <label htmlFor="city" className="block mb-2 font-medium">
+                                <label htmlFor="phoneNumber" className="block mb-2 font-medium">
                                     Phone Number <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
-                                    id="Phone Number"
-                                    name="Phone Number"
-                                    placeholder="Phone Number"
+                                    id="phoneNumber"
+                                    {...register("phoneNumber")}
                                     className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.city}
-                                    onChange={handleAddressChange}
                                 />
+                                {errors.phoneNumber && <span className="text-red-500 text-xs">{errors.phoneNumber.message}</span>}
                             </div>
 
                             {/* Email Address */}
                             <div className="text-gray-700 text-sm">
-                                <label htmlFor="Email Address" className="block mb-2 font-medium">
+                                <label htmlFor="email" className="block mb-2 font-medium">
                                     Email Address <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
-                                    id="Email Address"
-                                    name="Email Address"
-                                    placeholder="Email Address"
+                                    id="email"
+                                    {...register("email")}
                                     className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.city}
-                                    onChange={handleAddressChange}
                                 />
+                                {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
                             </div>
                         </form>
                     </div>
 
                     {/* Shipping Address */}
-                    <div className="border p-6 rounded-xl h-[35rem] bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                    <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
                         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Shipping Address</h2>
-                        <form className="space-y-4" onSubmit={handleSubmit}>
+                        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                             {/* Street Address */}
                             <div className="text-gray-700 text-sm">
                                 <label htmlFor="street" className="block mb-2 font-medium">
@@ -178,12 +167,10 @@ const CheckOut: React.FC = () => {
                                 <input
                                     type="text"
                                     id="street"
-                                    name="street"
-                                    placeholder="Street Address"
+                                    {...register("street")}
                                     className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.street}
-                                    onChange={handleAddressChange}
                                 />
+                                {errors.street && <span className="text-red-500 text-xs">{errors.street.message}</span>}
                             </div>
 
                             {/* Country */}
@@ -193,16 +180,15 @@ const CheckOut: React.FC = () => {
                                 </label>
                                 <select
                                     id="country"
-                                    name="country"
+                                    {...register("country")}
                                     className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.country}
-                                    onChange={handleAddressChange}
                                 >
-                                    <option value="">Country</option>
+                                    <option value="">Select Country</option>
                                     <option value="USA">USA</option>
                                     <option value="Canada">Canada</option>
                                     <option value="UK">UK</option>
                                 </select>
+                                {errors.country && <span className="text-red-500 text-xs">{errors.country.message}</span>}
                             </div>
 
                             {/* Town / City */}
@@ -213,12 +199,10 @@ const CheckOut: React.FC = () => {
                                 <input
                                     type="text"
                                     id="city"
-                                    name="city"
-                                    placeholder="Town / City"
+                                    {...register("city")}
                                     className="w-full p-3 border rounded-md"
-                                    value={shippingAddress.city}
-                                    onChange={handleAddressChange}
                                 />
+                                {errors.city && <span className="text-red-500 text-xs">{errors.city.message}</span>}
                             </div>
 
                             {/* State and Zip Code */}
@@ -230,12 +214,10 @@ const CheckOut: React.FC = () => {
                                     <input
                                         type="text"
                                         id="state"
-                                        name="state"
-                                        placeholder="State"
+                                        {...register("state")}
                                         className="w-full p-3 border rounded-md"
-                                        value={shippingAddress.state}
-                                        onChange={handleAddressChange}
                                     />
+                                    {errors.state && <span className="text-red-500 text-xs">{errors.state.message}</span>}
                                 </div>
                                 <div className="text-gray-700 text-sm">
                                     <label htmlFor="zipCode" className="block mb-2 font-medium">
@@ -244,12 +226,10 @@ const CheckOut: React.FC = () => {
                                     <input
                                         type="text"
                                         id="zipCode"
-                                        name="zipCode"
-                                        placeholder="Zip Code"
+                                        {...register("zipCode")}
                                         className="w-full p-3 border rounded-md"
-                                        value={shippingAddress.zipCode}
-                                        onChange={handleAddressChange}
                                     />
+                                    {errors.zipCode && <span className="text-red-500 text-xs">{errors.zipCode.message}</span>}
                                 </div>
                             </div>
 
@@ -258,12 +238,13 @@ const CheckOut: React.FC = () => {
                                 <input
                                     type="checkbox"
                                     id="differentBillingAddress"
-                                    name="differentBillingAddress"
+                                    {...register("differentBillingAddress")}
                                     className="w-4 h-4 border rounded"
-                                    checked={shippingAddress.differentBillingAddress}
-                                    onChange={handleAddressChange}
                                 />
-                                <label htmlFor="differentBillingAddress" className="ml-2 text-gray-700 text-[9px] sm:text-xs lg:text-base">
+                                <label
+                                    htmlFor="differentBillingAddress"
+                                    className="ml-2 text-gray-700 text-[9px] sm:text-xs lg:text-base"
+                                >
                                     Use a different billing address (optional)
                                 </label>
                             </div>
@@ -272,14 +253,12 @@ const CheckOut: React.FC = () => {
                             <Button
                                 type="submit"
                                 className="flex gap-2"
-                                onClick={navigateToOrderComplete}
                             >
                                 Place Order<PackageCheck />
                             </Button>
                         </form>
                     </div>
                 </div>
-
 
                 {/* Order Summary */}
                 <div className="space-y-4 border p-[2rem] rounded-xl 2xl:ml-[10rem] lg:ml-[10rem] lg:w-[19rem] xl:w-[28rem] 2xl:w-[35rem] mb-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
@@ -324,14 +303,6 @@ const CheckOut: React.FC = () => {
                     ))}
                     <table className="w-full">
                         <tbody>
-                            <tr className="text-md border-b">
-                                <td className="py-4">Shipping</td>
-                                <td className="text-right py-4">${shippingCosts[selectedOption].toFixed(2)}</td>
-                            </tr>
-                            <tr className="text-md border-b">
-                                <td className="py-4">Subtotal</td>
-                                <td className="text-right py-4">${subtotal.toFixed(2)}</td>
-                            </tr>
                             <tr className="font-semibold text-xl">
                                 <td className="py-4">Total</td>
                                 <td className="text-right py-4">${total.toFixed(2)}</td>
@@ -340,7 +311,6 @@ const CheckOut: React.FC = () => {
                     </table>
                 </div>
             </div>
-
         </LayoutWrapper>
     );
 };

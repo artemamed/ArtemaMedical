@@ -100,28 +100,18 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
             return;
         }
 
-        // const cartItem = {
-        //     id: product.
-        //     slug: product.slug,
-        //     title: product.title,
-        //     image: selectedImage || "/placeholder.png",
-        //     price: selectedProduct?.price || product.attributes[0]?.price,
-        //     quantity,
-        //     size: selectedSize,
-        // };
+        const cartItem = {
+            id: uuidv4(),
+            slug: product.slug,
+            title: product.title,
+            image: selectedImage || "/assets/avatar.jpg",
+            price: selectedProduct?.price || product.attributes[0]?.price,
+            quantity,
+            size: selectedSize,
+            sku: selectedSize,
+        };
 
-        // dispatch(addToCart(cartItem));
-
-        dispatch(addToCart({
-            id: uuidv4(), // Auto-generate a unique ID
-            slug: "product-slug",
-            size: "M",
-            quantity: 1,
-            price: 20,
-            title: "Product Title",
-            image: "/path-to-image.jpg",
-            sku: ""
-        }));
+        dispatch(addToCart(cartItem));
 
         // Show a success toast notification
         toast.success(`${product.title} added to cart!`, {

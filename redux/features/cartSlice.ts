@@ -52,7 +52,8 @@ const cartSlice = createSlice({
             );
 
             if (item) {
-                item.quantity = action.payload.quantity;
+                // Ensure quantity doesn't go below 1
+                item.quantity = Math.max(action.payload.quantity, 1);
             }
         },
     },

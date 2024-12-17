@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Package, Trash2 } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,27 +10,41 @@ import { RootState } from "../store";
 import { removeFromCart, updateQuantity } from "@/redux/features/cartSlice";
 
 const Cart: React.FC = () => {
-    const [selectedOption] = useState(0);
-    const freightCharges = [25, 75, 0.062 * 100];
-
     // Access cart items from Redux store
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
 
     // Handle increment and decrement quantity
-    const handleQuantityChange = (id: string, increment: boolean) => {
-        dispatch(updateQuantity({ slug: id, size: '', quantity: increment ? 1 : -1 }));
+    const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
+        const item = cartItems.find(item => item.slug === slug && item.size === size);
+        if (!item) return;
+
+        const newQuantity = increment ? item.quantity + 1 : item.quantity - 1;
+
+        // Dispatch updated quantity
+        dispatch(updateQuantity({ slug, size, quantity: newQuantity }));
     };
 
     // Handle remove item from cart
-    const handleRemoveItem = (id: string) => {
-        dispatch(removeFromCart({ slug: id, size: '' }));
+    const handleRemoveItem = (slug: string, size: string) => {
+        dispatch(removeFromCart({ slug, size }));
     };
 
     // Calculate totals
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const subtotal = total + freightCharges[selectedOption] + tax;
+
+    // Freight Charges: $25 for 1 quantity, $75 for 2 or more quantities
+    const freightCharge = cartItems.reduce((acc, item) => {
+        if (item.quantity === 1) {
+            return acc + 25; // $25 if quantity is 1
+        } else if (item.quantity >= 2) {
+            return acc + 75; // $75 if quantity is 2 or more
+        }
+        return acc;
+    }, 0);
+
+    const subtotal = total + freightCharge + tax;
 
     // Navigation logic
     const router = useRouter();
@@ -47,7 +61,7 @@ const Cart: React.FC = () => {
         <LayoutWrapper className="min-h-screen p-4">
             <div>
                 {/* Back Button */}
-                <button className="text-[#7c7c7c] mb-4">&lt; back</button>
+                <button className="text-[#7c7c7c] mb-4" onClick={() => router.back()}>&lt; back</button>
 
                 {/* Header */}
                 <div className="flex justify-center mb-6">
@@ -85,7 +99,7 @@ const Cart: React.FC = () => {
                                                     </h2>
                                                     <button
                                                         className="flex text-xs text-red-500 hover:underline"
-                                                        onClick={() => handleRemoveItem(item.id)}
+                                                        onClick={() => handleRemoveItem(item.slug, item.size)}
                                                     >
                                                         <Trash2 className="h-4 w-4 mr-1" />
                                                         Remove
@@ -96,14 +110,15 @@ const Cart: React.FC = () => {
                                                 <div className="flex items-center justify-center space-x-2 border w-[5rem] border-[#008080] rounded-md mx-auto">
                                                     <button
                                                         className="px-2 py-1 text-[#008080]"
-                                                        onClick={() => handleQuantityChange(item.id, false)}
+                                                        onClick={() => handleQuantityChange(item.slug, item.size, false)}
+                                                        disabled={item.quantity <= 1}
                                                     >
                                                         -
                                                     </button>
                                                     <span>{item.quantity}</span>
                                                     <button
                                                         className="px-2 py-1 text-[#008080]"
-                                                        onClick={() => handleQuantityChange(item.id, true)}
+                                                        onClick={() => handleQuantityChange(item.slug, item.size, true)}
                                                     >
                                                         +
                                                     </button>
@@ -141,7 +156,7 @@ const Cart: React.FC = () => {
                                     <tr className="text-md border-b border-[#E8ECEF]">
                                         <td className="py-4">Freight Charge</td>
                                         <td className="text-right py-4">
-                                            ${freightCharges[selectedOption].toFixed(2)}
+                                            ${freightCharge.toFixed(2)}
                                         </td>
                                     </tr>
                                     <tr className="font-semibold text-xl">
@@ -154,6 +169,7 @@ const Cart: React.FC = () => {
                             <Button
                                 className="w-full flex justify-center items-center"
                                 onClick={navigateToCheckOut}
+                                disabled={cartItems.length === 0}
                             >
                                 Checkout <Package className="ml-2" />
                             </Button>

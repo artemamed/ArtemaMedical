@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,6 +73,13 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     closeMenu();
   };
 
+  const handleCategoryClick = useCallback(
+    (subcategorySlug: string) => {
+      router.push(`/subcategory/${subcategorySlug}`);
+    },
+    [router]
+  );
+
   // If the component is not mounted yet (to prevent SSR mismatch)
   if (!isClient) {
     return null; // Render nothing during SSR
@@ -116,23 +123,30 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen ">
-          {menuData.slice(0, visibleItems).map((wrapper: { category: { name: string; slug: string; subCategories?: { name: string }[] } }, index: number) => {
+          {menuData.slice(0, visibleItems).map((wrapper: {
+            category: {
+              name: string; slug: string; subCategories?: {
+                slug: string; name: string
+              }[]
+            }
+          }, index: number) => {
             const { category } = wrapper;
             return (
-              <div key={index} className="lg:space-y-1">
+              <div key={index} className="lg:space-y-1 ">
                 <DropdownMenuItem
-                  className="text-sm lg:text-lg font-semibold text-[#004040] focus:bg-[#F7F7F7] focus:text-[#008080] -ml-2"
+                  className="text-sm cursor-pointer lg:text-lg font-semibold text-[#004040] focus:bg-[#F7F7F7] focus:text-[#008080] -ml-2"
                   onClick={() => navigateToSpecificCategories(category)}
                 >
                   {category.name}
                 </DropdownMenuItem>
                 {category.subCategories?.slice(0, visibleItems).map((subCategory, idx) => (
-                  <h2
+                  <DropdownMenuItem
                     key={idx}
-                    className="text-[#666666] text-sm lg:text-base hover:text-[#008080]"
+                    className="text-[#666666] cursor-pointer text-sm lg:text-base focus:bg-[#F7F7F7] focus:text-[#008080]"
+                    onClick={() => handleCategoryClick(subCategory.slug)}
                   >
                     {subCategory.name}
-                  </h2>
+                  </DropdownMenuItem>
                 ))}
                 <Link
                   href={`/category/${category.slug}`}
