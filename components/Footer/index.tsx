@@ -46,9 +46,9 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <h4 className="text-lg font-semibold mb-4">Our Expertise</h4>
             <ul className="text-gray-300 space-y-2 text-center md:text-left">
-              <li><Link href="/surgical" className="hover:text-green-400 transition duration-300">Surgical Instruments</Link></li>
-              <li><Link href="/biomedical" className="hover:text-green-400 transition duration-300">Biomedical Equipment</Link></li>
-              <li><Link href="/health-tech" className="hover:text-green-400 transition duration-300">Health Tech</Link></li>
+              <li><Link href="/category" className="hover:text-green-400 transition duration-300">Surgical Instruments</Link></li>
+              {/* <li><Link href="/biomedical" className="hover:text-green-400 transition duration-300">Biomedical Equipment</Link></li> */}
+              <li><Link href="https://artematech.com/" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition duration-300">Health Tech</Link></li>
             </ul>
           </div>
 
@@ -56,7 +56,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <h4 className="text-lg font-semibold mb-4">Resources</h4>
             <ul className="text-gray-300 space-y-2 text-center md:text-left">
-              <li><Link href="/faq" className="hover:text-green-400 transition duration-300">FAQ&apos;s</Link></li>
+              <li><Link href="/faqs" className="hover:text-green-400 transition duration-300">FAQ&apos;s</Link></li>
               <li><Link href="/ifu" className="hover:text-green-400 transition duration-300">IFU</Link></li>
               <li><Link href="/blog" className="hover:text-green-400 transition duration-300">Blog</Link></li>
             </ul>
@@ -67,7 +67,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Legal</h4>
             <ul className="text-gray-300 space-y-2 text-center md:text-left">
               <li><Link href="/terms" className="hover:text-green-400 transition duration-300">Terms & Conditions</Link></li>
-              <li><Link href="/privacy" className="hover:text-green-400 transition duration-300">Privacy Policy</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-green-400 transition duration-300">Privacy Policy</Link></li>
               <li><Link href="/refund" className="hover:text-green-400 transition duration-300">Refund Policy</Link></li>
               <li><Link href="/shipping" className="hover:text-green-400 transition duration-300">Shipping Policy</Link></li>
             </ul>

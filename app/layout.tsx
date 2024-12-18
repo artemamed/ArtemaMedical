@@ -20,8 +20,18 @@ export default function RootLayout({
         <Provider>
           {children}
         </Provider>
-        {/* Toast container for notifications */}
-        <ToastContainer />
+        <ToastContainer
+          className="!mt-[3.5rem]"
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </body>
     </html>
   );

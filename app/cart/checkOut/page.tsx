@@ -98,7 +98,7 @@ const CheckOut: React.FC = () => {
                         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
                         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                             {/* First Name and Last Name */}
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid lg:grid-cols-2 gap-4">
                                 <div className="text-gray-700 text-sm">
                                     <label htmlFor="firstName" className="block mb-2 font-medium">
                                         First Name
