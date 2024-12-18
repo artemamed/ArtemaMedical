@@ -4,6 +4,7 @@ import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Link from "next/link";
 import { client } from "@/app/sanity/client";
 import Image from "next/image";
+import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
 const RECOMMENDED_POSTS_QUERY = `*[_type == "post" && defined(slug.current)]|order(publishedAt desc){
@@ -41,32 +42,34 @@ export default async function PostPage(
     : null;
 
   const allPosts = await client.fetch<SanityDocument[]>(RECOMMENDED_POSTS_QUERY, {}, options);
-  const otherPosts = shuffleArray(allPosts.filter((p) => p.slug.current !== params.slug)).slice(0, 3);
+  const otherPosts = shuffleArray(allPosts.filter((p) => p.slug.current !== params.slug)).slice(0, 4);
 
   return (
-    <main className="container mx-auto min-h-screen max-w-3xl p-8 flex flex-col gap-4">
+    <LayoutWrapper className="min-h-screen py-[3rem] ">
       <Link href="/blog" className="hover:underline">
         ← Back to posts
       </Link>
-      {postImageUrl && (
-        <Image
-          src={postImageUrl}
-          alt={post.title}
-          className="aspect-video rounded-xl"
-          width="550"
-          height="310"
-        />
-      )}
-      <h1 className="text-4xl font-bold mb-8">{post.title}</h1>
-      <div className="prose">
-        <p>Published: {new Date(post.publishedAt).toLocaleDateString()}</p>
-        {Array.isArray(post.body) && <PortableText value={post.body} />}
-      </div>
+      <main className="min-h-screen max-w-3xl flex mx-auto flex-col gap-4">
+        {postImageUrl && (
+          <Image
+            src={postImageUrl}
+            alt={post.title}
+            className="aspect-video rounded-xl mx-auto block"
+            width="550"
+            height="310"
+          />
+        )}
+        <h1 className="text-4xl font-bold mb-8">{post.title}</h1>
+        <div className="prose">
+          <p>Published: {new Date(post.publishedAt).toLocaleDateString()}</p>
+          {Array.isArray(post.body) && <PortableText value={post.body} />}
+        </div>
+      </main>
 
       {/* Recommended Blog Posts Section */}
-      <section className="mt-12">
+      <section className="mt-12 object-center">
         <h2 className="text-3xl font-semibold mb-6">Recommended Blog Posts</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {otherPosts.map((otherPost) => (
             <div
               key={otherPost.slug.current}
@@ -77,7 +80,7 @@ export default async function PostPage(
                   <Image
                     src={urlFor(otherPost.image)?.width(400).height(250).url() ?? "/placeholder-image.jpg"}
                     alt={otherPost.title}
-                    className="object-cover w-full h-52 rounded-t-lg"
+                    className=" w-full h-56 rounded-t-lg object-contain"
                     width={400}
                     height={250}
                   />
@@ -100,6 +103,6 @@ export default async function PostPage(
           ))}
         </div>
       </section>
-    </main>
+    </LayoutWrapper>
   );
 }

@@ -53,6 +53,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
     const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
 
     // Fetch slug from params
     useEffect(() => {
@@ -90,41 +91,44 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
 
 
     const handleAddToCart = () => {
-        if (!product) {
-            toast.error("Product data is not available.");
-            return;
+        if (isAddingToCart) return;
+        setIsAddingToCart(true);
+
+        try {
+            if (!product) {
+                toast.error("Product data is not available.");
+                return;
+            }
+
+            if (!selectedSize) {
+                toast.error("Please select a size before adding to cart.");
+                return;
+            }
+
+            const cartItem = {
+                id: uuidv4(),
+                slug: product.slug,
+                title: product.title,
+                image: selectedImage || "/assets/avatar.jpg",
+                price: selectedProduct?.price || product.attributes[0]?.price,
+                quantity,
+                size: selectedSize,
+                sku: selectedSize,
+            };
+
+            dispatch(addToCart(cartItem));
+            toast.success(`${product.title} added to cart!`);
+        } catch (error) {
+            console.error("Failed to add product to cart:", error);
+            toast.error("Failed to add product to cart.");
+        } finally {
+            setTimeout(() => setIsAddingToCart(false), 3000);
         }
-
-        if (!selectedSize) {
-            toast.error("Please select a size before adding to cart");
-            return;
-        }
-
-        const cartItem = {
-            id: uuidv4(),
-            slug: product.slug,
-            title: product.title,
-            image: selectedImage || "/assets/avatar.jpg",
-            price: selectedProduct?.price || product.attributes[0]?.price,
-            quantity,
-            size: selectedSize,
-            sku: selectedSize,
-        };
-
-        dispatch(addToCart(cartItem));
-
-        // Show a success toast notification
-        toast.success(`${product.title} added to cart!`, {
-            position: "top-right",
-            autoClose: 3000, // Toast disappears after 3 seconds
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-        });
     };
+
+
+
+
 
 
 
@@ -236,10 +240,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                 <span>{quantity}</span>
                                 <button onClick={incrementQuantity}>+</button>
                             </div>
-                            <Button onClick={handleAddToCart}>
-                                Add to cart
+                            <Button onClick={handleAddToCart} disabled={isAddingToCart}>
+                                {isAddingToCart ? "Adding..." : "Add to cart"}
                                 <ShoppingCart className="ml-2 h-5 w-5" />
                             </Button>
+
 
                         </div>
                     </div>

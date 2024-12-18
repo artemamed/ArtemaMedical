@@ -22,7 +22,7 @@ export default function RootLayout({
         </Provider>
         <ToastContainer
           className="!mt-[3.5rem]"
-          position="top-center"
+          position="top-right"
           autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}

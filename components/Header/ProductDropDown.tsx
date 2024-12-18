@@ -13,40 +13,39 @@ import { ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMenuData } from "@/lib/api";
 
-
 export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => void }) {
   const [visibleItems, setVisibleItems] = useState(0);
-  const [isClient, setIsClient] = useState(false); // Track if the component is mounted
+  const [, setColumns] = useState(4);  // Default column count for lg screens
+  const [isClient, setIsClient] = useState(false);
 
   const router = useRouter();
 
-  // Handle window resize
   useEffect(() => {
     const updateVisibleItems = () => {
       if (window.innerWidth < 768) {
-        setVisibleItems(2); // Mobile
+        setColumns(1);  // Mobile (sm) - 1 column
+        setVisibleItems(2);  // Max 2 subcategories
       } else if (window.innerWidth < 1024) {
-        setVisibleItems(3); // Tablet
+        setColumns(3);  // Tablet (md) - 3 columns
+        setVisibleItems(2);  // Max 2 subcategories
       } else {
-        setVisibleItems(4); // Desktop
+        setColumns(4);  // Desktop (lg) - 4 columns
+        setVisibleItems(3);  // Max 3 subcategories
       }
     };
 
     updateVisibleItems();
     window.addEventListener("resize", updateVisibleItems);
 
-    // Set isClient to true after component mounts to avoid hydration mismatch
     setIsClient(true);
 
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, []);
 
-  // Use React Query to fetch the menu data
   const { data: menuData, error, isLoading, isError } = useQuery({
     queryKey: ["menuData"],
     queryFn: fetchMenuData,
     initialData: () => {
-      // Check if there's cached data in localStorage (only available in the browser)
       if (typeof window !== "undefined") {
         const cachedData = localStorage.getItem("menuData");
         return cachedData ? JSON.parse(cachedData) : [];
@@ -58,7 +57,6 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
 
   useEffect(() => {
     if (menuData && typeof window !== "undefined") {
-      // Cache the data in localStorage after the fetch is successful
       localStorage.setItem("menuData", JSON.stringify(menuData));
     }
   }, [menuData]);
@@ -80,7 +78,6 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     [router]
   );
 
-  // If the component is not mounted yet (to prevent SSR mismatch)
   if (!isClient) {
     return null; // Render nothing during SSR
   }
@@ -108,7 +105,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
   }
 
   if (!menuData?.length && !isLoading && !isError) {
-    return <div className="text-gray-500">No categories available at this time.</div>;
+    return <div className="text-gray-500">Failed!</div>;
   }
 
   return (
@@ -122,17 +119,15 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
           <ChevronDown className="ml-1 h-4 w-4" />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen ">
+        <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
           {menuData.slice(0, visibleItems).map((wrapper: {
             category: {
-              name: string; slug: string; subCategories?: {
-                slug: string; name: string
-              }[]
+              name: string; slug: string; subCategories?: { slug: string; name: string }[]
             }
           }, index: number) => {
             const { category } = wrapper;
             return (
-              <div key={index} className="lg:space-y-1 ">
+              <div key={index} className="lg:space-y-1">
                 <DropdownMenuItem
                   className="text-sm cursor-pointer lg:text-lg font-semibold text-[#004040] focus:bg-[#F7F7F7] focus:text-[#008080] -ml-2"
                   onClick={() => navigateToSpecificCategories(category)}
