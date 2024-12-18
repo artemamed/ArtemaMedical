@@ -3,7 +3,7 @@
 import { use } from "react"; // Import React's `use` hook
 import { useQuery } from "@tanstack/react-query";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
-import { ShoppingCart } from "lucide-react";
+// import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductsBySubCategorySlug } from "@/lib/api";
@@ -57,7 +57,7 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                     <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
                         {products.map((product) => (
                             <Link href={`/singleproduct/${product.slug}`} key={product.slug}>
-                                <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer">
+                                <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md">
                                     <div className="relative w-full h-full">
                                         <Image
                                             width={300}
@@ -66,9 +66,9 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                             alt={product.name || "Product Image"}
                                             className="w-full h-full object-contain mb-4"
                                         />
-                                        <ShoppingCart
+                                        {/* <ShoppingCart
                                             className="absolute top-2 right-2 text-[#008080] bg-[#F7F7F7] rounded-full p-2 h-[3rem] w-[2.5rem]"
-                                        />
+                                        /> */}
                                     </div>
                                     <div>
                                         <h3 className="text-base sm:text-lg font-bold text-gray-800">

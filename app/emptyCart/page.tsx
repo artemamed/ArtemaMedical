@@ -8,7 +8,7 @@ const EmptyCart: React.FC = () => {
     const router = useRouter();
 
     const navigateToMoreProducts = () => {
-        router.push("/productCategory");
+        router.push("/category");
     };
     return (
         <div className="my-[7rem] md:my-[15rem]  p-4 mx-4 lg:mx-[3rem] xl:mx-[5rem]">
