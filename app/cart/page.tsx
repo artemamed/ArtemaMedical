@@ -89,7 +89,8 @@ const Cart: React.FC = () => {
                                                 <Image
                                                     width={100}
                                                     height={100}
-                                                    src={item.image}
+                                                    // src={item.image}
+                                                    src="/assets/avatar.jpg"
                                                     alt={item.title}
                                                     className="rounded-xl object-contain"
                                                 />
