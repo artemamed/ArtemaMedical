@@ -32,14 +32,8 @@ const Cart: React.FC = () => {
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
 
-    const freightCharge = cartItems.reduce((acc, item) => {
-        if (item.quantity === 1) {
-            return acc + 25;
-        } else if (item.quantity >= 2) {
-            return acc + 75;
-        }
-        return acc;
-    }, 0);
+    const freightCharge = cartItems.length === 1 && cartItems[0].quantity === 1 ? 25 : 75;
+
 
     const subtotal = total + freightCharge + tax;
 
@@ -62,98 +56,114 @@ const Cart: React.FC = () => {
     return (
         <LayoutWrapper className="min-h-screen p-4">
             <div>
-                <button className="text-[#7c7c7c] mb-4" onClick={() => router.back()}>
+                <button
+                    className="text-[#7c7c7c] mb-4 text-sm md:text-base"
+                    onClick={() => router.back()}
+                >
                     &lt; back
                 </button>
                 <div className="flex justify-center mb-6">
-                    <h1 className="text-3xl md:text-5xl font-semibold text-[#004040]">Cart</h1>
+                    <h1 className="text-2xl md:text-4xl font-semibold text-[#004040]">Cart</h1>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div className="lg:col-span-8">
-                        <table className="w-full border-collapse">
-                            <thead>
-                                <tr className="border-b border-[#E8ECEF] text-lg">
-                                    <th className="text-left p-3">Product</th>
-                                    <th className="text-center p-3">Quantity</th>
-                                    <th className="text-center p-3">Price</th>
-                                    <th className="text-center p-3">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartItems.map((item) => (
-                                    <tr key={item.id} className="border-b border-[#E8ECEF]">
-                                        <td className="p-3 flex items-center gap-4">
-                                            <Image
-                                                width={100}
-                                                height={100}
-                                                src="/assets/avatar.jpg"
-                                                alt={item.title}
-                                                className="rounded-xl object-contain"
-                                            />
-                                            <div className="space-y-2">
-                                                <h2 className="text-sm font-semibold text-[#2B2B2B]">
-                                                    {item.title}
-                                                </h2>
-                                                <button
-                                                    className="flex text-xs text-red-500 hover:underline"
-                                                    onClick={() => handleRemoveItem(item.slug, item.size)}
-                                                >
-                                                    <Trash2 className="h-4 w-4 mr-1" />
-                                                    Remove
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="text-center">
-                                            <div className="flex items-center justify-center space-x-2 border w-[5rem] border-[#008080] rounded-md mx-auto">
-                                                <button
-                                                    className="px-2 py-1 text-[#008080]"
-                                                    onClick={() => handleQuantityChange(item.slug, item.size, false)}
-                                                    disabled={item.quantity <= 1}
-                                                >
-                                                    -
-                                                </button>
-                                                <span>{item.quantity}</span>
-                                                <button
-                                                    className="px-2 py-1 text-[#008080]"
-                                                    onClick={() => handleQuantityChange(item.slug, item.size, true)}
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="text-center">${item.price.toFixed(2)}</td>
-                                        <td className="text-center">
-                                            ${(item.price * item.quantity).toFixed(2)}
-                                        </td>
+                        <div className="overflow-x-auto">
+                            <table className="w-full border-collapse">
+                                <thead className="hidden md:table-header-group">
+                                    <tr className="border-b border-[#E8ECEF] text-lg">
+                                        <th className="text-left p-3">Product</th>
+                                        <th className="text-center p-3">Quantity</th>
+                                        <th className="text-center p-3">Price</th>
+                                        <th className="text-center p-3">Subtotal</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="md:col-span-4 lg:w-[21rem] xl:w-full w-full">
-                        <div className="border border-[#E0E0E0] rounded-xl p-4 space-y-6">
-                            <h3 className="text-lg lg:text-2xl font-semibold mb-4 text-center">
-                                Cart Summary
-                            </h3>
-                            <table className="w-full">
+                                </thead>
                                 <tbody>
-                                    <tr className="text-md border-b border-[#E8ECEF]">
-                                        <td className="py-4">Total</td>
-                                        <td className="text-right py-4">${total.toFixed(2)}</td>
+                                    {cartItems.map((item) => (
+                                        <tr
+                                            key={item.id}
+                                            className="border-b border-[#E8ECEF] flex-1 flex-col md:table-row md:gap-0 gap-4"
+                                        >
+                                            <td className="p-3 flex flex-col md:flex-row items-center gap-4">
+                                                <Image
+                                                    width={80}
+                                                    height={80}
+                                                    src="/assets/avatar.jpg"
+                                                    alt={item.title}
+                                                    className="rounded-xl object-contain"
+                                                />
+                                                <div className="md:space-y-2 text-center md:text-left">
+                                                    <h2 className="text-sm font-semibold text-[#2B2B2B]">
+                                                        {item.title}
+                                                    </h2>
+                                                    <h2 className="text-xs text-[#666666]">
+                                                        size: {item.size}
+                                                    </h2>
+                                                    <h2 className="text-xs text-[#666666]">
+                                                        sku: {item.sku}
+                                                    </h2>
+                                                    <button
+                                                        className="flex items-center justify-center text-xs text-red-500 hover:underline"
+                                                        onClick={() => handleRemoveItem(item.slug, item.size)}
+                                                    >
+                                                        <Trash2 className="h-4 w-4 mr-1" />
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="text-center">
+                                                <div className="flex items-center justify-center space-x-2 border w-[6rem] border-[#008080] rounded-md mx-auto">
+                                                    <button
+                                                        className="px-2 py-1 text-[#008080]"
+                                                        onClick={() =>
+                                                            handleQuantityChange(item.slug, item.size, false)
+                                                        }
+                                                        disabled={item.quantity <= 1}
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <span>{item.quantity}</span>
+                                                    <button
+                                                        className="px-2 py-1 text-[#008080]"
+                                                        onClick={() =>
+                                                            handleQuantityChange(item.slug, item.size, true)
+                                                        }
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="hidden md:block text-center md:absolute md:mt-[2.5rem] md:ml-[2rem]">${item.price.toFixed(2)}</td>
+                                            <td className="absolute mt-[8rem] -ml-[7rem] md:relative text-center">
+                                                ${(item.price * item.quantity).toFixed(2)}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="lg:col-span-4 w-full">
+                        <div className="border border-[#E0E0E0] rounded-xl p-4 space-y-6">
+                            <h3 className="text-lg lg:text-xl font-semibold text-center">Cart Summary</h3>
+                            <table className="w-full text-sm">
+                                <tbody>
+                                    <tr className="border-b border-[#E8ECEF]">
+                                        <td className="py-3">Total</td>
+                                        <td className="text-right py-3">${total.toFixed(2)}</td>
                                     </tr>
-                                    <tr className="text-md border-b border-[#E8ECEF]">
-                                        <td className="py-4">Tax</td>
-                                        <td className="text-right py-4">${tax.toFixed(2)}</td>
+                                    <tr className="border-b border-[#E8ECEF]">
+                                        <td className="py-3">Tax</td>
+                                        <td className="text-right py-3">${tax.toFixed(2)}</td>
                                     </tr>
-                                    <tr className="text-md border-b border-[#E8ECEF]">
-                                        <td className="py-4">Freight Charge</td>
-                                        <td className="text-right py-4">
+                                    <tr className="border-b border-[#E8ECEF]">
+                                        <td className="py-3">Freight Charge</td>
+                                        <td className="text-right py-3">
                                             ${freightCharge.toFixed(2)}
                                         </td>
                                     </tr>
-                                    <tr className="font-semibold text-xl">
-                                        <td className="py-4">Subtotal</td>
-                                        <td className="text-right py-4">${subtotal.toFixed(2)}</td>
+                                    <tr className="font-semibold text-base">
+                                        <td className="py-3">Subtotal</td>
+                                        <td className="text-right py-3">${subtotal.toFixed(2)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -169,6 +179,8 @@ const Cart: React.FC = () => {
                 </div>
             </div>
         </LayoutWrapper>
+
+
     );
 };
 

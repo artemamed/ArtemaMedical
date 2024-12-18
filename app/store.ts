@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "@/redux/features/cartSlice";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Default is localStorage
+import storage from "redux-persist/lib/storage"; 
 
 // Redux Persist Configuration
 const persistConfig = {
   key: "root",
-  storage, // Use localStorage or sessionStorage
+  storage,
 };
 
 const persistedCartReducer = persistReducer(persistConfig, cartReducer);
@@ -19,7 +19,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["persist/PERSIST"], // Ignore the non-serializable action
+        ignoredActions: ["persist/PERSIST"], 
       },
     }),
 });

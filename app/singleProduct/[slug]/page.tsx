@@ -17,8 +17,8 @@ import { v4 as uuidv4 } from "uuid";
 
 
 type ProductAttribute = {
-    size: number;
-    sku: string;
+    size: number; // size is a number based on the response (e.g., 345)
+    sku: string;  // SKU is a string (e.g., "SKU100")
     price: number;
     image: string;
 };
@@ -28,8 +28,10 @@ type Product = {
     name: string;
     title: string;
     description: string;
-    attributes: ProductAttribute[];
+    attributes: ProductAttribute[]; // attributes is an array of ProductAttribute objects
+    image: string; // This could be the main image URL for the product
 };
+
 
 type SimilarProduct = {
     slug: string;
@@ -105,17 +107,29 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                 return;
             }
 
+            // Find the selected product attribute based on selectedSize (sku)
+            const selectedAttribute = product.attributes.find(
+                (attr) => attr.sku === selectedSize // Find attribute by SKU
+            );
+
+            if (!selectedAttribute) {
+                toast.error("Invalid size selected.");
+                return;
+            }
+
+            // Create the cart item with correct data
             const cartItem = {
                 id: uuidv4(),
                 slug: product.slug,
                 title: product.title,
                 image: selectedImage || "/assets/avatar.jpg",
-                price: selectedProduct?.price || product.attributes[0]?.price,
+                price: selectedAttribute.price, // Use price from selected attribute
                 quantity,
-                size: selectedSize,
-                sku: selectedSize,
+                size: selectedAttribute.size.toString(), // Ensure size is in string format
+                sku: selectedAttribute.sku, // Use the selected SKU
             };
 
+            // Dispatch action to add to cart
             dispatch(addToCart(cartItem));
             toast.success(`${product.title} added to cart!`);
         } catch (error) {
@@ -125,6 +139,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
             setTimeout(() => setIsAddingToCart(false), 3000);
         }
     };
+
 
 
 
@@ -211,11 +226,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                             <p className="text-sm font-semibold flex">
                                 <Ruler className="mr-2 h-5 w-5" />Size
                             </p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2  gap-4 mt-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                                 {product.attributes.map((attr) => (
                                     <button
                                         key={attr.sku}
-                                        onClick={() => setSelectedSize(attr.sku)}
+                                        onClick={() => setSelectedSize(attr.sku)} // Set selected SKU (size)
                                         className={`border px-3 py-2 rounded-lg text-sm ${selectedSize === attr.sku
                                             ? "bg-[#F0FDFD] text-[#008080] border-[#008080]"
                                             : "hover:border-[#008080]"
@@ -226,6 +241,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                 ))}
                             </div>
                         </div>
+
 
 
                         {/* Total Price Display */}
