@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
@@ -8,10 +8,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { PackageCheck } from "lucide-react";
-
-
-const options = countryList().getData();
-
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 // Define Zod validation schema for the form
 const shippingAddressSchema = z.object({
@@ -28,15 +26,34 @@ const shippingAddressSchema = z.object({
 });
 
 type ShippingAddress = z.infer<typeof shippingAddressSchema>;
+
 const ContactForm = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
+        reset,
     } = useForm<ShippingAddress>({
         resolver: zodResolver(shippingAddressSchema),
     });
+
+    const options = countryList().getData();
+    const router = useRouter();
+
+    // Fetch user data from Redux
+    const { firstName, lastName, phoneNumber, email } = useSelector(
+        (state: RootState) => state.auth);
+
+    // Set default values when component mounts
+    useEffect(() => {
+        reset({
+            firstName: firstName || "",
+            lastName: lastName || "",
+            phoneNumber: phoneNumber || "",
+            email: email || "",
+        });
+    }, [firstName, lastName, phoneNumber, email, reset]);
 
     const handleChange = (selectedOption: { value: string } | null) => {
         if (selectedOption) {
@@ -45,8 +62,6 @@ const ContactForm = () => {
             setValue("country", "");
         }
     };
-
-    const router = useRouter();
 
     const navigateToOrderComplete = () => {
         router.push("/cart/checkOut/orderComplete");
@@ -57,6 +72,8 @@ const ContactForm = () => {
         console.log(data);
         navigateToOrderComplete();
     };
+
+    console.log("Auth State:", useSelector((state: RootState) => state.auth));
 
     return (
         <>
@@ -76,7 +93,9 @@ const ContactForm = () => {
                                 {...register("firstName")}
                                 className="w-full p-3 border rounded-md"
                             />
-                            {errors.firstName && <span className="text-red-500 text-xs">{errors.firstName.message}</span>}
+                            {errors.firstName && (
+                                <span className="text-red-500 text-xs">{errors.firstName.message}</span>
+                            )}
                         </div>
                         <div className="text-gray-700 text-sm">
                             <label htmlFor="lastName" className="block mb-2 font-medium">
@@ -88,7 +107,9 @@ const ContactForm = () => {
                                 {...register("lastName")}
                                 className="w-full p-3 border rounded-md"
                             />
-                            {errors.lastName && <span className="text-red-500 text-xs">{errors.lastName.message}</span>}
+                            {errors.lastName && (
+                                <span className="text-red-500 text-xs">{errors.lastName.message}</span>
+                            )}
                         </div>
                     </div>
 
@@ -103,7 +124,9 @@ const ContactForm = () => {
                             {...register("phoneNumber")}
                             className="w-full p-3 border rounded-md"
                         />
-                        {errors.phoneNumber && <span className="text-red-500 text-xs">{errors.phoneNumber.message}</span>}
+                        {errors.phoneNumber && (
+                            <span className="text-red-500 text-xs">{errors.phoneNumber.message}</span>
+                        )}
                     </div>
 
                     {/* Email Address */}
@@ -117,7 +140,9 @@ const ContactForm = () => {
                             {...register("email")}
                             className="w-full p-3 border rounded-md"
                         />
-                        {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
+                        {errors.email && (
+                            <span className="text-red-500 text-xs">{errors.email.message}</span>
+                        )}
                     </div>
                 </form>
             </div>

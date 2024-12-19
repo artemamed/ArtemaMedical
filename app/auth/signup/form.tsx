@@ -3,24 +3,29 @@
 import React, { useState } from "react";
 import { LockKeyhole, Mail, Phone, User } from "lucide-react";
 import Input from "@/components/ui/input";
-import { toast } from "react-toastify";  // Import React Toastify
-import { z } from "zod";  // Import Zod for form validation
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import { setAuth } from "@/redux/features/authSlice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API;
 
 // Define Zod schema for validation
-const signupSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Please enter a valid email address"),
-  phone: z.string().min(1, "Phone number is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const signupSchema = z
+  .object({
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
+    email: z.string().email("Please enter a valid email address"),
+    phone: z.string().min(1, "Phone number is required"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -31,9 +36,9 @@ const SignupForm = () => {
     password: "",
     confirmPassword: "",
   });
-
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,18 +47,16 @@ const SignupForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Validate form using Zod schema
+
     try {
-      signupSchema.parse(formData);  // This will throw an error if validation fails
+      signupSchema.parse(formData);
       setLoading(true);
-      setMessage(null);
-  
+
       const response = await fetch(`${API_URL}/buyers/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY || '',
+          "x-api-key": API_KEY || "",
         },
         body: JSON.stringify({
           firstName: formData.firstName,
@@ -63,34 +66,33 @@ const SignupForm = () => {
           password: formData.password,
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
-  
-        // Show API error message in a toast if response is not ok
-        toast.error(errorData.message || "An error occurred");
-        throw new Error(errorData.message || "An error occurred.");
+        throw new Error(errorData.message || "An error occurred");
       }
-  
-      setMessage("Account created successfully!");
-      toast.success("Account created successfully!");  // Show success toast
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        password: "",
-        confirmPassword: "",
-      });
+
+      const data = await response.json();
+
+      // Automatically sign in the user
+      dispatch(
+        setAuth({
+          email: formData.email,
+          token: data.token,
+          avatarUrl: data.avatarUrl,
+          firstName: formData.firstName,
+          lastName: formData.lastName,   
+          phoneNumber: formData.phone,   
+        })
+      );
+
+      toast.success("Account created and signed in successfully!");
+      router.push("/auth/signin");
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        // Show validation error toasts only for Zod errors
         error.errors.forEach((err) => toast.error(err.message));
       } else if (error instanceof Error) {
-        // Handle API errors and show one toast message for the error
-        if (!error.message.includes("already exists") && !error.message.includes("An error occurred")) {
-          toast.error(error.message);  // Show error toast for API errors
-        }
+        toast.error(error.message);
       } else {
         toast.error("An unexpected error occurred.");
       }
@@ -98,8 +100,7 @@ const SignupForm = () => {
       setLoading(false);
     }
   };
-  
-  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Input
@@ -154,13 +155,12 @@ const SignupForm = () => {
         onChange={handleChange}
         required
       />
-      {message && <p className={`text-sm ${message.includes("successfully") ? "text-green-500" : "text-red-500"}`}>{message}</p>}
       <button
         type="submit"
         disabled={loading}
         className="w-full bg-teal-500 text-white py-2 rounded hover:bg-teal-600 disabled:opacity-50"
       >
-        {loading ? "Submitting..." : "Sign Up"}
+        {loading ? "Creating Account..." : "Sign Up"}
       </button>
     </form>
   );

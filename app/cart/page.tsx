@@ -11,34 +11,28 @@ import { removeFromCart, updateQuantity } from "@/redux/features/cartSlice";
 
 const Cart: React.FC = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const dispatch = useDispatch();
     const router = useRouter();
 
-    // Handle increment and decrement quantity
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
         const item = cartItems.find(item => item.slug === slug && item.size === size);
         if (!item) return;
 
         const newQuantity = increment ? item.quantity + 1 : item.quantity - 1;
-
         dispatch(updateQuantity({ slug, size, quantity: newQuantity }));
     };
 
-    // Handle remove item from cart
     const handleRemoveItem = (slug: string, size: string) => {
         dispatch(removeFromCart({ slug, size }));
     };
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-
     const freightCharge = cartItems.length === 1 && cartItems[0].quantity === 1 ? 25 : 75;
-
-
     const subtotal = total + freightCharge + tax;
 
     const navigateToCheckOut = () => {
-        const isAuthenticated = document.cookie.includes("userToken");
         if (isAuthenticated) {
             router.push("/cart/checkOut");
         } else {
@@ -46,7 +40,6 @@ const Cart: React.FC = () => {
         }
     };
 
-    // Redirect if cart is empty
     useEffect(() => {
         if (cartItems.length === 0) {
             router.push("/emptyCart");
@@ -179,8 +172,6 @@ const Cart: React.FC = () => {
                 </div>
             </div>
         </LayoutWrapper>
-
-
     );
 };
 

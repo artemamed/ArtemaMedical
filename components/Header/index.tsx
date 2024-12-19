@@ -4,35 +4,34 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
 import logo from "@/public/images/logo.svg";
 import SearchInput from "./SearchInput";
 import CartButton from "./CartButton";
 import Support from "./Support";
 import ProductDropDown from "./ProductDropDown";
 import LayoutWrapper from "../Wrapper/LayoutWrapper";
+import { clearAuth } from "@/redux/features/authSlice"; // Import the clearAuth action
+import { RootState } from "@/app/store";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const router = useRouter();
-  const pathname = usePathname(); // This will give us the current pathname
+  const pathname = usePathname(); // Current pathname
+  const dispatch = useDispatch();
 
-  // Check authentication status on mount
-  useEffect(() => {
-    const token = document.cookie.split("; ").find((row) => row.startsWith("userToken="));
-    setIsAuthenticated(!!token); // Set authenticated state based on token presence
-  }, []);
+  // Get authentication state and user data from Redux
+  const { isAuthenticated, avatarUrl } = useSelector((state: RootState) => state.auth);
 
   // Close the menu when the pathname changes
   useEffect(() => {
-    setIsMenuOpen(false); // Close the menu when the page changes
+    setIsMenuOpen(false);
   }, [pathname]);
 
   // Handle logout
   const handleLogout = () => {
-    document.cookie = "userToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"; // Clear the cookie
-    setIsAuthenticated(false);
+    dispatch(clearAuth()); // Clear Redux state
     router.push("/auth/signin"); // Redirect to sign-in page
   };
 
@@ -63,13 +62,12 @@ export default function Navbar() {
           <div>
             <Support />
           </div>
-         
         </div>
 
         {/* Icons & Contact Button */}
         <div className="flex items-center space-x-4 xl:space-x-6">
           {/* Search Input */}
-          <div className="lg:ml-[1rem] xl:ml-[5rem] ">
+          <div className="lg:ml-[1rem] xl:ml-[5rem]">
             <SearchInput />
           </div>
 
@@ -77,14 +75,14 @@ export default function Navbar() {
           <CartButton />
 
           {/* User Avatar */}
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <div className="relative">
               <button
                 onClick={() => setShowAvatarMenu(!showAvatarMenu)}
                 className="relative w-7 h-7 rounded-full overflow-hidden border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <Image
-                  src="/assets/avatar.jpg"
+                  src={avatarUrl || "/assets/avatar.jpg"} // Use avatarUrl or a placeholder
                   alt="User Avatar"
                   layout="fill"
                   objectFit="cover"
@@ -92,6 +90,9 @@ export default function Navbar() {
               </button>
               {showAvatarMenu && (
                 <div className="absolute right-0 w-48 mt-4 bg-[#F7F7F7] border border-gray-200 rounded-md shadow-lg z-50">
+                  {/* <div className="px-4 py-2 text-gray-700">
+                    <p>{email}</p>
+                  </div> */}
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-teal-500"
@@ -101,7 +102,7 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-          )}
+          ) : null}
 
           {/* Contact Us Button (Visible in Desktop) */}
           <Link
@@ -153,7 +154,6 @@ export default function Navbar() {
             <div className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               <Support />
             </div>
-            
             <Link href="/contact" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               Contact Us
             </Link>

@@ -77,10 +77,10 @@ const OrderComplete: React.FC = () => {
         transition={{ delay: 0.4 }}
       >
         <div className="bg-white rounded-lg shadow-xl p-4 md:p-6 lg:p-8 max-w-[90%] md:max-w-[800px] text-center">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-semibold mb-2 text-[#6C7275]">
+          <h2 className="text-xl md:text-2xl lg:text-4xl font-semibold mb-2 text-[#6C7275]">
             Thank You For Choosing Artema!
           </h2>
-          <p className="text-xl md:text-2xl lg:text-4xl font-bold text-[#2B2B2B]">
+          <p className="text-lg md:text-xl lg:text-2xl font-bold text-[#2B2B2B]">
             Your order has been received
           </p>
 
@@ -96,7 +96,8 @@ const OrderComplete: React.FC = () => {
                   <Image
                     width={100}
                     height={100}
-                    src={product.image}
+                    // src={product.image}
+                    src="/assets/avatar.jpg"
                     alt={product.title}
                     className="w-16 h-16 md:w-20 md:h-20 object-contain rounded-md"
                   />

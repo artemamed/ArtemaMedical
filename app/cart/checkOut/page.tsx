@@ -69,7 +69,8 @@ const CheckOut: React.FC = () => {
                     {cartItems.map((item) => (
                         <div key={item.id} className="flex flex-col -ml-6 border-b pb-4 xl:ml-5">
                             <div className="flex items-center space-x-4">
-                                <Image src={item.image} alt={item.title} width={80} height={80} className="object-contain rounded-md" />
+                                {/* <Image src={item.image} alt={item.title} width={80} height={80} className="object-contain rounded-md" /> */}
+                                <Image src="/assets/avatar.jpg" alt={item.title} width={80} height={80} className="object-contain rounded-md" />
                                 <div className="flex-1 space-y-2 md:space-y-3">
                                     <h3 className="font-semibold text-sm text-[#2B2B2B]">{item.title}</h3>
                                     <p className="text-xs text-gray-600">Size: {item.size}</p>

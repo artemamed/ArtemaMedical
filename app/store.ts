@@ -1,31 +1,29 @@
+import rootReducer from "@/redux/rootReducer";
 import { configureStore } from "@reduxjs/toolkit";
-import cartReducer from "@/redux/features/cartSlice";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage"; 
+import storage from "redux-persist/lib/storage";
 
 // Redux Persist Configuration
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["auth", "cart"], // Persist only auth and cart
 };
 
-const persistedCartReducer = persistReducer(persistConfig, cartReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    cart: persistedCartReducer,
-  },
-  // Disable the serializable check for persistor
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ["persist/PERSIST"], 
+        ignoredActions: ["persist/PERSIST"], // Ignore Redux Persist actions
       },
     }),
 });
 
 export const persistor = persistStore(store);
 
-// Define RootState and AppDispatch types for TypeScript
+// Types for RootState and AppDispatch
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
