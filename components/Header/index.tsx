@@ -36,7 +36,7 @@ export default function Navbar() {
   };
 
   return (
-    <LayoutWrapper className="relative">
+    <LayoutWrapper className="relative w-[100%]">
       <div className="flex items-center justify-between py-4">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">

@@ -10,27 +10,28 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchMenuData } from "@/lib/api";
 
 export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => void }) {
   const [visibleItems, setVisibleItems] = useState(0);
-  const [, setColumns] = useState(4);  // Default column count for lg screens
+  const [, setColumns] = useState(4);
   const [isClient, setIsClient] = useState(false);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const updateVisibleItems = () => {
       if (window.innerWidth < 768) {
-        setColumns(1);  // Mobile (sm) - 1 column
-        setVisibleItems(2);  // Max 2 subcategories
+        setColumns(1);
+        setVisibleItems(2);
       } else if (window.innerWidth < 1024) {
-        setColumns(3);  // Tablet (md) - 3 columns
-        setVisibleItems(2);  // Max 2 subcategories
+        setColumns(3);
+        setVisibleItems(2);
       } else {
-        setColumns(4);  // Desktop (lg) - 4 columns
-        setVisibleItems(3);  // Max 3 subcategories
+        setColumns(4);
+        setVisibleItems(3);
       }
     };
 
@@ -38,28 +39,15 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     window.addEventListener("resize", updateVisibleItems);
 
     setIsClient(true);
+    queryClient.removeQueries({ queryKey: ["menuData"] }); // Clear cache on mount
 
     return () => window.removeEventListener("resize", updateVisibleItems);
-  }, []);
-
+  }, [queryClient]);
   const { data: menuData, error, isLoading, isError } = useQuery({
     queryKey: ["menuData"],
     queryFn: fetchMenuData,
-    initialData: () => {
-      if (typeof window !== "undefined") {
-        const cachedData = localStorage.getItem("menuData");
-        return cachedData ? JSON.parse(cachedData) : [];
-      }
-      return [];
-    },
-    staleTime: Infinity,
+    staleTime: 0,
   });
-
-  useEffect(() => {
-    if (menuData && typeof window !== "undefined") {
-      localStorage.setItem("menuData", JSON.stringify(menuData));
-    }
-  }, [menuData]);
 
   const navigateToCategories = () => {
     router.push("/category");
@@ -79,10 +67,10 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
   );
 
   if (!isClient) {
-    return null; // Render nothing during SSR
+    return null;
   }
 
-  if (isLoading && !menuData?.length) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-teal-500"></div>
@@ -90,7 +78,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     );
   }
 
-  if (isError && !menuData?.length) {
+  if (isError) {
     return (
       <div className="flex flex-col items-center text-red-500">
         <p>{(error as Error).message}</p>
@@ -102,10 +90,6 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
         </button>
       </div>
     );
-  }
-
-  if (!menuData?.length && !isLoading && !isError) {
-    return <div className="text-gray-500">Failed!</div>;
   }
 
   return (
@@ -120,11 +104,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
-          {menuData.slice(0, visibleItems).map((wrapper: {
-            category: {
-              name: string; slug: string; subCategories?: { slug: string; name: string }[]
-            }
-          }, index: number) => {
+          {menuData.slice(0, visibleItems).map((wrapper: { category: { name: string; slug: string; subCategories?: { name: string; slug: string }[] } }, index: number) => {
             const { category } = wrapper;
             return (
               <div key={index} className="lg:space-y-1">
@@ -152,7 +132,6 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
               </div>
             );
           })}
-
           <DropdownMenuItem
             className="bg-[#008080] text-white hover:bg-[#008080]/90 h-10 px-4 py-2 w-[10rem] focus:bg-[#378b8b] focus:text-white"
             onClick={navigateToCategories}
