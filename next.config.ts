@@ -1,3 +1,4 @@
+// next.config.js
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -11,6 +12,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: 'example.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',  // Added the protocol as https
+        hostname: 'medinven.api.artemamed.com', // Your image host
         pathname: '/**',
       },
     ],

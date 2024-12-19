@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5001/api/",
+  baseURL: "https://medinven.api.artemamed.com/api/",
   headers: {
     "x-api-key": process.env.NEXT_PUBLIC_API,
   },

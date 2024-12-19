@@ -20,10 +20,12 @@ interface SubCategory {
 }
 
 interface Category {
+
   subCategories: SubCategory[];
   slug: string;
   name: string;
   icon: string;
+
 }
 const ProductSubCategory: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -64,7 +66,8 @@ const ProductSubCategory: React.FC = () => {
   // Flatten Subcategories
   const subCategories: SubCategory[] = useMemo(() => {
     return (
-      subCategoriesPages?.pages?.flatMap((page: { subCategories?: SubCategory[] }) => page?.subCategories || []) || []    );
+      subCategoriesPages?.pages?.flatMap((page: { subCategories?: SubCategory[] }) => page?.subCategories || []) || []
+    );
   }, [subCategoriesPages]);
 
   const categoryName = subCategoriesPages?.pages?.[0]?.category?.name || "Subcategories";
@@ -91,9 +94,8 @@ const ProductSubCategory: React.FC = () => {
   const Sidebar = useMemo(
     () => (
       <aside
-        className={`fixed top-0 left-0 h-full bg-gray-100 shadow-lg z-40 p-4 transform transition-transform duration-300 ${
-          showSidebar ? "translate-x-0" : "-translate-x-full"
-        } lg:static lg:translate-x-0 lg:w-64 lg:rounded-2xl`}
+        className={`fixed top-0 left-0 h-full bg-gray-100 shadow-lg z-40 p-4 transform transition-transform duration-300 ${showSidebar ? "translate-x-0" : "-translate-x-full"
+          } lg:static lg:translate-x-0 lg:w-64 lg:rounded-2xl`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-semibold text-lg">Categories</h2>
@@ -128,8 +130,6 @@ const ProductSubCategory: React.FC = () => {
     ),
     [categories, handleCategoryClick, showSidebar]
   );
-  
-  
 
   if (loadingCategories || loadingSubCategories)
     return (
@@ -166,23 +166,32 @@ const ProductSubCategory: React.FC = () => {
         <main className="flex-1 lg:-mt-3 cursor-pointer">
           {subCategories.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
-              {subCategories.map((subCategory) => (
-                <div
-                  key={subCategory.slug}
-                  className="rounded-lg p-4 flex flex-col items-center"
-                  onClick={() => handleCategoryClick(subCategory.slug)}
-                >
-                  <Image
-                    width={300}
-                    height={300}
-                    src={subCategory.image || "/assets/avatar.jpg"}
-                    alt={subCategory.name}
-                    className="w-full h-full object-contain mb-4 border rounded-2xl"
-                  />
-                  <h3 className="text-lg font-semibold text-gray-800">{subCategory.name}</h3>
-                  <p className="text-gray-600">{subCategory.description}</p>
-                </div>
-              ))}
+              {subCategories.map((subCategory) => {
+                const fullImageUrl = subCategory.image?.startsWith('http')
+                  ? subCategory.image
+                  : `https://medinven.api.artemamed.com${subCategory.image}`;
+
+                console.log(fullImageUrl);
+
+                return (
+                  <div
+                    key={subCategory.slug}
+                    className="rounded-lg p-4 flex flex-col items-center"
+                    onClick={() => handleCategoryClick(subCategory.slug)}
+                  >
+                    <Image
+                      width={300}
+                      height={300}
+                      src={subCategory.image ? fullImageUrl : "/assets/avatar.jpg"} // Default image if no image is provided
+                      alt={subCategory.name}
+                      className="w-full h-full object-contain mb-4 border rounded-2xl"
+                    />
+
+                    <h3 className="text-lg font-semibold text-gray-800">{subCategory.name}</h3>
+                    <p className="text-gray-600">{subCategory.description}</p>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <p className="text-gray-600 text-center mt-8">No subcategories found.</p>
@@ -203,5 +212,4 @@ const ProductSubCategory: React.FC = () => {
       </div>
     </LayoutWrapper>
   );
-};
-export default ProductSubCategory;
+}; export default ProductSubCategory;

@@ -1,8 +1,6 @@
-//app/singleproduct/[slug]/page.tsx
 "use client";
 
 import { getProductBySlug } from "@/lib/api";
-// import { getSimilarProducts } from "@/lib/api"; 
 import { Button } from "@/components/ui/button";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { Ruler, ShoppingCart } from "lucide-react";
@@ -13,11 +11,9 @@ import { addToCart } from "@/redux/features/cartSlice";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 
-
-
 type ProductAttribute = {
-    size: number; // size is a number based on the response (e.g., 345)
-    sku: string;  // SKU is a string (e.g., "SKU100")
+    size: number;
+    sku: string; 
     price: number;
     image: string;
 };
@@ -27,29 +23,17 @@ type Product = {
     name: string;
     title: string;
     description: string;
-    attributes: ProductAttribute[]; // attributes is an array of ProductAttribute objects
-    image: string; // This could be the main image URL for the product
+    attributes: ProductAttribute[];
 };
-
-
-// type SimilarProduct = {
-//     slug: string;
-//     name: string;
-//     description: string;
-//     attributes: ProductAttribute[];
-// };
 
 interface SingleProductProps {
     params: Promise<{ slug: string }>;
 }
 
 const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
-    // Add this inside your SingleProduct Component
     const dispatch = useDispatch();
-
     const [slug, setSlug] = useState<string | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
-    // const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -66,21 +50,17 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         resolveParams();
     }, [params]);
 
-    // Fetch product and similar products data when slug is available
+    // Fetch product data when slug is available
     useEffect(() => {
         if (slug) {
             const fetchProductData = async () => {
                 try {
                     const fetchedProduct = await getProductBySlug(slug);
                     setProduct(fetchedProduct);
-                    setSelectedImage(fetchedProduct.attributes[0]?.image || null);
-
-                    // Fetch similar products
-                    // const similarResponse = await getSimilarProducts("probs", slug, 4);
-                    // console.log("Similar Products Response:", similarResponse); // Debug
-                    // setSimilarProducts(similarResponse?.data?.products || []);
+                    // Set initial image (fallback to placeholder if none)
+                    setSelectedImage(fetchedProduct.attributes[0]?.image || "/placeholder.png");
                 } catch (error) {
-                    console.error("Error fetching product or similar products:", error);
+                    console.error("Error fetching product:", error);
                 } finally {
                     setLoading(false);
                 }
@@ -90,6 +70,13 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         }
     }, [slug]);
 
+    // Handle size selection and update image
+    const handleSizeSelection = (sku: string) => {
+        setSelectedSize(sku);
+        const selectedAttribute = product?.attributes.find((attr) => attr.sku === sku);
+        // If image exists for the selected size, update it, else fallback to the first attribute's image
+        setSelectedImage(selectedAttribute?.image || product?.attributes[0]?.image || "/placeholder.png");
+    };
 
     const handleAddToCart = () => {
         if (isAddingToCart) return;
@@ -106,29 +93,24 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                 return;
             }
 
-            // Find the selected product attribute based on selectedSize (sku)
-            const selectedAttribute = product.attributes.find(
-                (attr) => attr.sku === selectedSize // Find attribute by SKU
-            );
+            const selectedAttribute = product.attributes.find((attr) => attr.sku === selectedSize);
 
             if (!selectedAttribute) {
                 toast.error("Invalid size selected.");
                 return;
             }
 
-            // Create the cart item with correct data
             const cartItem = {
                 id: uuidv4(),
                 slug: product.slug,
                 title: product.title,
-                image: selectedImage || "/assets/avatar.jpg",
-                price: selectedAttribute.price, // Use price from selected attribute
+                image: selectedImage || "/placeholder.png",
+                price: selectedAttribute.price,
                 quantity,
-                size: selectedAttribute.size.toString(), // Ensure size is in string format
-                sku: selectedAttribute.sku, // Use the selected SKU
+                size: selectedAttribute.size.toString(),
+                sku: selectedAttribute.sku,
             };
 
-            // Dispatch action to add to cart
             dispatch(addToCart(cartItem));
             toast.success(`${product.title} added to cart!`);
         } catch (error) {
@@ -139,19 +121,12 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         }
     };
 
-
-    // Increment and decrement quantity
     const incrementQuantity = () => setQuantity(quantity + 1);
     const decrementQuantity = () => {
         if (quantity > 1) setQuantity(quantity - 1);
     };
 
-    // Get the selected price based on selectedSize (if available)
-    const selectedProduct = product?.attributes.find(
-        (attr) => attr.sku === selectedSize
-    );
-
-    // Total price calculation based on selected size and quantity
+    const selectedProduct = product?.attributes.find((attr) => attr.sku === selectedSize);
     const totalPrice = selectedProduct
         ? selectedProduct.price * quantity
         : (product?.attributes[0]?.price || 0) * quantity;
@@ -178,42 +153,48 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         );
     }
 
-    // Ensure the image path is absolute or has a leading slash
+    // Update image URL logic
     const getValidImageUrl = (imageUrl: string | null) => {
-        if (!imageUrl) return "/placeholder.png"; // fallback image
-        return imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
+        if (!imageUrl) return "/placeholder.png";
+
+        // Base URL of your API or image source
+        const baseUrl = "https://medinven.api.artemamed.com"; // Update this as necessary
+
+        // Check if the image URL is already a full URL (starts with "http")
+        const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+
+        return fullImageUrl;
     };
+
 
     return (
         <LayoutWrapper className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
             <div className="w-full">
-                <div className="flex flex-col lg:flex-row py-8 lg:py-16 space-y-6 lg:space-y-0 lg:space-x-8">
-                    {/* Image Section */}
-                    <div className="flex flex-col justify-center items-center lg:w-3/5 gap-4">
+                <div className="flex flex-col md:flex-row py-8 lg:py-16 space-y-6 md:space-y-0 md:space-x-8">
+                    <div className="flex flex-col justify-center items-center md:w-3/5 gap-4">
                         <Image
                             width={300}
                             height={300}
                             src={getValidImageUrl(selectedImage)}
                             alt={product.name}
-                            className="h-48 sm:h-64 lg:h-[35rem] lg:w-[35rem] mix-blend-multiply"
+                            className="h-[20rem] w-[5rem] lg:h-auto lg:w-auto mix-blend-multiply"
                         />
                     </div>
 
-                    {/* Details Section */}
-                    <div className="lg:w-1/3 lg:pl-8">
+                    <div className="lg:w-2/3 lg:pl-8">
+                    <h1 className="text-sm font-bold">{product.name}</h1>
                         <h1 className="text-xl sm:text-xl lg:text-2xl font-bold">{product.title}</h1>
                         <p className="text-gray-500 text-sm lg:text-base mt-2">{product.description}</p>
 
-                        {/* Size Selector */}
                         <div className="mt-6">
                             <p className="text-sm font-semibold flex">
-                                <Ruler className="mr-2 h-5 w-5" />Size
+                                <Ruler className="mr-2 h-5 w-5" /> Size
                             </p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                                 {product.attributes.map((attr) => (
                                     <button
                                         key={attr.sku}
-                                        onClick={() => setSelectedSize(attr.sku)} // Set selected SKU (size)
+                                        onClick={() => handleSizeSelection(attr.sku)}
                                         className={`border px-3 py-2 rounded-lg text-sm ${selectedSize === attr.sku
                                             ? "bg-[#F0FDFD] text-[#008080] border-[#008080]"
                                             : "hover:border-[#008080]"
@@ -225,14 +206,8 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                             </div>
                         </div>
 
+                        <div className="text-xl 2xl:text-3xl font-bold mt-4">${totalPrice.toFixed(2)}</div>
 
-
-                        {/* Total Price Display */}
-                        <div className="text-xl 2xl:text-3xl font-bold mt-4">
-                            ${totalPrice.toFixed(2)}
-                        </div>
-
-                        {/* Quantity Selector */}
                         <div className="mt-6 flex gap-4">
                             <div className="flex items-center space-x-4 text-[#008080] border border-[#008080] rounded-md px-5">
                                 <button onClick={decrementQuantity}>−</button>
@@ -243,8 +218,6 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                 {isAddingToCart ? "Adding..." : "Add to cart"}
                                 <ShoppingCart className="ml-2 h-5 w-5" />
                             </Button>
-
-
                         </div>
                     </div>
                 </div>

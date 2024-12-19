@@ -3,7 +3,6 @@
 import { use } from "react"; // Import React's `use` hook
 import { useQuery } from "@tanstack/react-query";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
-// import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductsBySubCategorySlug } from "@/lib/api";
@@ -18,10 +17,8 @@ const fetchProducts = async (slug: string) => {
 };
 
 const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) => {
-    // Unwrap params with React `use`
     const { slug } = use(params);
 
-    // Fetch products with React Query
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["products", slug],
         queryFn: () => fetchProducts(slug),
@@ -54,39 +51,41 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
             </div>
             <div className="relative flex min-h-screen">
                 <main className="flex-1 pt-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 2xl:grid-cols-4 gap-6">
-                        {products.map((product) => (
-                            <Link href={`/singleproduct/${product.slug}`} key={product.slug}>
-                                <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md">
-                                    <div className="relative w-full h-full">
-                                        <Image
-                                            width={300}
-                                            height={300}
-                                            src="/assets/avatar.jpg"
-                                            alt={product.name || "Product Image"}
-                                            className="w-full h-full object-contain mb-4"
-                                        />
-                                        {/* <ShoppingCart
-                                            className="absolute top-2 right-2 text-[#008080] bg-[#F7F7F7] rounded-full p-2 h-[3rem] w-[2.5rem]"
-                                        /> */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-8 lg:gap-12">
+                        {products.map((product) => {
+                            const imageUrl = product.attributes[0]?.image;
+                            const fullImageUrl = imageUrl?.startsWith('http') ? imageUrl : `https://medinven.api.artemamed.com${imageUrl}`;
+                            return (
+                                <Link href={`/singleproduct/${product.slug}`} key={product.slug}>
+                                    <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-[300px] md:h-[400px] lg:h-auto"> {/* Fixed height */}
+                                        <div className="relative w-full h-0 pb-[50%] md:pb-[100%]"> {/* Aspect ratio container */}
+                                            <Image
+                                                src={fullImageUrl || "/assets/avatar.jpg"}
+                                                alt={product.name || "Product Image"}
+                                                layout="fill"
+                                                objectFit="contain"
+                                                className="absolute top-0 left-0"
+                                            />
+                                        </div>
+                                        <div className="flex flex-col justify-between mt-4 flex-1"> {/* Ensures content is always aligned */}
+                                            <h3 className="text-base sm:text-lg font-bold text-gray-800">
+                                                {product.name}
+                                            </h3>
+                                            <h3 className="text-sm text-[#666666]">{product.description}</h3>
+                                            <h3 className="text-base sm:text-xl font-semibold text-gray-800">
+                                                ${product.attributes[0]?.price.toFixed(2)}
+                                            </h3>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 className="text-base sm:text-lg font-bold text-gray-800">
-                                            {product.name}
-                                        </h3>
-                                        <h3 className="text-sm text-[#666666]">{product.description}</h3>
-                                        <h3 className="text-base sm:text-xl font-semibold text-gray-800">
-                                            ${product.attributes[0]?.price.toFixed(2)}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
+                                </Link>
+                            );
+                        })}
                     </div>
                 </main>
             </div>
         </LayoutWrapper>
+
+
     );
 };
-
 export default SubCategoryListing;
