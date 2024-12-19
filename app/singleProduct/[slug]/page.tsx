@@ -1,14 +1,13 @@
 //app/singleproduct/[slug]/page.tsx
 "use client";
 
-import { getProductBySlug, getSimilarProducts } from "@/lib/api"; // Add getSimilarProducts
-import BreadcrumbComponent from "@/components/Breadcrumb";
+import { getProductBySlug } from "@/lib/api";
+// import { getSimilarProducts } from "@/lib/api"; 
 import { Button } from "@/components/ui/button";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { Ruler, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { ScrollAreaHorizontalDemo } from "@/components/Product/singleProductScroll";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/features/cartSlice";
 import { toast } from "react-toastify";
@@ -33,12 +32,12 @@ type Product = {
 };
 
 
-type SimilarProduct = {
-    slug: string;
-    name: string;
-    description: string;
-    attributes: ProductAttribute[];
-};
+// type SimilarProduct = {
+//     slug: string;
+//     name: string;
+//     description: string;
+//     attributes: ProductAttribute[];
+// };
 
 interface SingleProductProps {
     params: Promise<{ slug: string }>;
@@ -50,7 +49,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
 
     const [slug, setSlug] = useState<string | null>(null);
     const [product, setProduct] = useState<Product | null>(null);
-    const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
+    // const [similarProducts, setSimilarProducts] = useState<SimilarProduct[]>([]);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -77,9 +76,9 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                     setSelectedImage(fetchedProduct.attributes[0]?.image || null);
 
                     // Fetch similar products
-                    const similarResponse = await getSimilarProducts("probs", slug, 4);
-                    console.log("Similar Products Response:", similarResponse); // Debug
-                    setSimilarProducts(similarResponse?.data?.products || []);
+                    // const similarResponse = await getSimilarProducts("probs", slug, 4);
+                    // console.log("Similar Products Response:", similarResponse); // Debug
+                    // setSimilarProducts(similarResponse?.data?.products || []);
                 } catch (error) {
                     console.error("Error fetching product or similar products:", error);
                 } finally {
@@ -141,21 +140,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
     };
 
 
-
-
-
-
-
-
-
     // Increment and decrement quantity
     const incrementQuantity = () => setQuantity(quantity + 1);
     const decrementQuantity = () => {
         if (quantity > 1) setQuantity(quantity - 1);
     };
-
-    // Handle image selection
-    const handleImageClick = (imageUrl: string) => setSelectedImage(imageUrl);
 
     // Get the selected price based on selectedSize (if available)
     const selectedProduct = product?.attributes.find(
@@ -198,7 +187,6 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
     return (
         <LayoutWrapper className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
             <div className="w-full">
-                <BreadcrumbComponent />
                 <div className="flex flex-col lg:flex-row py-8 lg:py-16 space-y-6 lg:space-y-0 lg:space-x-8">
                     {/* Image Section */}
                     <div className="flex flex-col justify-center items-center lg:w-3/5 gap-4">
@@ -208,11 +196,6 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                             src={getValidImageUrl(selectedImage)}
                             alt={product.name}
                             className="h-48 sm:h-64 lg:h-[35rem] lg:w-[35rem] mix-blend-multiply"
-                        />
-                        {/* Pass images as a prop to ScrollArea */}
-                        <ScrollAreaHorizontalDemo
-                            onImageClick={handleImageClick}
-                            images={product.attributes.map((attr) => getValidImageUrl(attr.image))}
                         />
                     </div>
 
@@ -266,7 +249,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                     </div>
                 </div>
                 {/* Similar Products */}
-                <div className="mt-16 2xl:mx-[6rem]">
+                {/* <div className="mt-16 2xl:mx-[6rem]">
                     <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6">
                         Similar Products
                     </h2>
@@ -302,7 +285,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                             </div>
                         ))}
                     </div>
-                </div>
+                </div> */}
             </div>
         </LayoutWrapper>
     );

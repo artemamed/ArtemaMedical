@@ -20,11 +20,11 @@ interface SubCategory {
 }
 
 interface Category {
+  subCategories: SubCategory[];
   slug: string;
   name: string;
   icon: string;
 }
-
 const ProductSubCategory: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showButton, setShowButton] = useState(true);
@@ -110,17 +110,15 @@ const ProductSubCategory: React.FC = () => {
                   {category.name}
                 </summary>
                 <ul className="ml-8 mt-2 space-y-1 text-sm text-gray-600">
-                  {subCategories
-                    .filter((subcategory) => subcategory.categorySlug === category.slug)
-                    .map((subcategory) => (
-                      <li
-                        key={subcategory.slug}
-                        className="hover:text-teal-600 cursor-pointer"
-                        onClick={() => handleCategoryClick(subcategory.slug)}
-                      >
-                        {subcategory.name}
-                      </li>
-                    ))}
+                  {category.subCategories?.map((subcategory: SubCategory) => (
+                    <li
+                      key={subcategory.slug}
+                      className="hover:text-teal-600 cursor-pointer"
+                      onClick={() => handleCategoryClick(subcategory.slug)}
+                    >
+                      {subcategory.name}
+                    </li>
+                  ))}
                 </ul>
               </details>
             </li>
@@ -128,8 +126,10 @@ const ProductSubCategory: React.FC = () => {
         </ul>
       </aside>
     ),
-    [categories, handleCategoryClick, showSidebar, subCategories]
+    [categories, handleCategoryClick, showSidebar]
   );
+  
+  
 
   if (loadingCategories || loadingSubCategories)
     return (

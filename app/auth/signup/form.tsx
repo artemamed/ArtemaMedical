@@ -3,11 +3,9 @@
 import React, { useState } from "react";
 import { LockKeyhole, Mail, Phone, User } from "lucide-react";
 import Input from "@/components/ui/input";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import { setAuth } from "@/redux/features/authSlice";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API;
@@ -37,7 +35,6 @@ const SignupForm = () => {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,21 +69,7 @@ const SignupForm = () => {
         throw new Error(errorData.message || "An error occurred");
       }
 
-      const data = await response.json();
-
-      // Automatically sign in the user
-      dispatch(
-        setAuth({
-          email: formData.email,
-          token: data.token,
-          avatarUrl: data.avatarUrl,
-          firstName: formData.firstName,
-          lastName: formData.lastName,   
-          phoneNumber: formData.phone,   
-        })
-      );
-
-      toast.success("Account created and signed in successfully!");
+      toast.success("Account created successfully! Please sign in.");
       router.push("/auth/signin");
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
@@ -100,6 +83,7 @@ const SignupForm = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
