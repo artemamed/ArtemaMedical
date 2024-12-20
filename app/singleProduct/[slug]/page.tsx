@@ -177,7 +177,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                             height={300}
                             src={getValidImageUrl(selectedImage)}
                             alt={product.name}
-                            className="h-[20rem] w-[5rem] lg:h-auto lg:w-auto mix-blend-multiply"
+                            className="h-[15rem] w-[5rem] lg:h-[400px] lg:w-auto mix-blend-multiply object-contain"
                         />
                     </div>
 

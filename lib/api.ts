@@ -132,3 +132,19 @@ export const getSimilarProducts = async (
     throw error;
   }
 };
+
+
+// Fetch products based on the search query
+export const searchProducts = async (query: string | null) => {
+  const searchQuery = query === null ? "" : query; // Use empty string for null query
+
+  try {
+    const response = await api.get("products/all-client-products", {
+      params: { limit: 8, page: 1, search: searchQuery },
+    });
+    return response.data; // Return the data directly
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw new Error("Failed to fetch products.");
+  }
+};
