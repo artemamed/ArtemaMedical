@@ -2,7 +2,7 @@ services:
   artemamed:
       image: ${DOCKER_IMAGE}
       ports:
-        - 1003:3000
+        - 1004:3000
       env_file:
         - .env
       restart: always
