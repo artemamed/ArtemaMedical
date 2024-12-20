@@ -1,9 +1,9 @@
-import { CircleDollarSign, Leaf, Microscope } from 'lucide-react';
-import React from 'react';
+import { CircleDollarSign, Leaf, Microscope } from "lucide-react";
+import React from "react";
 
 const WhyChooseUs = () => {
   return (
-    <div className="bg-[#004040] p-4 md:p-8 lg:p-12 xl:p-16 text-white rounded-xl transition-all duration-300">
+    <div className="bg-[#004040] p-4 md:p-8 lg:p-12 xl:p-16 text-white transition-all duration-300">
       <h2 className="text-2xl md:text-4xl xl:text-5xl font-bold mb-6 md:mb-10 animate-fade-in text-center">
         Why Choose Us
       </h2>
@@ -11,13 +11,17 @@ const WhyChooseUs = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 ">
         {[
           {
-            icon: <CircleDollarSign className="w-8 md:w-10 xl:w-12 md:h-8 lg:h-10 -mb-2" />,
+            icon: (
+              <CircleDollarSign className="w-8 md:w-10 xl:w-12 md:h-8 lg:h-10 -mb-2" />
+            ),
             title: "Cost-Effective Excellence",
             description:
               "We prioritize delivering premium-quality medical instruments while ensuring budget-friendly solutions tailored to your needs.",
           },
           {
-            icon: <Microscope className="w-8 md:w-10 xl:w-12 lg:h-10 md:h-8 -mb-2" />,
+            icon: (
+              <Microscope className="w-8 md:w-10 xl:w-12 lg:h-10 md:h-8 -mb-2" />
+            ),
             title: "Precision and Innovation",
             description:
               "Our team of biomedical experts continually pushes boundaries to design innovative tools that meet the highest standards.",

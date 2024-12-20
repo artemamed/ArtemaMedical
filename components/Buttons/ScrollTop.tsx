@@ -12,9 +12,11 @@ const ScrollTop = () => {
         <Button
           onClick={() => scrollTo({ y: 0 })}
           size="icon"
-          className="bg-black rounded-full w-14 h-14"
+          type="button"
+          variant="default"
+          className="rounded-full w-12 h-12 fixed bottom-8 right-8 z-50 animate-bounce"
         >
-          <FaArrowUpLong className="h-8 w-8 text-white" />
+          <FaArrowUpLong className="h-5 w-5" />
         </Button>
       )}
     </>

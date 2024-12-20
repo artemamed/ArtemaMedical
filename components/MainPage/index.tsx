@@ -2,12 +2,12 @@
 import React from 'react';
 import HeroSection from './HeroSection';
 import MedicalEquipment from './MedicalEquipment';
-import TrustedStandard from './TrustedStandard';
+// import TrustedStandard from './TrustedStandard';
 import Sustainability from './Sustainability';
 import WhyChooseUs from './WhyChooseUs';
 import ReliableInstrumnet from './ReliableInstrument';
 import TrustedUser from './TrustedUser';
-import BlogSection from './BlogSection';
+// import BlogSection from './BlogSection';
 
 export default function MainPageData() {
     return (
@@ -16,14 +16,14 @@ export default function MainPageData() {
                 <HeroSection />
             </header>
             <MedicalEquipment />
-            <TrustedStandard />
+            {/* <TrustedStandard /> */}
             <Sustainability />
             <div className='pt-[6rem]'>
                 <WhyChooseUs />
             </div>
             <ReliableInstrumnet />
             <TrustedUser />
-            <BlogSection />
+            {/* <BlogSection /> */}
         </>
     );
 }

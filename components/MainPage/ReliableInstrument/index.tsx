@@ -8,7 +8,7 @@ const CardWithStethoscope = () => {
   return (
     <LayoutWrapper>
       <div className=" px-4 my-8 md:my-[4rem]">
-        <div className="flex flex-col md:flex-row items-center justify-between rounded-3xl shadow-lg bg-[#EDF8F833] p-6 md:p-8">
+        <div className="flex flex-col md:flex-row items-center justify-between rounded-3xl shadow-2xl bg-[#EDF8F833] p-6 md:p-8">
           <div className="w-full md:w-auto mb-6 md:mb-0">
             <Image
               src={image}

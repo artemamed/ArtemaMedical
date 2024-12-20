@@ -18,7 +18,7 @@ export default function Footer() {
               <Image 
                 src={image_logo} 
                 alt='Logo'
-                className="w-auto h-auto max-w-[200px]"
+                className="w-auto h-auto max-w-[160px]"
               />
               <p className="text-gray-300 text-sm md:text-base mt-4 text-center md:text-left">
                 371 J, Commercial Block EME Society DHA Phase XII Canal Road, Lahore, Pakistan.
