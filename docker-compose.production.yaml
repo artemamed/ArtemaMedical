@@ -3,6 +3,4 @@ services:
       image: ${DOCKER_IMAGE}
       ports:
         - 1004:3000
-      env_file:
-        - .env
       restart: always
