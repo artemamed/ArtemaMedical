@@ -3,76 +3,147 @@
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateQuantity } from "@/redux/features/cartSlice";
 import { RootState } from "@/app/store";
-import ContactForm from "@/components/ui/contactForm";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
 
 
 const CheckOut: React.FC = () => {
-    // Access cart items from Redux store
+    const { firstName, lastName, phoneNumber, email } = useSelector(
+        (state: RootState) => state.auth);
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
 
-    // Handle increment and decrement quantity
+    // Handle quantity change
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
         const item = cartItems.find(item => item.slug === slug && item.size === size);
         if (!item) return;
 
         const newQuantity = increment ? item.quantity + 1 : item.quantity - 1;
-
         dispatch(updateQuantity({ slug, size, quantity: newQuantity }));
     };
 
-    // Handle remove item from cart
+    // Handle item removal from cart
     const handleRemoveItem = (slug: string, size: string) => {
         dispatch(removeFromCart({ slug, size }));
     };
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const freightCharge = cartItems.length === 1 && cartItems[0].quantity === 1 ? 25 : 75;
-
+    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 ? 75 : 0);
     const subtotal = total + freightCharge + tax;
 
+    // Handle placing order and redirecting for payment
+    const handlePlaceOrder = async () => {
+        setLoading(true);
+
+        try {
+            const orderId = `ORDER_${Date.now()}`; // Generate a unique order ID dynamically
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + 7); // Expiry set to 7 days from today
+            // const todayDate = new Date().toISOString();
+
+            const payload = {
+                apiOperation: "INITIATE_CHECKOUT",
+                checkoutMode: "PAYMENT_LINK",
+                interaction: {
+                    operation: "PURCHASE",
+                    merchant: {
+                        name: "ARTEMAMEDICA",
+                        url: "http://localhost:3000/cart/checkOut/orderComplete", // Redirect URL after payment
+                    },
+                },
+                order: {
+                    currency: "USD",
+                    // amount: subtotal.toFixed(2),
+                    amount: 1,
+                    id: orderId,
+                    description: "Payment Process",
+                },
+                paymentLink: {
+                    expiryDateTime: expiryDate.toISOString(),
+                    numberOfAllowedAttempts: "7",
+                },
+            };
+
+            // Sending the payload to the server for payment processing
+            const response = await axios.post("/api/payment", payload);
+            if (response.data.paymentLink?.url) {
+                window.location.href = response.data.paymentLink.url; // Redirect to the payment gateway URL
+            } else {
+                throw new Error("Payment link not found");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("An error occurred during payment. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <LayoutWrapper className="min-h-screen p-4">
-            {/* Header */}
+              <LayoutWrapper className="min-h-screen p-4">
             <button className="text-gray-500 mb-4">&lt; Back</button>
             <h1 className="text-3xl md:text-4xl font-bold text-teal-800 text-center mb-5">Check Out</h1>
 
-            {/* Steps */}
-            <div className="flex flex-col sm:flex-row items-center justify-center mb-8 gap-4 md:gap-12 ">
-                <div className="hidden sm:block md:flex items-center">
-                    <div className="w-8 h-8 bg-teal-800 text-white flex items-center justify-center rounded-full">✓</div>
-                    <span className="ml-2 text-teal-800">Shopping cart</span>
-                </div>
-                <div className="flex items-center">
-                    <div className="w-8 h-8 bg-teal-600 text-white flex items-center justify-center rounded-full">2</div>
-                    <span className="ml-2 text-teal-600">Checkout details</span>
-                </div>
-                <div className="hidden sm:block md:flex items-center">
-                    <div className="w-8 h-8 bg-gray-400 text-white flex items-center justify-center rounded-full">3</div>
-                    <span className="ml-2 text-gray-400">Order complete</span>
-                </div>
-            </div>
-
-            {/* Checkout Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-                <div className="space-y-10">
-                    <ContactForm />
+                <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
+                    <div className="space-y-4">
+                        {/* First Name and Last Name */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="text-gray-700 text-sm">
+                                <label className="block mb-2 font-medium">
+                                    First Name
+                                </label>
+                                <div className="w-full p-3 border rounded-md ">
+                                    {firstName || "Not provided"}
+                                </div>
+                            </div>
+                            <div className="text-gray-700 text-sm">
+                                <label className="block mb-2 font-medium">
+                                    Last Name
+                                </label>
+                                <div className="w-full p-3 border rounded-md ">
+                                    {lastName || "Not provided"}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Phone Number */}
+                        <div className="text-gray-700 text-sm">
+                            <label className="block mb-2 font-medium">
+                                Phone Number
+                            </label>
+                            <div className="w-full p-3 border rounded-md ">
+                                {phoneNumber || "Not provided"}
+                            </div>
+                        </div>
+
+                        {/* Email Address */}
+                        <div className="text-gray-700 text-sm">
+                            <label className="block mb-2 font-medium">
+                                Email Address
+                            </label>
+                            <div className="w-full p-3 border rounded-md ">
+                                {email || "Not provided"}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {/* Order Summary */}
                 <div className="space-y-4 border p-[2rem] rounded-xl 2xl:ml-[10rem] lg:ml-[10rem] lg:w-[19rem] xl:w-[28rem] 2xl:w-[35rem] mb-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
-                    <h2 className="text-2xl font-semibold text-center mb-5">Order summary</h2>
+                    <h2 className="text-2xl font-semibold text-center mb-5">Order Summary</h2>
                     {cartItems.map((item) => (
                         <div key={item.id} className="flex flex-col -ml-6 border-b pb-4 xl:ml-5">
                             <div className="flex items-center space-x-4">
-                                {/* <Image src={item.image} alt={item.title} width={80} height={80} className="object-contain rounded-md" /> */}
                                 <Image src="/assets/avatar.jpg" alt={item.title} width={80} height={80} className="object-contain rounded-md" />
                                 <div className="flex-1 space-y-2 md:space-y-3">
-                                    <h3 className="font-semibold text-sm text-[#2B2B2B]">{item.title}</h3>
+                                    <h3 className="font-semibold text-sm text-[#2B2B2B] md:w-[15rem] lg:w-[12.5rem] xl:w-[18.5rem]">{item.title}</h3>
                                     <p className="text-xs text-gray-600">Size: {item.size}</p>
                                     <p className="text-xs text-gray-600">SKU: {item.sku}</p>
                                     <div className="flex items-center space-x-2 border border-[#008080] w-[6.5rem] rounded-md px-2">
@@ -92,12 +163,12 @@ const CheckOut: React.FC = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="flex flex-col space-y-4 -mt-[4.5rem] ">
-                                    <p className="text-sm font-semibold text-[#2B2B2B] -ml-[2rem]">
+                                <div className="flex flex-col space-y-4 -mt-[4.5rem] md:mt-[4rem] lg:mt-auto ">
+                                    <p className="text-sm font-semibold text-[#2B2B2B] -ml-[2rem] md:-ml-[8rem] lg:-ml-[6rem]">
                                         ${(item.price * item.quantity).toFixed(2)}
                                     </p>
                                     <button
-                                        className="text-xs text-[#666666] hover:text-red-500"
+                                        className="text-xs text-[#666666] hover:text-red-500 md:-ml-[6.5rem] lg:-ml-[4.5rem]"
                                         onClick={() => handleRemoveItem(item.slug, item.size)}
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -126,6 +197,12 @@ const CheckOut: React.FC = () => {
                             </tr>
                         </tbody>
                     </table>
+                    <Button
+                        onClick={handlePlaceOrder}
+                        disabled={loading}
+                    >
+                        {loading ? "Processing..." : "Place Order"}
+                    </Button>
                 </div>
             </div>
         </LayoutWrapper>

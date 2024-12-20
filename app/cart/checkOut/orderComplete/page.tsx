@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const OrderComplete: React.FC = () => {
   const router = useRouter();
@@ -14,11 +16,34 @@ const OrderComplete: React.FC = () => {
   // State for order details
   const [orderCode, setOrderCode] = useState("");
   const [orderDate, setOrderDate] = useState("");
+  const [orderTotal, setOrderTotal] = useState<number>(0);
+  const [paymentStatus, setPaymentStatus] = useState<string>("Pending");
 
   useEffect(() => {
-    // Set dynamic values on the client-side
-    setOrderCode(`#${Math.random().toString(36).substring(2, 10).toUpperCase()}`);
-    setOrderDate(new Date().toLocaleDateString());
+    // Ideally, you would fetch this from the server based on a successful payment
+    const fetchOrderDetails = async () => {
+      try {
+        // Simulate fetching order details (e.g., from API or session)
+        const orderId = localStorage.getItem("orderId"); // Store order ID in localStorage or URL
+        if (!orderId) throw new Error("No order found.");
+
+        const response = await axios.get(`/api/order/${orderId}`); // Your endpoint for fetching order data
+        const order = response.data;
+
+        setOrderCode(order.id);
+        setOrderDate(order.date);
+        setOrderTotal(order.total);
+        setPaymentStatus(order.paymentStatus);
+
+        if (order.paymentStatus !== "Paid") {
+          toast.error("Payment failed or pending. Please try again.");
+        }
+      } catch (error: unknown) {
+        toast.error("Failed to fetch order details.");
+        console.error("Error fetching order details:", error);
+      }
+    };
+    fetchOrderDetails();
   }, []);
 
   const navigateToMoreProducts = () => {
@@ -120,10 +145,13 @@ const OrderComplete: React.FC = () => {
               <span className="font-medium text-[#6C7275]">Date:</span> {orderDate || "Loading..."}
             </p>
             <p>
-              <span className="font-medium text-[#6C7275]">Total:</span> $1,345.00
+              <span className="font-medium text-[#6C7275]">Total:</span> ${orderTotal.toFixed(2) || "Loading..."}
             </p>
             <p>
               <span className="font-medium text-[#6C7275]">Payment method:</span> Credit Card
+            </p>
+            <p>
+              <span className="font-medium text-[#6C7275]">Payment Status:</span> {paymentStatus}
             </p>
           </div>
 

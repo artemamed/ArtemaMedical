@@ -35,7 +35,7 @@ const SigninForm = () => {
     try {
       signinSchema.parse(formData);
 
-      const response = await fetch(`${API_URL}/buyers/buyer-login`, {
+      const response = await fetch(`${API_URL}buyers/buyer-login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

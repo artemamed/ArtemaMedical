@@ -6,6 +6,8 @@ import Input from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { z } from "zod";
+import { setAuth } from "@/redux/features/authSlice";
+import { useDispatch } from "react-redux";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API;
@@ -36,6 +38,7 @@ const SignupForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,12 +47,12 @@ const SignupForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
       signupSchema.parse(formData);
       setLoading(true);
-
-      const response = await fetch(`${API_URL}/buyers/register`, {
+  
+      const response = await fetch(`${API_URL}buyers/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,14 +66,28 @@ const SignupForm = () => {
           password: formData.password,
         }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "An error occurred");
       }
-
+  
+      const data = await response.json();
+  
+      // Dispatch setAuth to update Redux store
+      dispatch(
+        setAuth({
+          email: formData.email,
+          token: data.token, // Use the correct token field
+          avatarUrl: data.avatarUrl || "", // Use the correct avatar field
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phoneNumber: formData.phone,
+        })
+      );
+  
       toast.success("Account created successfully! Please sign in.");
-      router.push("/auth/signin");
+      router.push("/cart/checkOut");
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => toast.error(err.message));
@@ -83,6 +100,7 @@ const SignupForm = () => {
       setLoading(false);
     }
   };
+  
 
 
   return (

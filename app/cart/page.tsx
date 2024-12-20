@@ -29,7 +29,7 @@ const Cart: React.FC = () => {
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const freightCharge = cartItems.length === 1 && cartItems[0].quantity === 1 ? 25 : 75;
+    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 ? 75 : 0);
     const subtotal = total + freightCharge + tax;
 
     const navigateToCheckOut = () => {
@@ -76,7 +76,7 @@ const Cart: React.FC = () => {
                                             key={item.id}
                                             className="border-b border-[#E8ECEF] flex-1 flex-col md:table-row md:gap-0 gap-4"
                                         >
-                                            <td className="p-3 flex flex-col md:flex-row items-center gap-4">
+                                            <td className="py-3 md:p-3  flex flex-col md:flex-row items-center gap-4">
                                                 <Image
                                                     width={80}
                                                     height={80}
@@ -84,8 +84,9 @@ const Cart: React.FC = () => {
                                                     alt={item.title}
                                                     className="rounded-xl object-contain"
                                                 />
-                                                <div className="md:space-y-2 text-center md:text-left">
-                                                    <h2 className="text-sm font-semibold text-[#2B2B2B]">
+
+                                                <div className="space-y-2 text-center md:text-left">
+                                                    <h2 className="absolute md:relative w-auto -mt-[5rem] md:-mt-0 md:ml-0 ml-[7rem] text-sm font-semibold text-[#2B2B2B]">
                                                         {item.title}
                                                     </h2>
                                                     <h2 className="text-xs text-[#666666]">
@@ -95,7 +96,7 @@ const Cart: React.FC = () => {
                                                         sku: {item.sku}
                                                     </h2>
                                                     <button
-                                                        className="flex items-center justify-center text-xs text-red-500 hover:underline"
+                                                        className="flex items-center mx-auto md:mx-0 justify-center text-xs text-red-500 hover:underline"
                                                         onClick={() => handleRemoveItem(item.slug, item.size)}
                                                     >
                                                         <Trash2 className="h-4 w-4 mr-1" />
@@ -103,8 +104,8 @@ const Cart: React.FC = () => {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="text-center">
-                                                <div className="flex items-center justify-center space-x-2 border w-[6rem] border-[#008080] rounded-md mx-auto">
+                                            <td className="text-center ">
+                                                <div className="flex items-center justify-center space-x-2 border mt-[2rem] xl:-mt-[0.75rem] md:-mt-[2rem] w-[6rem] border-[#008080] rounded-md mx-auto">
                                                     <button
                                                         className="px-2 py-1 text-[#008080]"
                                                         onClick={() =>
@@ -125,8 +126,8 @@ const Cart: React.FC = () => {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="hidden md:block text-center md:absolute md:mt-[2.5rem] md:ml-[2rem]">${item.price.toFixed(2)}</td>
-                                            <td className="absolute mt-[8rem] -ml-[7rem] md:relative text-center">
+                                            <td className="hidden md:block text-center md:absolute md:mt-[2.5rem] md:ml-[0.5rem]">${item.price.toFixed(2)}</td>
+                                            <td className="absolute mt-[9.5rem] md:mt-[2.5rem] md:ml-[5.5rem] -ml-[8rem] lg:mt-[2.5rem] text-center">
                                                 ${(item.price * item.quantity).toFixed(2)}
                                             </td>
                                         </tr>

@@ -14,12 +14,11 @@ const initialState: AuthState = {
   email: null,
   token: null,
   isAuthenticated: false,
-  avatarUrl: null,
-  firstName: null,
-  lastName: null,
-  phoneNumber: null,
+  avatarUrl: null,  // Changed to null for consistency
+  firstName: null,  // Changed to null for consistency
+  lastName: null,   // Changed to null for consistency
+  phoneNumber: null, // Changed to null for consistency
 };
-
 
 const authSlice = createSlice({
   name: "auth",
@@ -36,13 +35,14 @@ const authSlice = createSlice({
         phoneNumber: string;
       }>
     ) {
-      state.email = action.payload.email;
-      state.token = action.payload.token;
+      const { email, token, avatarUrl, firstName, lastName, phoneNumber } = action.payload;
+      state.email = email;
+      state.token = token;
       state.isAuthenticated = true;
-      state.avatarUrl = action.payload.avatarUrl;
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
-      state.phoneNumber = action.payload.phoneNumber;
+      state.avatarUrl = avatarUrl;
+      state.firstName = firstName;
+      state.lastName = lastName;
+      state.phoneNumber = phoneNumber;
     },
     clearAuth(state: AuthState) {
       state.email = null;

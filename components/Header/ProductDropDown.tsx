@@ -43,7 +43,8 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
 
     return () => window.removeEventListener("resize", updateVisibleItems);
   }, [queryClient]);
-  const { data: menuData, error, isLoading, isError } = useQuery({
+
+  const { data: menuData } = useQuery({
     queryKey: ["menuData"],
     queryFn: fetchMenuData,
     staleTime: 0,
@@ -70,28 +71,6 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
     return null;
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-teal-500"></div>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex flex-col items-center text-red-500">
-        <p>{(error as Error).message}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div>
       <DropdownMenu>
@@ -104,7 +83,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
-          {menuData.slice(0, visibleItems).map((wrapper: { category: { name: string; slug: string; subCategories?: { name: string; slug: string }[] } }, index: number) => {
+          {menuData?.slice(0, visibleItems).map((wrapper: { category: { name: string; slug: string; subCategories?: { name: string; slug: string }[] } }, index: number) => {
             const { category } = wrapper;
             return (
               <div key={index} className="lg:space-y-1">
