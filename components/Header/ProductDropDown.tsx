@@ -62,7 +62,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
 
   const handleCategoryClick = useCallback(
     (subcategorySlug: string) => {
-      router.push(`/subcategory/${subcategorySlug}`);
+      router.push(`/sub-category/${subcategorySlug}`);
     },
     [router]
   );

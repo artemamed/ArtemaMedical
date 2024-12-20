@@ -56,7 +56,7 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                             const imageUrl = product.attributes[0]?.image;
                             const fullImageUrl = imageUrl?.startsWith('http') ? imageUrl : `https://medinven.api.artemamed.com${imageUrl}`;
                             return (
-                                <Link href={`/singleproduct/${product.slug}`} key={product.slug}>
+                                <Link href={`/single-product/${product.slug}`} key={product.slug}>
                                     <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-[300px] md:h-[400px] lg:h-auto"> {/* Fixed height */}
                                         <div className="relative w-full h-0 pb-[50%] md:pb-[100%]"> {/* Aspect ratio container */}
                                             <Image

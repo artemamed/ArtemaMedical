@@ -65,7 +65,7 @@ const SearchPage: React.FC = () => {
                 ? imageUrl
                 : `https://medinven.api.artemamed.com${imageUrl}`;
               return (
-                <Link href={`/singleproduct/${product.slug}`} key={product.slug}>
+                <Link href={`/single-product/${product.slug}`} key={product.slug}>
                   <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-[300px] md:h-[330px] lg:h-[390px] xl:h-[470px] ">
                     {/* Fixed height */}
                     <div className="relative w-full h-0 pb-[60%] md:pb-[100%]">
