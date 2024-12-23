@@ -29,7 +29,7 @@ const Cart: React.FC = () => {
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 || cartItems[0].quantity > 1) ? 75 : 0;
+    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 ? 75 : 0);
     const subtotal = total + freightCharge + tax;
 
     const navigateToCheckOut = () => {

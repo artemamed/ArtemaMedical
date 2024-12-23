@@ -7,6 +7,8 @@ import Sustainability from './Sustainability';
 import WhyChooseUs from './WhyChooseUs';
 import ReliableInstrumnet from './ReliableInstrument';
 import TrustedUser from './TrustedUser';
+import BlogSection from './BlogSection';
+import TrustedStandard from './TrustedStandard';
 // import BlogSection from './BlogSection';
 
 export default function MainPageData() {
@@ -16,14 +18,14 @@ export default function MainPageData() {
                 <HeroSection />
             </header>
             <MedicalEquipment />
-            {/* <TrustedStandard /> */}
+            <TrustedStandard />
             <Sustainability />
             <div className='pt-[6rem]'>
                 <WhyChooseUs />
             </div>
             <ReliableInstrumnet />
             <TrustedUser />
-            {/* <BlogSection /> */}
+            <BlogSection />
         </>
     );
 }

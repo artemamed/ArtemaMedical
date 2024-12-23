@@ -32,6 +32,7 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.460.0",
     "next-sanity": "^9.8.21",
+    "nodemailer": "^6.9.16",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.1",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@types/lodash": "^4.17.13",
     "@types/node": "^20.17.9",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^18.3.13",
     "@types/react-dom": "^18",
     "@types/react-select-country-list": "^2.2.3",

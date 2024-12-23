@@ -47,21 +47,31 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex lg:space-x-[2rem] xl:space-x-[4rem] 2xl:space-x-[6rem] bg-[#F7F7F7] pl-8 p-3 pr-8 rounded-2xl">
-          <Link href="/" className="text-teal-700 font-medium hover:text-[#008080]">
+          <Link
+            href="/"
+            className={` ${pathname === '/' ? 'text-[#008080]' : ''}`}
+          >
             Home
           </Link>
-          <Link href="/about" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
+          <Link
+            href="/about"
+            className={`${pathname === '/about' ? 'text-[#008080]' : ''}`}
+          >
             About Us
           </Link>
-          <div>
+          <div className={`${pathname === '/category' ? 'text-[#008080]' : ''}`}>
             <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
           </div>
-          <Link href="/certification" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
+          <Link
+            href="/certification"
+            className={`${pathname === '/certification' ? 'text-[#008080]' : ''}`}
+          >
             Certification
           </Link>
-          <div>
+          <div className={` ${pathname === '/ifu' ? 'text-[#008080]' : ''}`}>
             <Support />
           </div>
+
         </div>
 
         {/* Icons & Contact Button */}
@@ -137,7 +147,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-[#F7F7F7] shadow-md rounded-2xl z-50">
+        <div className="lg:hidden fixed top-20 left-0 w-full bg-[#F7F7F7] shadow-md rounded-2xl z-50">
           <div className="flex flex-col space-y-1 py-5 px-10 text-[#666666]">
             <Link href="/" className="block px-4 py-2 hover:text-[#008080] hover:bg-gray-100">
               Home
@@ -160,6 +170,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
     </LayoutWrapper>
   );
 }

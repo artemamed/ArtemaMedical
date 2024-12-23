@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -102,12 +102,15 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
                     {subCategory.name}
                   </DropdownMenuItem>
                 ))}
-                <Link
-                  href={`/category/${category.slug}`}
-                  className="text-[#008080] text-sm lg:font-medium underline"
-                >
-                  View All
-                </Link>
+                {/* <DropdownMenuItem
+                  className="text-[#666666] cursor-pointer text-sm lg:text-base focus:bg-[#F7F7F7] focus:text-[#008080]">
+                  <Link
+                    href={`/category/${category.slug}`}
+                    className="text-[#008080] text-sm lg:font-medium underline"
+                  >
+                    View All
+                  </Link>
+                </DropdownMenuItem> */}
               </div>
             );
           })}
