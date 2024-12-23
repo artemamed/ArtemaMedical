@@ -53,9 +53,9 @@ export default function Navbar() {
           <Link href="/about" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
             About Us
           </Link>
-          {/* <div>
+          <div>
             <ProductDropDown closeMenu={() => setIsMenuOpen(false)} />
-          </div> */}
+          </div>
           <Link href="/certification" className="text-[#2B2B2B] hover:text-[#008080] font-medium">
             Certification
           </Link>

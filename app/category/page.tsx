@@ -51,7 +51,7 @@ const PrecisionDriven = () => {
             src={stethoscopeImage}
             alt="Stethoscope"
             fill
-            className="hidden md:block object-contain md:ml-[2.5rem] lg:ml-[6rem] xl:ml-[6.5rem] 2xl:ml-[20rem]"
+            className="hidden md:block object-contain md:ml-[2.5rem] lg:ml-[1rem] "
             priority
           />
           <Image

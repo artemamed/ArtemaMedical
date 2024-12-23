@@ -14,7 +14,7 @@ const GuidelineCard: React.FC<GuidelineCardProps> = ({
   description,
 }) => {
   return (
-    <div className="bg-white shadow-xl rounded-xl p-6 space-y-4 flex flex-col min-h-[250px] sm:min-h-[300px] mb-5">
+    <div className="bg-white shadow-md rounded-xl p-6 space-y-4 flex flex-col min-h-[250px] sm:min-h-[300px] mb-5">
       <div className="text-[#666666] text-sm flex ml-auto justify-end -mb-3">
         <span className="mr-1">
           <ScrollText className="h-4 w-4" />

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import React from 'react'
 import image from "@/public/assets/faqs.png"
 import { useState } from 'react';
+import Link from 'next/link';
 
 const faqs = [
   {
@@ -95,15 +96,17 @@ const Faqs = () => {
           </div>
 
           {/* Content Section */}
-          <div className="flex-1 text-center md:text-left md:ml-8">
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold text-teal-900">
+          <div className="flex-1 text-center md:text-left md:ml-[4rem]">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl font-semibold text-teal-900">
               Still have a question?
             </h1>
             <p className="mt-2 text-gray-600 text-sm sm:text-base lg:max-w-lg">
               If you didn&apos;t find the answer you were looking for, feel free to reach out to our support team. We&apos;re here to help!
             </p>
             <Button className="mt-4 px-4 py-2 text-sm sm:text-base md:text-lg">
-              Contact Us
+              <Link href="/contact" className="text-white">
+                Contact Us
+              </Link>
             </Button>
           </div>
         </div>

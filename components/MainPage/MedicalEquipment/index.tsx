@@ -1,4 +1,7 @@
+
+
 import React from "react";
+import Link from "next/link";
 import ProductSlider from "./ProductSlider";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 
@@ -7,7 +10,7 @@ const MedicalEquipment: React.FC = () => {
     <LayoutWrapper>
       <div className="mb-8 sm:mb-12">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 sm:mb-6 leading-tight">
-          Explore Our Range of Medical Equipment
+        Find the Perfect Surgical Equipment for Your Needs
         </h2>
 
         <p className="text-[#666666] text-base sm:text-lg max-w-3xl text-justify">
@@ -21,13 +24,11 @@ const MedicalEquipment: React.FC = () => {
               "General",
               "Orthopedic",
               "Scissors",
-              "Dental",
-              "ENT",
+              // "Dental",
+              // "ENT",
               "Cardiovascular",
-              "Cardiovascular",
-              "Cardiovascular",
-              "Gynaecology",
-              "Plastic Surgery",
+              // "Gynaecology",
+              // "Plastic Surgery",
             ].map((category, index) => (
               <button
                 key={index}
@@ -39,13 +40,13 @@ const MedicalEquipment: React.FC = () => {
           </div>
 
           <div className="mt-6 sm:mt-8">
-            <a
-              href="#"
+            <Link
+              href="/category"
               className="inline-flex items-center text-teal-600 hover:text-teal-800 font-medium transition-colors duration-200"
             >
               Discover All
-              <span className="ml-2">&rarr;</span>
-            </a>
+              <span className="ml-2">→</span>
+            </Link>
           </div>
         </div>
       </div>
@@ -56,3 +57,4 @@ const MedicalEquipment: React.FC = () => {
 };
 
 export default MedicalEquipment;
+

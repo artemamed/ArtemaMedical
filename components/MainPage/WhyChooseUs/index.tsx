@@ -14,23 +14,23 @@ const WhyChooseUs = () => {
             icon: (
               <CircleDollarSign className="w-8 md:w-10 xl:w-12 md:h-8 lg:h-10 -mb-2" />
             ),
-            title: "Cost-Effective Excellence",
+            title: "Extensive Experience",
             description:
-              "We prioritize delivering premium-quality medical instruments while ensuring budget-friendly solutions tailored to your needs.",
+              "We have four decades of experience that prove our reliability and commitment.",
           },
           {
             icon: (
               <Microscope className="w-8 md:w-10 xl:w-12 lg:h-10 md:h-8 -mb-2" />
             ),
-            title: "Precision and Innovation",
+            title: "Cost-Effective",
             description:
-              "Our team of biomedical experts continually pushes boundaries to design innovative tools that meet the highest standards.",
+              "We save a considerable amount of money for our customers by providing suitable budget offers.",
           },
           {
             icon: <Leaf className="w-8 md:w-10 xl:w-12 lg:h-10 md:h-8 -mb-2" />,
-            title: "Eco-Friendly Commitment",
+            title: "100% Satisfaction",
             description:
-              "We're passionate about sustainability, integrating green practices into our processes to protect the planet.",
+              "Our dedicated team of scientists and medical professionals is always available to ensure 100 percent customer satisfaction.",
           },
         ].map((item, index) => (
           <div

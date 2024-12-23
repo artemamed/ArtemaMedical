@@ -29,7 +29,7 @@ const Cart: React.FC = () => {
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 ? 75 : 0);
+    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 || cartItems[0].quantity > 1) ? 75 : 0;
     const subtotal = total + freightCharge + tax;
 
     const navigateToCheckOut = () => {
@@ -105,7 +105,7 @@ const Cart: React.FC = () => {
                                                 </div>
                                             </td>
                                             <td className="text-center ">
-                                                <div className="flex items-center justify-center space-x-2 border mt-[2rem] xl:-mt-[0.75rem] md:-mt-[2rem] w-[6rem] border-[#008080] rounded-md mx-auto">
+                                                <div className="flex items-center justify-center space-x-2 border mt-[2rem] xl:-mt-[0.75rem] md:-mt-[0.5rem] w-[6rem] border-[#008080] rounded-md mx-auto">
                                                     <button
                                                         className="px-2 py-1 text-[#008080]"
                                                         onClick={() =>
@@ -126,8 +126,8 @@ const Cart: React.FC = () => {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="hidden md:block text-center md:absolute md:mt-[2.5rem] md:ml-[0.5rem]">${item.price.toFixed(2)}</td>
-                                            <td className="absolute mt-[9.5rem] md:mt-[2.5rem] md:ml-[5.5rem] -ml-[8rem] lg:mt-[2.5rem] text-center">
+                                            <td className="hidden md:block text-center md:absolute md:mt-[2.5rem] md:ml-[2rem]">${item.price.toFixed(2)}</td>
+                                            <td className="absolute mt-[9.5rem] md:mt-[2.5rem] md:ml-[9rem] -ml-[7.5rem] lg:mt-[2.5rem] xl:ml-[11rem] 2xl:ml-[13rem] text-center">
                                                 ${(item.price * item.quantity).toFixed(2)}
                                             </td>
                                         </tr>

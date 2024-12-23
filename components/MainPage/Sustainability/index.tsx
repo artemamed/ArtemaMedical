@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import sustainability from "@/public/images/Sustainability.png";
 import { Button } from "@/components/ui/button";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
+import Link from "next/link";
 
 export default function Sustainability() {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -20,7 +21,7 @@ export default function Sustainability() {
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const fullText = "At Artema Medical, we are driven by a mission to revolutionize the surgical tool industry while promoting eco-friendly practices. Our dedicated team works tirelessly to integrate sustainable solutions into every aspect of our operations, ensuring we leave a positive impact on both healthcare and the environment. Join us in our journey toward a greener future.";
+    const fullText = "Artema Medical is a medical equipment manufacturers. Our medical tools are designed by German-grade steel, that ensuring the strength, durability, and reliability of our instruments. They strive to meet the highest international standards with every instrument they create. We also have a team of skilled medical equipment suppliers who are dedicated to understanding your needs and ensuring that the right surgical instruments are delivered to you.";
 
     const shortText = fullText.slice(0, 145) + "...";
 
@@ -29,7 +30,7 @@ export default function Sustainability() {
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-8">
                 <div className="xl:w-[50rem] 2xl:w-[60rem] md:w-[30rem] lg:w-[38rem]">
                     <h1 className="text-xl sm:text-4xl lg:text-5xl  font-semibold mb-6">
-                        Committed to Sustainability in Healthcare
+                        We work with Reliability and Commitment
                     </h1>
 
                     <div className="relative">
@@ -48,7 +49,9 @@ export default function Sustainability() {
                     </div>
 
                     <Button className="bg-[#008080] text-sm sm:text-base lg:text-lg mt-2 lg:mt-5 text-white  py-3 rounded-lg hover:bg-teal-700 transition">
-                        About Us →
+                        <Link href="/about">
+                            About Us →
+                        </Link>
                     </Button>
                 </div>
 

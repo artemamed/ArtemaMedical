@@ -7,24 +7,31 @@ const TrustedUser = () => {
   const testimonials = [
     {
       stars: 5,
-      text: "Whenever precision and reliability are paramount in medical instruments, my first thought is Artema Medical. Products are topnotch.",
-      name: "Cindy Edrington",
+      text: "I would like to thank Artema Medical for the quality of their surgical instruments. They are not only durable but also ergonomically designed. They help me a lot in performing complex procedures.",
+      name: "Johnson Smith",
       role: "Medical Superintendent at Evercare",
       image: "/images/trusted/test1.png",
     },
     {
       stars: 5,
-      text: "Artema Medical immediately comes to mind for ophthalmic instruments. Their products have always met our expectations.",
-      name: "Jennifer Chura",
+      text: "We have been working with Artema Medical for 10 years. Their medical tools are easy to handle and highly affordable. They ensure quality and reliability at the same time.",
+      name: "Clark Anderson",
       role: "Director OPD at AHD",
       image: "/images/trusted/test1.png",
     },
     {
       stars: 4,
-      text: "Reliable and efficient services every single time. I highly recommend them.",
-      name: "John Doe",
+      text: "Artema Medical is a best medical equipment suppliers for several years. Their tools are safe and highly effective. They have helped significantly in improving the of our services.",
+      name: "Lopez Williams",
       role: "Head of Procurement",
       image: "/images/trusted/test2.png",
+    },
+    {
+      stars: 5,
+      text: "As a senior doctor, I always receive positive feedback from my staff regarding the quality and efficacy of their hospital equipment. Without a doubt, they are raising the standard of healthcare to a great extent.",
+      name: "Mitchell Wright",
+      role: "Director OPD at AHD",
+      image: "/images/trusted/test1.png",
     },
   ];
 

@@ -3,6 +3,7 @@ import React from "react";
 import image from "@/public/images/Vector.svg"
 import { Button } from "@/components/ui/button";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
+import Link from "next/link";
 
 const CardWithStethoscope = () => {
   return (
@@ -23,9 +24,11 @@ const CardWithStethoscope = () => {
             <h1 className="text-2xl md:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-teal-900">
               Reliable Instruments, Exceptional Care!
             </h1>
-            <p className="mt-2 text-gray-600">Connect with us for unmatched quality</p>
+            <p className="mt-2 text-gray-600">Want to know more about us or have any queries? Feel free to contact us.</p>
             <Button className="mt-4">
-              Contact Us
+              <Link href="/contact">
+                Contact Us
+              </Link>
             </Button>
           </div>
         </div>
