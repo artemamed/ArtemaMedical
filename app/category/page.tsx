@@ -56,7 +56,7 @@ const PrecisionDriven = () => {
           src={stethoscopeImage}
           alt="Stethoscope"
           fill
-          className="block md:hidden object-contain -mt-[10rem] ml-[8rem]  "
+          className="block md:hidden object-contain -mt-[10rem] ml-[8.5rem]  "
           priority />
       </motion.div>
     </div><LayoutWrapper className="min-h-screen flex flex-col ">
