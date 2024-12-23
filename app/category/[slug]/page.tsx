@@ -176,7 +176,7 @@ const ProductSubCategory: React.FC = () => {
                 return (
                   <div
                     key={subCategory.slug}
-                    className="rounded-lg p-4 flex flex-col items-center h-auto md:h-[400px] lg:h-[500px]"
+                    className="rounded-lg p-4 flex flex-col h-auto md:h-[400px] lg:h-[500px]"
                     onClick={() => handleCategoryClick(subCategory.slug)}
                   >
                     <Image

@@ -60,13 +60,22 @@ const SearchPage: React.FC = () => {
         <main className="flex-1 pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-8 lg:gap-12">
             {products.map((product) => {
-              const imageUrl = product.attributes[0]?.image;
+              // Function to find the first available image
+              const getImageUrl = () => {
+                const attributeWithImage = product.attributes.find(attr => attr.image);
+                return attributeWithImage?.image || null;
+              };
+
+              const imageUrl = getImageUrl();
               const fullImageUrl = imageUrl?.startsWith('http')
                 ? imageUrl
-                : `https://medinven.api.artemamed.com${imageUrl}`;
+                : imageUrl
+                  ? `https://medinven.api.artemamed.com${imageUrl}`
+                  : null;
+
               return (
                 <Link href={`/product/${product.slug}`} key={product.slug}>
-                  <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-[300px] md:h-[330px] lg:h-[390px] xl:h-[470px] ">
+                  <div className="rounded-lg p-4 flex flex-col bg-white cursor-pointer shadow-md h-[300px] md:h-[330px] lg:h-[390px] xl:h-[470px]">
                     {/* Fixed height */}
                     <div className="relative w-full h-0 pb-[60%] md:pb-[100%]">
                       {/* Aspect ratio container */}
@@ -92,6 +101,7 @@ const SearchPage: React.FC = () => {
                 </Link>
               );
             })}
+
           </div>
         </main>
       </div>

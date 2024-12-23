@@ -18,6 +18,12 @@ const OrderComplete: React.FC = () => {
   const [orderDate, setOrderDate] = useState("");
   const [orderTotal, setOrderTotal] = useState<number>(0);
   const [paymentStatus, setPaymentStatus] = useState<string>("Pending");
+  const getValidImageUrl = (imageUrl: string | null) => {
+    if (!imageUrl) return "/placeholder.png";
+    const baseUrl = "https://medinven.api.artemamed.com";
+    return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+};
+
 
   useEffect(() => {
     // Ideally, you would fetch this from the server based on a successful payment
@@ -121,8 +127,7 @@ const OrderComplete: React.FC = () => {
                   <Image
                     width={100}
                     height={100}
-                    // src={product.image}
-                    src="/assets/avatar.jpg"
+                    src={getValidImageUrl(product.image)}
                     alt={product.title}
                     className="w-16 h-16 md:w-20 md:h-20 object-contain rounded-md"
                   />
@@ -130,8 +135,7 @@ const OrderComplete: React.FC = () => {
                     {product.quantity}
                   </span>
                 </motion.div>
-              ))
-            ) : (
+              ))            ) : (
               <p className="text-gray-500">No items in the cart</p>
             )}
           </div>

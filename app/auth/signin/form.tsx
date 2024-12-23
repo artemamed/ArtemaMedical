@@ -31,37 +31,38 @@ const SigninForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
       signinSchema.parse(formData);
-
+  
       const response = await fetch(`${API_URL}buyers/buyer-login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": API_KEY || "", // Include the API key
+          "x-api-key": API_KEY || "",
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Invalid login credentials");
       }
-
+  
       const data = await response.json();
-       // Dispatch user data along with avatar URL
-       dispatch(
-               setAuth({
-                 email: formData.email,
-                 token: data.token,
-                 avatarUrl: data.avatarUrl,
-                 firstName: formData.firstName,
-                 lastName: formData.lastName,   
-                 phoneNumber: formData.phone,   
-               })
-             );
-
+  
+      // Ensure that the API response includes firstName, lastName, and phoneNumber
+      dispatch(
+        setAuth({
+          email: formData.email,
+          token: data.token,
+          avatarUrl: data.avatarUrl || "",
+          firstName: data.firstName || "", // Use values from the API response
+          lastName: data.lastName || "",
+          phoneNumber: data.phoneNumber || "",
+        })
+      );
+  
       toast.success("Login successful!");
       router.push("/cart");
     } catch (error: unknown) {
@@ -74,6 +75,7 @@ const SigninForm = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">

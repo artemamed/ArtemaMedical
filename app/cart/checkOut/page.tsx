@@ -18,6 +18,12 @@ const CheckOut: React.FC = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+    const getValidImageUrl = (imageUrl: string | null) => {
+        if (!imageUrl) return "/placeholder.png";
+        const baseUrl = "https://medinven.api.artemamed.com";
+        return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+    };
+    
 
     // Handle quantity change
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
@@ -35,7 +41,13 @@ const CheckOut: React.FC = () => {
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 ? 75 : 0);
+    const freightCharge = (() => {
+        if (cartItems.length === 1 && cartItems[0].quantity === 1) {
+            return 25;
+        }
+        const hasMultipleCharges = cartItems.some(item => item.quantity > 1 || cartItems.length > 1);
+        return hasMultipleCharges ? 75 : 0;
+    })();
     const subtotal = total + freightCharge + tax;
 
     // Handle placing order and redirecting for payment
@@ -87,7 +99,7 @@ const CheckOut: React.FC = () => {
     };
 
     return (
-              <LayoutWrapper className="min-h-screen p-4">
+        <LayoutWrapper className="min-h-screen p-4">
             <button className="text-gray-500 mb-4">&lt; Back</button>
             <h1 className="text-3xl md:text-4xl font-bold text-teal-800 text-center mb-5">Check Out</h1>
 
@@ -141,7 +153,7 @@ const CheckOut: React.FC = () => {
                     {cartItems.map((item) => (
                         <div key={item.id} className="flex flex-col -ml-6 border-b pb-4 xl:ml-5">
                             <div className="flex items-center space-x-4">
-                                <Image src="/assets/avatar.jpg" alt={item.title} width={80} height={80} className="object-contain rounded-md" />
+                                <Image src={getValidImageUrl(item.image)} alt={item.title} width={80} height={80} className="object-contain rounded-md w-full h-[5rem]" />
                                 <div className="flex-1 space-y-2 md:space-y-3">
                                     <h3 className="font-semibold text-sm text-[#2B2B2B] md:w-[15rem] lg:w-[12.5rem] xl:w-[18.5rem]">{item.title}</h3>
                                     <p className="text-xs text-gray-600">Size: {item.size}</p>

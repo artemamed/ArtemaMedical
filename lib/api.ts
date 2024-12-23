@@ -31,7 +31,7 @@ export const fetchMenuData = async () => {
 export const getSubCategoriesByCategorySlug = async (
   categorySlug: string,
   page: number = 1,
-  limit: number = 8
+  limit: number = 20
 ) => {
   if (!categorySlug) {
     throw new Error("Category slug is required to fetch subcategories.");

@@ -100,12 +100,10 @@ export default function Navbar() {
               </button>
               {showAvatarMenu && (
                 <div className="absolute right-0 w-48 mt-4 bg-[#F7F7F7] border border-gray-200 rounded-md shadow-lg z-50">
-                  {/* <div className="px-4 py-2 text-gray-700">
-                    <p>{email}</p>
-                  </div> */}
+                 
                   <button
                     onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-teal-500"
+                    className="block fixed w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-teal-500"
                   >
                     Logout
                   </button>

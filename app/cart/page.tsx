@@ -14,6 +14,12 @@ const Cart: React.FC = () => {
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
     const dispatch = useDispatch();
     const router = useRouter();
+    const getValidImageUrl = (imageUrl: string | null) => {
+        if (!imageUrl) return "/placeholder.png";
+        const baseUrl = "https://medinven.api.artemamed.com";
+        return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+    };
+
 
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
         const item = cartItems.find(item => item.slug === slug && item.size === size);
@@ -29,7 +35,14 @@ const Cart: React.FC = () => {
 
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
-    const freightCharge = (cartItems.length === 1 && cartItems[0].quantity === 1) ? 25 : (cartItems.length > 1 ? 75 : 0);
+    const freightCharge = (() => {
+        if (cartItems.length === 1 && cartItems[0].quantity === 1) {
+            return 25;
+        }
+        const hasMultipleCharges = cartItems.some(item => item.quantity > 1 || cartItems.length > 1);
+        return hasMultipleCharges ? 75 : 0;
+    })();
+
     const subtotal = total + freightCharge + tax;
 
     const navigateToCheckOut = () => {
@@ -78,12 +91,13 @@ const Cart: React.FC = () => {
                                         >
                                             <td className="py-3 md:p-3  flex flex-col md:flex-row items-center gap-4">
                                                 <Image
-                                                    width={80}
-                                                    height={80}
-                                                    src="/assets/avatar.jpg"
+                                                    width={30}
+                                                    height={30}
+                                                    src={getValidImageUrl(item.image)}
                                                     alt={item.title}
-                                                    className="rounded-xl object-contain"
+                                                    className="w-auto h-[5rem] rounded-xl object-contain"
                                                 />
+
 
                                                 <div className="space-y-2 text-center md:text-left">
                                                     <h2 className="absolute md:relative w-auto -mt-[5rem] md:-mt-0 md:ml-0 ml-[7rem] text-sm font-semibold text-[#2B2B2B]">

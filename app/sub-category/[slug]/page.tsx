@@ -91,7 +91,7 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                 : `https://medinven.api.artemamed.com${imageUrl}`;
                             return (
                                 <Link href={`/product/${product.slug}`} key={`${product.slug}-${index}`}>
-                                    <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-auto md:h-[500px] xl:h-[600px]">
+                                    <div className="rounded-lg p-4 flex flex-col  bg-white cursor-pointer shadow-md h-auto">
                                         <div className="relative w-full h-0 pb-[50%] md:pb-[100%]">
                                             <Image
                                                 src={fullImageUrl || "/assets/avatar.jpg"}
@@ -101,14 +101,14 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                                 className="absolute top-0 left-0"
                                             />
                                         </div>
-                                        <div className="flex flex-col justify-between mt-4 flex-1">
+                                        <div className="flex flex-col  mt-4 flex-1">
                                             <h3 className="text-xs text-gray-800">{product.name}</h3>
                                             <h3 className="text-base sm:text-lg font-bold text-gray-800">
                                                 {product.title}
                                             </h3>
-                                            <h3 className="text-sm text-[#666666]">
+                                            {/* <h3 className="text-sm text-[#666666]">
                                                 {product.description}
-                                            </h3>
+                                            </h3> */}
                                             <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                                                 ${product.attributes[0]?.price.toFixed(2)}
                                             </h3>
