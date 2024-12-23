@@ -176,7 +176,7 @@ const ProductSubCategory: React.FC = () => {
                 return (
                   <div
                     key={subCategory.slug}
-                    className="rounded-lg p-4 flex flex-col items-center"
+                    className="rounded-lg p-4 flex flex-col items-center h-auto md:h-[400px] lg:h-[500px]"
                     onClick={() => handleCategoryClick(subCategory.slug)}
                   >
                     <Image
@@ -184,7 +184,7 @@ const ProductSubCategory: React.FC = () => {
                       height={300}
                       src={subCategory.image ? fullImageUrl : "/assets/avatar.jpg"} // Default image if no image is provided
                       alt={subCategory.name}
-                      className="w-full h-full object-contain mb-4 border rounded-2xl"
+                      className="w-full object-contain mb-4 border rounded-2xl"
                     />
 
                     <h3 className="text-lg font-semibold text-gray-800">{subCategory.name}</h3>

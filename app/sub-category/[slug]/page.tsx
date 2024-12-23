@@ -1,15 +1,15 @@
 "use client";
 
-import { use } from "react"; // Import React's `use` hook
-import { useQuery } from "@tanstack/react-query";
+import React, { useMemo, useCallback, use } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import Image from "next/image";
 import Link from "next/link";
 import { getProductsBySubCategorySlug } from "@/lib/api";
 import { Product } from "@/lib/types";
 
-const fetchProducts = async (slug: string) => {
-    const response = await getProductsBySubCategorySlug(slug);
+const fetchProducts = async (slug: string, page: number) => {
+    const response = await getProductsBySubCategorySlug(slug, page);
     if (!response.success) {
         throw new Error(response.message || "Failed to fetch products.");
     }
@@ -19,11 +19,49 @@ const fetchProducts = async (slug: string) => {
 const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) => {
     const { slug } = use(params);
 
-    const { data, isLoading, isError, error } = useQuery({
+    const {
+        data: productPages,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isLoading,
+        isError,
+        error,
+    } = useInfiniteQuery({
         queryKey: ["products", slug],
-        queryFn: () => fetchProducts(slug),
+        queryFn: ({ pageParam = 1 }) => fetchProducts(slug, pageParam),
+        getNextPageParam: (lastPage, pages) => {
+            return lastPage.products.length ? pages.length + 1 : undefined;
+        },
         staleTime: 1000 * 60 * 5,
+        initialPageParam: 1,
     });
+
+    const products: Product[] = useMemo(
+        () =>
+            productPages?.pages.flatMap((page) => page.products) || [],
+        [productPages]
+    );
+
+    const subCategoryName: string =
+        productPages?.pages?.[0]?.subCategory?.name || "Unknown SubCategory";
+
+    // Infinite Scroll Handler
+    const handleScroll = useCallback(() => {
+        if (
+            window.innerHeight + document.documentElement.scrollTop >=
+            document.documentElement.offsetHeight - 300
+        ) {
+            if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+            }
+        }
+    }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+    React.useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [handleScroll]);
 
     if (isLoading)
         return (
@@ -38,27 +76,23 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
 
     if (isError) return <div>Error: {(error as Error).message}</div>;
 
-    const products: Product[] = data.products || [];
-    const subCategoryName: string = data.subCategory?.name || "Unknown SubCategory";
-
     return (
         <LayoutWrapper className="lg:py-[3rem]">
             <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold mb-6 text-center mt-[1rem] text-[#004040]">
                 {subCategoryName || "SubCategory"}
             </h1>
-            <div className="text-end -mb-[3rem] lg:-mb-1 mr-[1rem] md:mr-[2rem] text-sm sm:text-base">
-                Showing {products.length} results ...
-            </div>
             <div className="relative flex min-h-screen">
                 <main className="flex-1 pt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-8 lg:gap-12">
-                        {products.map((product) => {
+                        {products.map((product, index) => {
                             const imageUrl = product.attributes[0]?.image;
-                            const fullImageUrl = imageUrl?.startsWith('http') ? imageUrl : `https://medinven.api.artemamed.com${imageUrl}`;
+                            const fullImageUrl = imageUrl?.startsWith("http")
+                                ? imageUrl
+                                : `https://medinven.api.artemamed.com${imageUrl}`;
                             return (
-                                <Link href={`/product/${product.slug}`} key={product.slug}>
-                                    <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-[300px] md:h-[400px] lg:h-auto"> {/* Fixed height */}
-                                        <div className="relative w-full h-0 pb-[50%] md:pb-[100%]"> {/* Aspect ratio container */}
+                                <Link href={`/product/${product.slug}`} key={`${product.slug}-${index}`}>
+                                    <div className="rounded-lg p-4 flex flex-col items-center bg-white cursor-pointer shadow-md h-auto md:h-[500px] xl:h-[600px]">
+                                        <div className="relative w-full h-0 pb-[50%] md:pb-[100%]">
                                             <Image
                                                 src={fullImageUrl || "/assets/avatar.jpg"}
                                                 alt={product.name || "Product Image"}
@@ -67,11 +101,14 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                                 className="absolute top-0 left-0"
                                             />
                                         </div>
-                                        <div className="flex flex-col justify-between mt-4 flex-1"> {/* Ensures content is always aligned */}
+                                        <div className="flex flex-col justify-between mt-4 flex-1">
+                                            <h3 className="text-xs text-gray-800">{product.name}</h3>
                                             <h3 className="text-base sm:text-lg font-bold text-gray-800">
-                                                {product.name}
+                                                {product.title}
                                             </h3>
-                                            <h3 className="text-sm text-[#666666]">{product.description}</h3>
+                                            <h3 className="text-sm text-[#666666]">
+                                                {product.description}
+                                            </h3>
                                             <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                                                 ${product.attributes[0]?.price.toFixed(2)}
                                             </h3>
@@ -80,12 +117,15 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                 </Link>
                             );
                         })}
+
                     </div>
+                    {isFetchingNextPage && <div className="text-center mt-4">Loading more...</div>}
+                    {!hasNextPage && (
+                        <div className="text-center text-gray-500 mt-8">No more products.</div>
+                    )}
                 </main>
             </div>
         </LayoutWrapper>
-
-
     );
 };
 export default SubCategoryListing;

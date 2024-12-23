@@ -2,12 +2,10 @@
 import React from 'react';
 import HeroSection from './HeroSection';
 import MedicalEquipment from './MedicalEquipment';
-// import TrustedStandard from './TrustedStandard';
 import Sustainability from './Sustainability';
 import WhyChooseUs from './WhyChooseUs';
 import ReliableInstrumnet from './ReliableInstrument';
 import TrustedUser from './TrustedUser';
-import BlogSection from './BlogSection';
 import TrustedStandard from './TrustedStandard';
 // import BlogSection from './BlogSection';
 
@@ -25,7 +23,7 @@ export default function MainPageData() {
             </div>
             <ReliableInstrumnet />
             <TrustedUser />
-            <BlogSection />
+            {/* <BlogSection /> */}
         </>
     );
 }
