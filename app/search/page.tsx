@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useMemo, useCallback, useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,9 +9,9 @@ import { searchProducts } from "@/lib/api";
 import { Product } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 
-// Function to fetch products based on the search query
-const fetchSearchResults = async (query: string) => {
-  const response = await searchProducts(query);
+// Function to fetch products based on the search query and page number
+const fetchSearchResults = async (query: string, page: number) => {
+  const response = await searchProducts(query, page); // Assuming searchProducts accepts a page number
   if (!response || !response.data) {
     throw new Error("Failed to fetch products.");
   }
@@ -22,13 +22,47 @@ const SearchPage: React.FC = () => {
   const searchParams = useSearchParams(); // Get search params
   const query = searchParams.get("query") || ""; // Get the 'query' param from the URL
 
-  // Use react-query to fetch products based on the query
-  const { data, isLoading, isError, error } = useQuery({
+  // Use react-query to fetch paginated search results
+  const {
+    data: productPages,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error,
+  } = useInfiniteQuery({
     queryKey: ["searchResults", query],
-    queryFn: () => fetchSearchResults(query),
+    queryFn: ({ pageParam = 1 }) => fetchSearchResults(query, pageParam),
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage?.data?.length ? pages.length + 1 : undefined;
+    },
     staleTime: 1000 * 60 * 5, // Cache results for 5 minutes
     enabled: query.length > 0, // Only fetch if query is not empty
+    initialPageParam: 1,
   });
+
+  const products: Product[] = useMemo(
+    () => productPages?.pages.flatMap((page) => page.data) || [],
+    [productPages]
+  );
+
+  // Infinite Scroll Handler
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight - 300
+    ) {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   if (isLoading) {
     return (
@@ -46,21 +80,18 @@ const SearchPage: React.FC = () => {
     return <div>Error: {(error as Error).message}</div>;
   }
 
-  const products: Product[] = data?.data || [];
-
   return (
     <LayoutWrapper className="lg:py-[3rem]">
       <h1 className="text-2xl md:text-3xl lg:text-5xl font-semibold mb-6 text-center mt-[1rem] text-[#004040]">
         Search Results for: &quot;{query}&quot;
       </h1>
-      <div className="text-end -mb-[3rem] lg:-mb-1 mr-[1rem] md:mr-[2rem] text-sm sm:text-base">
+      {/* <div className="text-end -mb-[3rem] lg:-mb-1 mr-[1rem] md:mr-[2rem] text-sm sm:text-base">
         Showing {products.length} results ...
-      </div>
+      </div> */}
       <div className="relative flex min-h-screen">
         <main className="flex-1 pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-8 lg:gap-12">
             {products.map((product) => {
-              // Function to find the first available image
               const getImageUrl = () => {
                 const attributeWithImage = product.attributes.find(attr => attr.image);
                 return attributeWithImage?.image || null;
@@ -74,11 +105,9 @@ const SearchPage: React.FC = () => {
                   : null;
 
               return (
-                <Link href={`/product/${product.slug}`} key={product.slug}>
-                  <div className="rounded-lg p-4 flex flex-col bg-white cursor-pointer shadow-md h-[300px] md:h-[330px] lg:h-[390px] xl:h-[470px]">
-                    {/* Fixed height */}
+                <Link href={`/product/${product.slug}`} key={`${product.slug}-${product.id}`}>
+                  <div className="rounded-lg p-4 flex flex-col bg-white  cursor-pointer shadow-md h-auto">
                     <div className="relative w-full h-0 pb-[60%] md:pb-[100%]">
-                      {/* Aspect ratio container */}
                       <Image
                         src={fullImageUrl || "/assets/avatar.jpg"}
                         alt={product.name || "Product Image"}
@@ -88,9 +117,9 @@ const SearchPage: React.FC = () => {
                       />
                     </div>
                     <div className="flex flex-col justify-between mt-4 flex-1">
-                      {/* Ensures content is always aligned */}
+                      <h3 className="text-xs text-gray-800">{product.name}</h3>
                       <h3 className="text-base sm:text-lg font-bold text-gray-800">
-                        {product.name}
+                        {product.title}
                       </h3>
                       <h3 className="text-sm text-[#666666]">{product.description}</h3>
                       <h3 className="text-base sm:text-xl font-semibold text-gray-800">
@@ -103,6 +132,10 @@ const SearchPage: React.FC = () => {
             })}
 
           </div>
+          {isFetchingNextPage && <div className="text-center mt-4">Loading more...</div>}
+          {!hasNextPage && (
+            <div className="text-center text-gray-500 mt-8">No more products.</div>
+          )}
         </main>
       </div>
     </LayoutWrapper>

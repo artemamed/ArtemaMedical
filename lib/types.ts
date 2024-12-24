@@ -6,6 +6,7 @@ export interface Attribute {
   }
   
   export interface Product {
+    id: string | number;
     slug: string;
     name: string;
     title: string;

@@ -15,7 +15,7 @@ const Cart: React.FC = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const getValidImageUrl = (imageUrl: string | null) => {
-        if (!imageUrl) return "/placeholder.png";
+        if (!imageUrl) return "/assets/avatar.jpg";
         const baseUrl = "https://medinven.api.artemamed.com";
         return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
     };

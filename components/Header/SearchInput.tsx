@@ -24,7 +24,7 @@ const SearchInput: React.FC = () => {
     setSearchQuery(query);
     setIsLoading(true);
     try {
-      const results = await searchProducts(query === "" ? null : query); // Handle null or query
+      const results = await searchProducts(query === "" ? null : query, 1); // Handle null or query, and add page number
       setSearchResults(results.data || []);
     } catch (error) {
       console.error("Search failed:", error);
@@ -33,7 +33,6 @@ const SearchInput: React.FC = () => {
       setIsLoading(false);
     }
   };
-
   const handleSearchSelect = (query: string) => {
     router.push(`/search?page=1&query=${query}`); // Navigate to search page with query
     setIsOpen(false);

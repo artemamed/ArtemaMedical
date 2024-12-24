@@ -135,12 +135,12 @@ export const getSimilarProducts = async (
 
 
 // Fetch products based on the search query
-export const searchProducts = async (query: string | null) => {
+export const searchProducts = async (query: string | null, page: number) => {
   const searchQuery = query === null ? "" : query; // Use empty string for null query
 
   try {
     const response = await api.get("products/all-client-products", {
-      params: { limit: 8, page: 1, search: searchQuery },
+      params: { limit: 8, page: page, search: searchQuery },
     });
     return response.data; // Return the data directly
   } catch (error) {
