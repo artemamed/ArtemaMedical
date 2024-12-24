@@ -20,19 +20,19 @@ const Distributors = () => {
                             title: "ISO",
                             image: "/images/trusted/ISO.svg",
                             description:
-                                "This internationally recognized certification reflects our adherence to stringent quality control processes in the design, manufacture, and distribution of medical devices.",
+                                "Our ISO certification demonstrates our commitment to precision and reliability in developing and distributing top-quality surgical instruments.",
                         },
                         {
                             title: "CE Mark Certification",
                             image: "/images/trusted/CE.svg",
                             description:
-                                "Our products bear the CE Mark, signifying compliance with the essential health and safety requirements outlined by the European Union.",
+                                "We proudly display the CE Mark, representing full compliance with the European Union’s key health and environmental standards.",
                         },
                         {
                             title: "FDA Clearance",
                             image: "/images/trusted/FDA.svg",
                             description:
-                                "For our U.S. customers, we are proud to confirm that our products meet the stringent safety and efficacy standards set by the U.S. Food and Drug Administration (FDA).",
+                                "We are pleased to inform our U.S. customers that our products meet the safety and efficacy criteria set by the U.S. Food and Drug Administration (FDA).",
                         },
                     ].map((item, index) => (
                         <div
@@ -69,11 +69,8 @@ const Distributors = () => {
                         Our ISO Certifications
                     </h2>
                     <p className="text-lg text-gray-600 mb-8 max-w-3xl text-justify">
-                        At Artema, we take pride in our commitment to quality,
-                        innovation, and safety. Our ISO certifications are a
-                        testament to our dedication to meeting the highest
-                        international standards, ensuring trust and reliability
-                        for our clients and partners.
+                        Our ISO certifications represent our dedication to the highest levels of quality and consistency
+                        across all aspects of our operations.
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                         {[

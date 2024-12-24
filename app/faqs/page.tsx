@@ -10,29 +10,29 @@ import Link from 'next/link';
 
 const faqs = [
   {
-    question: 'What is Webflow and why is it the best website builder?',
-    answer: 'Vitae congue eu consequat ac felis placerat vestibulum lectus mauris ultrices. Cursus sit amet dictum sit amet justo donec enim diam porttitor lacus luctus accumsan tortor posuere.',
+    question: 'Does Artema provide any shipping services to its customers?',
+    answer: 'Yes, Artema provides shipping services, but only upon the customer’s request with extra charges.',
   },
   {
-    question: 'What is your favorite template from BRIX Templates?',
-    answer: 'Vitae congue eu consequat ac felis placerat vestibulum lectus mauris ultrices. Cursus sit amet dictum sit amet justo donec enim diam porttitor lacus luctus accumsan tortor posuere.',
+    question: 'Is Artema responsible for any damage to the instrument?',
+    answer: 'Yes, but only if the damage occurred within the company during manufacturing or final packaging. Once the instrument is dispatched, the company is not responsible. In both cases, the customer should provide proof of the claim.',
   },
   {
-    question: 'How do you clone a template from the Showcase?',
-    answer: 'Vitae congue eu consequat ac felis placerat vestibulum lectus mauris ultrices. Cursus sit amet dictum sit amet justo donec enim diam porttitor lacus luctus accumsan tortor posuere.',
-  },
-  {
-    question: 'Why is BRIX Templates the best Webflow agency?',
-    answer: 'Vitae congue eu consequat ac felis placerat vestibulum lectus mauris ultrices. Cursus sit amet dictum sit amet justo donec enim diam porttitor lacus luctus accumsan tortor posuere.',
-  },
-  {
-    question: 'When was Webflow officially launched?',
-    answer: 'Vitae congue eu consequat ac felis placerat vestibulum lectus mauris ultrices. Cursus sit amet dictum sit amet justo donec enim diam porttitor lacus luctus accumsan tortor posuere.',
-  },
-  {
-    question: 'How do you integrate Jetboost with Webflow?',
-    answer: 'Vitae congue eu consequat ac felis placerat vestibulum lectus mauris ultrices. Cursus sit amet dictum sit amet justo donec enim diam porttitor lacus luctus accumsan tortor posuere.',
-  },
+    question: 'Does the product price mentioned on the website include tax?',
+    answer: 'Yes, tax is already included in the product description.',
+  }, {
+    question: 'Does Artema accept payments for the products only through a bank?',
+    answer: 'Yes, the company only accepts payments officially made through the bank. Cash payments are not accepted in any condition.',
+  }, {
+    question: 'Does the company take responsibility for the loss in case of any disaster?',
+    answer: 'Yes, the company should take responsibility for any loss, but only if it is the cause of the disaster. Otherwise, for all the social or natural circumstances that are beyond the control of the company, the customer should take responsibility.',
+  }, {
+    question: 'For how many days can the customer apply for a refund?',
+    answer: 'A customer can apply for a refund within three working days, provided it is not against the company policy.',
+  }, {
+    question: 'Does the company provide services other than surgical instruments?',
+    answer: 'Yes, the company also provides hospital furniture and physiotherapy instruments to its customers.',
+  }
 ];
 
 const Faqs = () => {
