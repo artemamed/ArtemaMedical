@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { FileText, ScrollText } from "lucide-react";
@@ -12,6 +14,7 @@ interface GuidelineCardProps {
 const GuidelineCard: React.FC<GuidelineCardProps> = ({
   title,
   description,
+  pdfLink,
 }) => {
   return (
     <div className="bg-white shadow-md rounded-xl p-6 space-y-4 flex flex-col min-h-[250px] sm:min-h-[300px] mb-5">
@@ -24,7 +27,11 @@ const GuidelineCard: React.FC<GuidelineCardProps> = ({
       <h3 className="text-lg lg:text-xl font-semibold text-[#004040]">{title}</h3>
       <p className="text-sm lg:text-base text-[#666666] flex-grow">{description}</p>
       <div className="mt-auto">
-        <Button variant="secondary" className="relative">
+        <Button
+          variant="secondary"
+          className="relative"
+          onClick={() => window.open(pdfLink, "_blank")}
+        >
           View PDF
           <FileText className="h-4 w-4 ml-1" />
         </Button>
@@ -39,37 +46,37 @@ const Ifu = () => {
       title: "Artema Instruments Care & Cleaning Instructions",
       description:
         "Provide essential guidelines for properly maintaining and cleaning your instruments to ensure optimal performance and longevity.",
-      pdfLink: "#",
+      pdfLink: "userGuidelines/userGuidelines1.pdf",
     },
     {
       title: "Recommendations for Decontamination and Sterilization",
       description:
         "Provide essential guidelines for properly maintaining your instruments.",
-      pdfLink: "#",
+      pdfLink: "userGuidelines/userGuidelines2.pdf",
     },
     {
       title: "Medical Spinal Punches",
       description:
         "Provide essential guidelines for properly maintaining and cleaning your instruments to ensure optimal performance and longevity.",
-      pdfLink: "#",
+      pdfLink: "userGuidelines/userGuidelines3.pdf",
     },
     {
       title: "Medical Reusable Instruments with Silicon Handles",
       description:
         "Provide essential guidelines for properly maintaining and cleaning your instruments to ensure optimal performance and longevity.",
-      pdfLink: "#",
+      pdfLink: "userGuidelines/userGuidelines4.pdf",
     },
     {
       title: "Medical Wire Guides With Extension",
       description:
         "Provide essential guidelines for properly maintaining and cleaning your instruments to ensure optimal performance and longevity.",
-      pdfLink: "#",
+      pdfLink: "userGuidelines/userGuidelines5.pdf",
     },
     {
       title: "Surgical Reusable Instruments",
       description:
         "Provide essential guidelines for properly maintaining and cleaning your instruments to ensure optimal performance and longevity.",
-      pdfLink: "#",
+      pdfLink: "userGuidelines/userGuidelines6.pdf",
     },
   ];
 
