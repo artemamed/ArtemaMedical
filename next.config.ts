@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_API_URL: "https://medinven.api.artemamed.com/api/",
     NEXT_PUBLIC_API:
       "e2c7b781fbdd6ff1be05b9b1abc3cba67007505808f6ed8ca901fd61b284414154a6dbcaf361ba0430188358ed9ba6b6",
+    EMAIL_USER: "sales@artemamed.com",
+    EMAIL_PASS: "jjxk ygzq brkg nbxu",
+    EMAIL_HOST: "mail.artemamedical.com",
+    EMAIL_PORT: "465",
+    EMAIL_SECURE: "false",
   },
   images: {
     remotePatterns: [
@@ -33,5 +38,4 @@ const nextConfig: NextConfig = {
     ],
   },
 };
-
 export default nextConfig;
