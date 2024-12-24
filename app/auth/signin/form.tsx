@@ -31,51 +31,67 @@ const SigninForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
     try {
+      // Validate the form data using Zod schema
       signinSchema.parse(formData);
-  
+
+      // Make the API request to login
       const response = await fetch(`${API_URL}buyers/buyer-login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-api-key": API_KEY || "",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
       });
-  
+
+      // Handle non-OK responses
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Invalid login credentials");
       }
-  
-      const data = await response.json();
-  
-      // Ensure that the API response includes firstName, lastName, and phoneNumber
-      dispatch(
-        setAuth({
-          email: formData.email,
-          token: data.token,
-          avatarUrl: data.avatarUrl || "",
-          firstName: data.firstName || "", // Use values from the API response
-          lastName: data.lastName || "",
-          phoneNumber: data.phoneNumber || "",
-        })
-      );
-  
-      toast.success("Login successful!");
-      router.push("/cart");
+
+      // Parse the API response
+      const { data, success, message, statusCode } = await response.json();
+
+      // Ensure success and correct status code
+      if (success && statusCode === 201) {
+        // Dispatch Redux action to set the authenticated user
+        dispatch(
+          setAuth({
+            email: data.email,
+            token: "", // Placeholder for token if not included in the API response
+            avatarUrl: "", // Placeholder for avatar URL if not included in the API response
+            firstName: data.firstname,
+            lastName: data.lastname,
+            phoneNumber: data.number,
+          })
+        );
+
+        // Show a success message and redirect the user
+        toast.success(message || "Login successful!");
+        router.push("/cart/checkOut");
+      } else {
+        throw new Error(message || "An error occurred during login");
+      }
     } catch (error: unknown) {
+      // Show an error message if something goes wrong
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error("An error occurred");
+        toast.error("An unexpected error occurred");
       }
     } finally {
+      // Reset the loading state
       setLoading(false);
     }
   };
-  
+
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
