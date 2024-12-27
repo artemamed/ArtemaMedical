@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 
 type ProductAttribute = {
     size: number;
-    sku: string; 
+    sku: string;
     price: number;
     image: string;
 };
@@ -24,6 +24,10 @@ type Product = {
     title: string;
     description: string;
     attributes: ProductAttribute[];
+    metadata: {
+        title: string;
+        description: string;
+    };
 };
 
 interface SingleProductProps {
@@ -74,7 +78,6 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
     const handleSizeSelection = (sku: string) => {
         setSelectedSize(sku);
         const selectedAttribute = product?.attributes.find((attr) => attr.sku === sku);
-        // If image exists for the selected size, update it, else fallback to the first attribute's image
         setSelectedImage(selectedAttribute?.image || product?.attributes[0]?.image || "/placeholder.png");
     };
 
@@ -131,6 +134,39 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         ? selectedProduct.price * quantity
         : (product?.attributes[0]?.price || 0) * quantity;
 
+    // Update image URL logic
+    const getValidImageUrl = (imageUrl: string | null) => {
+        if (!imageUrl) return "/placeholder.png";
+
+        // Base URL of your API or image source
+        const baseUrl = "https://medinven.api.artemamed.com"; // Update this as necessary
+
+        // Check if the image URL is already a full URL (starts with "http")
+        const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+
+        return fullImageUrl;
+    };
+
+    // Set meta title and description
+    const metaTitle = product?.metadata.title || '';
+    const metaDescription = product?.metadata.description || '';
+
+    // Update the document title and meta description after the data has been loaded
+    useEffect(() => {
+        if (metaTitle && metaDescription) {
+            document.title = metaTitle; // Set the title dynamically
+            const descriptionMetaTag = document.querySelector('meta[name="description"]');
+            if (descriptionMetaTag) {
+                descriptionMetaTag.setAttribute("content", metaDescription);
+            } else {
+                const metaDescriptionElement = document.createElement("meta");
+                metaDescriptionElement.name = "description";
+                metaDescriptionElement.content = metaDescription;
+                document.head.appendChild(metaDescriptionElement);
+            }
+        }
+    }, [metaTitle, metaDescription]);
+
     if (loading) {
         return (
             <LayoutWrapper className="min-h-screen flex items-center justify-center">
@@ -153,20 +189,6 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         );
     }
 
-    // Update image URL logic
-    const getValidImageUrl = (imageUrl: string | null) => {
-        if (!imageUrl) return "/placeholder.png";
-
-        // Base URL of your API or image source
-        const baseUrl = "https://medinven.api.artemamed.com"; // Update this as necessary
-
-        // Check if the image URL is already a full URL (starts with "http")
-        const fullImageUrl = imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
-
-        return fullImageUrl;
-    };
-
-
     return (
         <LayoutWrapper className="min-h-screen flex items-center justify-center p-4 md:p-8 mb-[5rem]">
             <div className="w-full">
@@ -182,7 +204,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                     </div>
 
                     <div className="lg:w-2/3 lg:pl-8">
-                    <h1 className="text-sm font-bold">{product.name}</h1>
+                        <h1 className="text-sm font-bold">{product.name}</h1>
                         <h1 className="text-xl sm:text-xl lg:text-2xl font-bold">{product.title}</h1>
                         <p className="text-gray-500 text-sm lg:text-base mt-2">{product.description}</p>
 
@@ -263,5 +285,4 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
         </LayoutWrapper>
     );
 };
-
 export default SingleProduct;

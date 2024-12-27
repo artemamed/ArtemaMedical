@@ -2,8 +2,8 @@ import ScrollTop from "@/components/Buttons/ScrollTop";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Product Categories | Equipment List | Artema Medical",
-  description: "The product categories page shows the all info about our products. You can view all categories and sub categories of our instruments.",
+  title: "Cookies | Surgical Instruments | Artema Medical",
+  description: "A cookies policy informs users about how cookies are used to collect data while they are interacting with the website.",
 };
 
 export default function RootLayout({
