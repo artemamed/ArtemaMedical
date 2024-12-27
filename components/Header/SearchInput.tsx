@@ -93,7 +93,7 @@ const SearchInput: React.FC = () => {
           />
 
           <div
-            className={`fixed inset-x-0 mt-6 bg-white px-8 sm:px-10 md:px-12 lg:px-20 rounded-2xl shadow-lg z-50 transition-transform duration-500 ease-in-out ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"
+            className={`fixed inset-x-0 mt-6 bg-[#F7F7F7] px-8 sm:px-10 md:px-12 lg:px-20 rounded-2xl shadow-lg z-50 transition-transform duration-500 ease-in-out ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"
               }`}
           >
             <div className="md:p-6 py-6 max-w-4xl mx-auto">
