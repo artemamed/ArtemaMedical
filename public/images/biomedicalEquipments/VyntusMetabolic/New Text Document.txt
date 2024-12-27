@@ -1,0 +1,4 @@
+Vyntus™ CPX Metabolic Cart
+Performing CPET tests can be complex and difficult, especially after peripheral devices are added. Vyntus™ CPX stands out from all other metabolic carts, as many new features now make CPET testing easy to learn and perform.
+
+Vyntus™ CPX has taken the hassle out of CPET testing by integrating hardware and software peripherals, utilizing pre-exercise hardware and software checks, automating flow sensor calibration, and incorporating software that actually helps guide users through performing the best test possible. Test completed? The Vyaire software platform can also assist with data cleanup and assessment.

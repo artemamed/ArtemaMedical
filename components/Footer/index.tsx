@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Our Expertise</h4>
             <ul className="text-gray-300 space-y-2 text-center md:text-left">
               <li><Link href="/category" className="hover:text-green-400 transition duration-300">Surgical Instruments</Link></li>
-              {/* <li><Link href="/biomedical" className="hover:text-green-400 transition duration-300">Biomedical Equipment</Link></li> */}
+              <li><Link href="/biomedical" className="hover:text-green-400 transition duration-300">Biomedical Equipment</Link></li>
               <li><Link href="https://artematech.com/" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition duration-300">Health Tech</Link></li>
             </ul>
           </div>

@@ -1,0 +1,5 @@
+Vyntus™ WALK Mobile Exercise Testing
+
+
+Vyntus™ WALK allows patients to perform an untethered six-minute walk test (6MWT) by wearing wireless sensors that communicate data to a technician-held tablet PC.
+The system is both patient- and technician-friendly and because we know a single sensor does not fit all clinical needs, comes with an array of easy-to-wear sensors. Because standardizing the complete testing process is critical to meaningful data for patient trending, Vyaire has integrated the complete ATS testing standards in the workflow-driven tablet software application. 

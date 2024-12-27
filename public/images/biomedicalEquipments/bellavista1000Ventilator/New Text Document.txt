@@ -1,0 +1,9 @@
+bellavista™ 1000 Ventilator
+
+bellavista™  offers adult through neonatal support with a powerful turbine, highly configurable user interface and lung protective features. 
+This next-generation ventilator combines cutting-edge technology to simplify clinical practice and support daily challenges across 
+care settings. This new ventilator offers efficient ventilation and lung protection that’s focused on:
+
+.Minimizing respiratory distress through advanced synchronization
+.Reduced workload for clinicians through monitoring features like AnimatedLung and VentSummary
+.Versatility with modes of ventilation to support adult through neonatal patients 

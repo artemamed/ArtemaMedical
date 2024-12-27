@@ -1,0 +1,6 @@
+CardioSoft ECG
+
+CardioSoft is a CAM-USB hardware, PC-based 12-Lead ECG system that is the perfect extension of your metabolic cart, providing 
+you with clinical excellence for complete cardiopulmonary exercise testing (CPET).
+The CardioSoft ECG system is a comprehensive system for precise acquisition, evaluation and reporting of your ECG data, 
+but it is also surprisingly easy to use. Everything is on the main testing screen and quickly accessible with a simple mouse click.
