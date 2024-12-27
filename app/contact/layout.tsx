@@ -2,8 +2,8 @@ import ScrollTop from "@/components/Buttons/ScrollTop";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Products| surgical instruments| Wincorn medical",
-  description: "Wincorn Medical is a leading manufacturer in medical equipment fields with a wide range of products like General and orthopedic instruments, ENT instruments, and more.",
+  title: "Contact|Medical equipments| Artema Medical",
+  description: "If you want to buy medical equipments? Artema medical contact page help to solve your query.",
 };
 
 export default function RootLayout({

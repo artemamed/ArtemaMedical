@@ -11,7 +11,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 
-
 const CheckOut: React.FC = () => {
     const { firstName, lastName, phoneNumber, email } = useSelector(
         (state: RootState) => state.auth);
@@ -23,9 +22,7 @@ const CheckOut: React.FC = () => {
         const baseUrl = "https://medinven.api.artemamed.com";
         return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
     };
-    
 
-    // Handle quantity change
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
         const item = cartItems.find(item => item.slug === slug && item.size === size);
         if (!item) return;
@@ -34,7 +31,6 @@ const CheckOut: React.FC = () => {
         dispatch(updateQuantity({ slug, size, quantity: newQuantity }));
     };
 
-    // Handle item removal from cart
     const handleRemoveItem = (slug: string, size: string) => {
         dispatch(removeFromCart({ slug, size }));
     };
@@ -53,12 +49,10 @@ const CheckOut: React.FC = () => {
     // Handle placing order and redirecting for payment
     const handlePlaceOrder = async () => {
         setLoading(true);
-
         try {
-            const orderId = `ORDER_${Date.now()}`; // Generate a unique order ID dynamically
+            const orderId = `ORDER_${Date.now()}`;
             const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + 7); // Expiry set to 7 days from today
-            // const todayDate = new Date().toISOString();
+            expiryDate.setDate(expiryDate.getDate() + 7);
 
             const payload = {
                 apiOperation: "INITIATE_CHECKOUT",
@@ -66,14 +60,13 @@ const CheckOut: React.FC = () => {
                 interaction: {
                     operation: "PURCHASE",
                     merchant: {
-                        name: "ARTEMAMEDICA",
-                        url: "http://localhost:3000/cart/checkOut/orderComplete", // Redirect URL after payment
+                        name: "TESTARTEMA",
+                        url: "http://localhost:3001/cart/checkOut/orderComplete",
                     },
                 },
                 order: {
-                    currency: "USD",
-                    // amount: subtotal.toFixed(2),
-                    amount: 1,
+                    currency: "PKR",
+                    amount: subtotal.toFixed(2),
                     id: orderId,
                     description: "Payment Process",
                 },
@@ -83,20 +76,21 @@ const CheckOut: React.FC = () => {
                 },
             };
 
-            // Sending the payload to the server for payment processing
             const response = await axios.post("/api/payment", payload);
             if (response.data.paymentLink?.url) {
-                window.location.href = response.data.paymentLink.url; // Redirect to the payment gateway URL
+                window.location.href = response.data.paymentLink.url; // Redirect to the payment gateway
             } else {
                 throw new Error("Payment link not found");
             }
         } catch (error) {
             console.error(error);
-            toast.error("An error occurred during payment. Please try again.");
+            toast.error("Payment process failed. Please try again.");
         } finally {
             setLoading(false);
         }
     };
+
+
 
     return (
         <LayoutWrapper className="min-h-screen p-4">
@@ -107,44 +101,28 @@ const CheckOut: React.FC = () => {
                 <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
                     <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
                     <div className="space-y-4">
-                        {/* First Name and Last Name */}
+                        {/* Contact Details */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="text-gray-700 text-sm">
-                                <label className="block mb-2 font-medium">
-                                    First Name
-                                </label>
+                                <label className="block mb-2 font-medium">First Name</label>
                                 <div className="w-full p-3 border rounded-md ">
                                     {firstName || "Not provided"}
                                 </div>
                             </div>
                             <div className="text-gray-700 text-sm">
-                                <label className="block mb-2 font-medium">
-                                    Last Name
-                                </label>
+                                <label className="block mb-2 font-medium">Last Name</label>
                                 <div className="w-full p-3 border rounded-md ">
                                     {lastName || "Not provided"}
                                 </div>
                             </div>
                         </div>
-
-                        {/* Phone Number */}
                         <div className="text-gray-700 text-sm">
-                            <label className="block mb-2 font-medium">
-                                Phone Number
-                            </label>
-                            <div className="w-full p-3 border rounded-md ">
-                                {phoneNumber || "Not provided"}
-                            </div>
+                            <label className="block mb-2 font-medium">Phone Number</label>
+                            <div className="w-full p-3 border rounded-md ">{phoneNumber || "Not provided"}</div>
                         </div>
-
-                        {/* Email Address */}
                         <div className="text-gray-700 text-sm">
-                            <label className="block mb-2 font-medium">
-                                Email Address
-                            </label>
-                            <div className="w-full p-3 border rounded-md ">
-                                {email || "Not provided"}
-                            </div>
+                            <label className="block mb-2 font-medium">Email Address</label>
+                            <div className="w-full p-3 border rounded-md ">{email || "Not provided"}</div>
                         </div>
                     </div>
                 </div>

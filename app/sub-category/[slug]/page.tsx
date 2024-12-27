@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useCallback, use } from "react";
+import React, { useMemo, useCallback, useEffect, use } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import Image from "next/image";
@@ -45,6 +45,20 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
 
     const subCategoryName: string =
         productPages?.pages?.[0]?.subCategory?.name || "Unknown SubCategory";
+
+    const subCategoryMetadata = productPages?.pages?.[0]?.subCategory?.metadata?.[0];
+
+    // Set Meta title and description based on API data
+    useEffect(() => {
+        if (subCategoryMetadata) {
+            // Set the meta title and description dynamically
+            document.title = subCategoryMetadata.title || "Default Title";
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+                metaDescription.setAttribute("content", subCategoryMetadata.description || "Default description");
+            }
+        }
+    }, [subCategoryMetadata]);
 
     // Infinite Scroll Handler
     const handleScroll = useCallback(() => {

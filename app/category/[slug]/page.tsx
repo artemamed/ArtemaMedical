@@ -1,6 +1,6 @@
-"use client";
+"use client"; // Add this to ensure hooks work properly
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Settings2, X } from "lucide-react";
@@ -10,7 +10,6 @@ import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import { getCategories, getSubCategoriesByCategorySlug } from "@/lib/api";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 
-// Types
 interface SubCategory {
   categorySlug: string;
   slug: string;
@@ -19,14 +18,6 @@ interface SubCategory {
   image: string | null;
 }
 
-interface Category {
-
-  subCategories: SubCategory[];
-  slug: string;
-  name: string;
-  icon: string;
-
-}
 const ProductSubCategory: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showButton, setShowButton] = useState(true);
@@ -35,13 +26,11 @@ const ProductSubCategory: React.FC = () => {
   const pathname = usePathname();
   const categorySlug = pathname?.split("/").pop();
 
-  // React Query: Fetch Categories
   const { data: categories, isLoading: loadingCategories, error: categoryError } = useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
   });
 
-  // React Query: Fetch Subcategories with Infinite Scrolling
   const {
     data: subCategoriesPages,
     fetchNextPage,
@@ -60,10 +49,9 @@ const ProductSubCategory: React.FC = () => {
       return lastPage?.subCategories?.length ? pages.length + 1 : undefined;
     },
     initialPageParam: 1,
-    enabled: !!categorySlug, // Only fetch if `categorySlug` is available
+    enabled: !!categorySlug,
   });
 
-  // Flatten Subcategories
   const subCategories: SubCategory[] = useMemo(() => {
     return (
       subCategoriesPages?.pages?.flatMap((page: { subCategories?: SubCategory[] }) => page?.subCategories || []) || []
@@ -71,6 +59,20 @@ const ProductSubCategory: React.FC = () => {
   }, [subCategoriesPages]);
 
   const categoryName = subCategoriesPages?.pages?.[0]?.category?.name || "Subcategories";
+
+  // Set Meta title and description based on API data
+  useEffect(() => {
+    if (subCategoriesPages?.pages?.[0]?.category?.userCategories?.[1]?.metadata) { // Use the second entry for metadata
+      const metadata = subCategoriesPages.pages[0]?.category?.userCategories[1]?.metadata;
+      if (metadata) {
+        document.title = metadata.title || "Default Title";
+        const metaDescription = document.querySelector('meta[name="description"]');
+        if (metaDescription) {
+          metaDescription.setAttribute("content", metadata.description || "Default description");
+        }
+      }
+    }
+  }, [subCategoriesPages]);
 
   // Handle Sidebar
   const handleCategoryClick = useCallback(
@@ -81,8 +83,7 @@ const ProductSubCategory: React.FC = () => {
     [router]
   );
 
-  // Show/Hide Button on Scroll
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       setShowButton(window.scrollY <= 10);
     };
@@ -104,7 +105,7 @@ const ProductSubCategory: React.FC = () => {
           </Button>
         </div>
         <ul className="space-y-4">
-          {categories?.map((category: Category) => (
+          {categories?.map((category: { slug: string; icon: string; name: string; subCategories?: { slug: string; name: string }[] }) => (
             <li key={category.slug}>
               <details className="cursor-pointer">
                 <summary className="hover:text-teal-600 text-lg font-medium text-[#004040] flex items-center gap-2">
@@ -112,7 +113,7 @@ const ProductSubCategory: React.FC = () => {
                   {category.name}
                 </summary>
                 <ul className="ml-8 mt-2 space-y-1 text-sm text-gray-600">
-                  {category.subCategories?.map((subcategory: SubCategory) => (
+                  {category.subCategories?.map((subcategory) => (
                     <li
                       key={subcategory.slug}
                       className="hover:text-teal-600 cursor-pointer"
@@ -124,8 +125,7 @@ const ProductSubCategory: React.FC = () => {
                 </ul>
               </details>
             </li>
-          ))}
-        </ul>
+          ))}        </ul>
       </aside>
     ),
     [categories, handleCategoryClick, showSidebar]
@@ -171,8 +171,6 @@ const ProductSubCategory: React.FC = () => {
                   ? subCategory.image
                   : `https://medinven.api.artemamed.com${subCategory.image}`;
 
-                console.log(fullImageUrl);
-
                 return (
                   <div
                     key={subCategory.slug}
@@ -212,4 +210,6 @@ const ProductSubCategory: React.FC = () => {
       </div>
     </LayoutWrapper>
   );
-}; export default ProductSubCategory;
+};
+
+export default ProductSubCategory;

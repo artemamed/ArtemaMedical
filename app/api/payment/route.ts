@@ -27,19 +27,20 @@ export async function POST(request: Request) {
     try {
         const payload: PaymentPayload = await request.json();
         const response = await axios.post(
-            "https://bankalfalah.gateway.mastercard.com/api/rest/version/84/merchant/ARTEMAMEDICA/session",
+            "https://test-bankalfalah.gateway.mastercard.com/api/rest/version/84/merchant/TESTARTEMA/session",
             payload,
             {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Basic ${Buffer.from(
-                        `merchant.ARTEMAMEDICA:5d245bae704ba8a34ee40ad35beac255`
+                        `merchant.TESTARTEMA:25e46eaf387cb8c8a6af46b1cf16f9f3`
                     ).toString("base64")}`,
                 },
             }
         );
 
-        return NextResponse.json(response.data);
+        // Pass the payment link URL back to the client
+        return NextResponse.json({ paymentLink: response.data.paymentLink });
     } catch (error) {
         return NextResponse.json(
             { error: axios.isAxiosError(error) ? error.response?.data : "Unknown error" },
