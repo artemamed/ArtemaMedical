@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     SANITY_API_READ_TOKEN: "<paste your token here>",
     NEXT_PUBLIC_API_URL: "https://medinven.api.artemamed.com/api/",
     NEXT_PUBLIC_API:
-      "e2c7b781fbdd6ff1be05b9b1abc3cba67007505808f6ed8ca901fd61b284414154a6dbcaf361ba0430188358ed9ba6b6",
+      "4ba26604e36749f2da838e4178c985f9bfe3bc964bc1066ac3487f8bc63903669bc97de9d78fbc66b359f46b0f9b7d561dd6d11661ce93c9ada353ed7a3c1281",
     EMAIL_USER: "sales@artemamed.com",
     EMAIL_PASS: "jjxk ygzq brkg nbxu",
     EMAIL_HOST: "mail.artemamedical.com",

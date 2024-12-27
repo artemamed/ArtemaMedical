@@ -1,4 +1,4 @@
-"use client"; // Add this to ensure hooks work properly
+"use client";
 
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
