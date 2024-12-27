@@ -62,17 +62,24 @@ const ProductSubCategory: React.FC = () => {
 
   // Set Meta title and description based on API data
   useEffect(() => {
-    if (subCategoriesPages?.pages?.[0]?.category?.userCategories?.[1]?.metadata) { // Use the second entry for metadata
-      const metadata = subCategoriesPages.pages[0]?.category?.userCategories[1]?.metadata;
+    if (subCategoriesPages?.pages?.[0]?.category?.userCategories?.[0]?.metadata) {
+      const metadata = subCategoriesPages.pages[0].category.userCategories[0].metadata;
       if (metadata) {
         document.title = metadata.title || "Default Title";
         const metaDescription = document.querySelector('meta[name="description"]');
         if (metaDescription) {
           metaDescription.setAttribute("content", metadata.description || "Default description");
+        } else {
+          // If the meta description tag doesn't exist, create one
+          const metaTag = document.createElement("meta");
+          metaTag.name = "description";
+          metaTag.content = metadata.description || "Default description";
+          document.head.appendChild(metaTag);
         }
       }
     }
   }, [subCategoriesPages]);
+
 
   // Handle Sidebar
   const handleCategoryClick = useCallback(
