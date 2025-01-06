@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
   env: {
-    NEXT_PUBLIC_SANITY_PROJECT_ID: "n3xjfs90",
+    NEXT_PUBLIC_SANITY_PROJECT_ID: "r78z3nyl",
     NEXT_PUBLIC_SANITY_DATASET: "production",
     NEXT_PUBLIC_SANITY_API_VERSION: "2024-01-01",
     NEXT_PUBLIC_SANITY_STUDIO_URL: "http://localhost:3333",
