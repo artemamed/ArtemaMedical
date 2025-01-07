@@ -60,12 +60,12 @@ const CheckOut: React.FC = () => {
                 interaction: {
                     operation: "PURCHASE",
                     merchant: {
-                        name: "TESTARTEMA",
+                        name: "ARTEMAMEDICA",
                         url: "http://localhost:3001/cart/checkOut/orderComplete",
                     },
                 },
                 order: {
-                    currency: "PKR",
+                    currency: "USD",
                     amount: subtotal.toFixed(2),
                     id: orderId,
                     description: "Payment Process",

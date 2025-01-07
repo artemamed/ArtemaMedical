@@ -27,13 +27,13 @@ export async function POST(request: Request) {
     try {
         const payload: PaymentPayload = await request.json();
         const response = await axios.post(
-            "https://test-bankalfalah.gateway.mastercard.com/api/rest/version/84/merchant/TESTARTEMA/session",
+            "https://bankalfalah.gateway.mastercard.com/api/rest/version/84/merchant/ARTEMAMEDICA/session",
             payload,
             {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Basic ${Buffer.from(
-                        `merchant.TESTARTEMA:25e46eaf387cb8c8a6af46b1cf16f9f3`
+                        `merchant.ARTEMAMEDICA:5d245bae704ba8a34ee40ad35beac255`
                     ).toString("base64")}`,
                 },
             }
