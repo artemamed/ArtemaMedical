@@ -43,6 +43,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [showAllSizes, setShowAllSizes] = useState(false);
+
+    const toggleShowAllSizes = () => {
+        setShowAllSizes(!showAllSizes);
+    };
 
     // Fetch slug from params
     useEffect(() => {
@@ -61,8 +66,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                 try {
                     const fetchedProduct = await getProductBySlug(slug);
                     setProduct(fetchedProduct);
-                    // Set initial image (fallback to placeholder if none)
-                    setSelectedImage(fetchedProduct.attributes[0]?.image || "/placeholder.png");
+
+                    // Set initial image: Find the first attribute with an image
+                    const firstAttributeWithImage = fetchedProduct.attributes.find((attr: ProductAttribute) => attr.image);
+                    setSelectedImage(firstAttributeWithImage?.image || "/placeholder.png");
+
                 } catch (error) {
                     console.error("Error fetching product:", error);
                 } finally {
@@ -78,8 +86,13 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
     const handleSizeSelection = (sku: string) => {
         setSelectedSize(sku);
         const selectedAttribute = product?.attributes.find((attr) => attr.sku === sku);
-        setSelectedImage(selectedAttribute?.image || product?.attributes[0]?.image || "/placeholder.png");
+
+        // If the selected SKU doesn't have an image, find another SKU with an image
+        const image = selectedAttribute?.image || product?.attributes.find((attr) => attr.image)?.image || "/placeholder.png";
+        setSelectedImage(image);
     };
+
+
 
     const handleAddToCart = () => {
         if (isAddingToCart) return;
@@ -213,7 +226,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                 <Ruler className="mr-2 h-5 w-5" /> Size
                             </p>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                                {product.attributes.map((attr) => (
+                                {(showAllSizes ? product.attributes : product.attributes.slice(0, 4)).map((attr) => (
                                     <button
                                         key={attr.sku}
                                         onClick={() => handleSizeSelection(attr.sku)}
@@ -226,6 +239,14 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                                     </button>
                                 ))}
                             </div>
+                            {product.attributes.length > 4 && (
+                                <button
+                                    onClick={toggleShowAllSizes}
+                                    className="text-[#008080] underline mt-4"
+                                >
+                                    {showAllSizes ? "Show Less" : "Show More Sizes & SKUs"}
+                                </button>
+                            )}
                         </div>
 
                         <div className="text-xl 2xl:text-3xl font-bold mt-4">${totalPrice.toFixed(2)}</div>

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import { Mail, Phone, Youtube } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
+import { Mail, Phone } from 'lucide-react';
 import image_logo from '@/public/images/Footer/footer_logo.png';
 import image1 from '@/public/images/Footer/footer1.png';
 import image2 from '@/public/images/Footer/footer2.png';
@@ -15,13 +15,13 @@ export default function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-4 lg:col-span-1">
             <div className="flex flex-col items-center md:items-start">
-              <Image 
-                src={image_logo} 
+              <Image
+                src={image_logo}
                 alt='Logo'
                 className="w-auto h-auto max-w-[160px]"
               />
               <p className="text-gray-300 text-sm md:text-base mt-4 text-center md:text-left">
-                371 J, Commercial Block EME Society DHA Phase XII Canal Road, Lahore, Pakistan.
+                7901 4th St. N STE 10963, Saint Petersburg, Florida, 3370
               </p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                 <Image src={image1} alt="image1" className="h-24 w-auto object-contain" />
@@ -72,11 +72,18 @@ export default function Footer() {
               <li><Link href="/shipping" className="hover:text-green-400 transition duration-300">Shipping Policy</Link></li>
             </ul>
             <div className="flex gap-4 mt-6 lg:mt-[4rem] lg:gap-6">
-              <FaFacebook className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
-              <FaTwitter className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
-              <FaInstagram className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
-              <FaLinkedin className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
-              <Youtube className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
+              <Link href="https://www.facebook.com/profile.php?id=61556179106203" target="_blank" rel="noopener noreferrer">
+                <FaFacebook className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
+              </Link>
+              <Link href="https://www.instagram.com/surgical.medical.instruments/" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
+              </Link>
+              <Link href="https://www.linkedin.com/company/artema-medical-group/?viewAsMember=true" target="_blank" rel="noopener noreferrer">
+                <FaLinkedin className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
+              </Link>
+              <Link href="https://www.youtube.com/@ArtemaMedical" target="_blank" rel="noopener noreferrer">
+                <FaYoutube className="w-6 h-6 cursor-pointer hover:text-green-400 transition-colors" />
+              </Link>
             </div>
           </div>
         </div>

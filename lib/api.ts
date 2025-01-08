@@ -37,17 +37,29 @@ export const getSubCategoriesByCategorySlug = async (
     throw new Error("Category slug is required to fetch subcategories.");
   }
 
-  const response = await api.get(`categories/subCategories/${categorySlug}`, {
-    params: { page, limit },
-  });
+  try {
+    const response = await api.get(`categories/subCategories/${categorySlug}`, {
+      params: { page, limit },
+    });
 
-  if (response.data.success) {
-    return response.data;
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error("Category not found");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        window.location.href = "/404";
+      }
+      throw new Error(
+        error.response?.data?.message || "Failed to fetch subcategories."
+      );
+    } else {
+      throw new Error("Unexpected error occurred.");
+    }
   }
-
-  throw new Error("Failed to fetch subcategories");
 };
-
 
 // Fetch all products by subcategory slug
 export const getProductsBySubCategorySlug = async (
@@ -64,11 +76,19 @@ export const getProductsBySubCategorySlug = async (
         params: { page, limit },
       }
     );
+
     console.log("API Response:", response.data);
-    return response.data; // Ensure the response structure matches your API's design
+
+    if (response.data.success) {
+      return response.data;
+    } else {
+      throw new Error("Subcategory not found");
+    }
   } catch (error) {
-    console.error("Error fetching products:", error);
     if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        window.location.href = "/404";
+      }
       throw new Error(
         error.response?.data?.message || "Failed to fetch products."
       );
@@ -77,6 +97,7 @@ export const getProductsBySubCategorySlug = async (
     }
   }
 };
+
 
 // Fetch a single product by slug
 export const getProductBySlug = async (slug: string) => {
@@ -132,7 +153,6 @@ export const getSimilarProducts = async (
     throw error;
   }
 };
-
 
 // Fetch products based on the search query
 export const searchProducts = async (query: string | null, page: number) => {

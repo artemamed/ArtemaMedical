@@ -10,7 +10,7 @@ interface Card {
 
 const initialCards: Card[] = [
   {
-    imageSrc: "/images/slider/slide1.png",
+    imageSrc: "/images/slider/slide11.png",
     title: "General Instrument",
     description: "Our general instruments are contain wide range of medical tools that are cover whole surgical process",
   },
@@ -32,34 +32,29 @@ const initialCards: Card[] = [
 
 
   {
-    imageSrc: "/images/slider/slide1.png",
+    imageSrc: "/images/slider/slide5.png",
     title: "Dental",
     description: "Good-quality dental instruments are manufactured at Artema Medical at an affordable price",
   },
   {
-    imageSrc: "/images/slider/slide2.png",
+    imageSrc: "/images/slider/slide6.png",
     title: "ENT Instruments",
     description: "We provide long, pointed, and thin ENT instruments diverse in design and size",
   },
   {
-    imageSrc: "/images/slider/slide3.png",
+    imageSrc: "/images/slider/slide7.png",
     title: "Gynecology",
     description: "Gynecology instruments include a variety of retractors, measuring devices, and electronic instruments",
   },
   {
-    imageSrc: "/images/slider/slide4.png",
+    imageSrc: "/images/slider/slide8.png",
     title: "Plastic Instruments",
     description: "Our plastic surgery instruments are small but precisely designed for sensitive skin",
   },
   {
-    imageSrc: "/images/slider/slide1.png",
+    imageSrc: "/images/slider/slide9.png",
     title: "Needle Holder",
     description: "A wide variety of needle holders are available, which ensures precision and control",
-  },
-  {
-    imageSrc: "/images/slider/slide2.png",
-    title: "Biomedical devices",
-    description: "We bring high-quality biomedical devices to our customers as a premium distributor of Vyaire Medical",
   },
 ];
 
