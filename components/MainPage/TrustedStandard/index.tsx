@@ -1,6 +1,7 @@
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 const trusted = [
   {
@@ -23,23 +24,28 @@ const trusted = [
 
 const products = [
   {
-    title: "Scalpels for Precision Surgery",
-    price: "200",
+    title: "Rollator Walker",
+    price: "55.64",
     imageUrl: "/images/slider/slide1.png",
   },
   {
-    title: "Scalpels for Precision Surgery",
-    price: "200",
-    imageUrl: "/images/slider/slide2.png",
+    title: "Bone Rib Shear ",
+    price: "158",
+    imageUrl: "/images/slider/slide22.webp",
   },
   {
-    title: "Scalpels for Precision Surgery",
-    price: "200",
-    imageUrl: "/images/slider/slide3.png",
+    title: "TC needleholde",
+    price: "110",
+    imageUrl: "/images/slider/slide33.png",
   },
 ];
 
+
 const TrustedStandard = () => {
+  const route = useRouter();
+  const handleProductClick = () => {
+    route.push('/category');
+  };
   return (
     <LayoutWrapper className="min-h-screen md:py-12">
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-10">
@@ -84,7 +90,7 @@ const TrustedStandard = () => {
             />
             <h3 className="text-lg mb-2">{product.title}</h3>
             <p className="text-xl font-bold mb-4">${product.price}</p>
-            <button className=" border text-teal-500 border-teal-500 py-2 px-4 rounded hover:bg-teal-600 hover:text-white transition">
+            <button className="border text-teal-500 border-teal-500 py-2 px-4 rounded hover:bg-teal-600 hover:text-white transition" onClick={handleProductClick}>
               Buy Now
             </button>
           </div>

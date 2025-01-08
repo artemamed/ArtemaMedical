@@ -88,7 +88,7 @@ export default function CustomDropdownMenu({ closeMenu }: { closeMenu: () => voi
         <ChevronDown className="ml-1 h-4 w-4" />
       </DropdownMenuTrigger>
   
-      <DropdownMenuContent className="lg:mt-5 grid grid-rows-2 lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
+      <DropdownMenuContent className="lg:mt-5 grid lg:grid-cols-4 gap-4 xl:py-[6rem] 2xl:py-[8rem] lg:py-[3rem] px-[5rem] lg:px-[4rem] xl:pl-[8rem] bg-[#F7F7F7] rounded-2xl border-none shadow-lg w-screen">
         {menuData?.slice(0, visibleItems).map((wrapper: { category: { name: string; slug: string; subCategories?: { name: string; slug: string }[] } }, index: number) => {
           const { category } = wrapper;
           return (

@@ -46,7 +46,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex lg:space-x-[2rem] xl:space-x-[4rem] 2xl:space-x-[6rem] bg-[#F7F7F7] pl-8 p-3 pr-8 rounded-2xl">
+        <div className="hidden lg:flex lg:space-x-[1.25rem] xl:space-x-[4rem] 2xl:space-x-[6rem] bg-[#F7F7F7] pl-8 p-3 pr-8 rounded-2xl">
           <Link
             href="/"
             className={` ${pathname === '/' ? 'text-[#008080]' : ''}`}
