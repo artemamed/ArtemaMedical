@@ -168,3 +168,4 @@ export const searchProducts = async (query: string | null, page: number) => {
     throw new Error("Failed to fetch products.");
   }
 };
+
