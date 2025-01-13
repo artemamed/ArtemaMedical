@@ -48,8 +48,8 @@ const initialCards: Card[] = [
   },
   {
     imageSrc: "/images/slider/slide8.png",
-    title: "Plastic Instruments",
-    description: "Our plastic surgery instruments are small but precisely designed for sensitive skin",
+    title: "Dermatology Tools",
+    description: "Highly precise and durable dermatology tools are manufactured at Artema Medical. They are ergonomically designed in a variety of shapes and sizes.",
   },
   {
     imageSrc: "/images/slider/slide9.png",
@@ -121,8 +121,8 @@ const MedicalCardSlider: React.FC = () => {
           >
             <div
               className={`rounded-xl hover:shadow-lg ${currentIndex % initialCards.length === index % initialCards.length
-                  ? "bg-[#CFE7E7] sm:py-6"
-                  : "bg-[#F7F7F7]"
+                ? "bg-[#CFE7E7] sm:py-6"
+                : "bg-[#F7F7F7]"
                 } transition-all duration-300`}
             >
               <div className="relative h-[250px]"> {/* Fixed height for consistency */}
@@ -132,15 +132,15 @@ const MedicalCardSlider: React.FC = () => {
                   src={card.imageSrc}
                   alt={card.title}
                   className={`p-3 sm:p-4 lg:p-[1rem] object-contain w-full h-full transition-all duration-300 ${currentIndex % initialCards.length === index % initialCards.length
-                      ? "transform -translate-y-10 sm:-translate-y-5 md:-translate-y-[6rem] lg:-translate-y-[9rem]"
-                      : "h-[100px] sm:h-[175px] md:h-[250px]"
+                    ? "transform -translate-y-10 sm:-translate-y-5 md:-translate-y-[6rem] lg:-translate-y-[9rem]"
+                    : "h-[100px] sm:h-[175px] md:h-[250px]"
                     }`}
                 />
               </div>
               <div
                 className={`p-3 sm:p-4 mx-auto ${currentIndex % initialCards.length === index % initialCards.length
-                    ? "transform -translate-y-4 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[7rem]"
-                    : ""
+                  ? "transform -translate-y-4 sm:-translate-y-5 md:-translate-y-6 lg:-translate-y-[7rem]"
+                  : ""
                   }`}
               >
                 <h3 className="text-base sm:text-lg font-semibold text-teal-700 flex justify-between items-center">
