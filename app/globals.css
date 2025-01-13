@@ -58,10 +58,11 @@
 }
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
@@ -72,3 +73,26 @@
   position: absolute;
   left: 3px;
 }
+
+/* Add this in your global CSS or Tailwind configuration */
+.prose p {
+  margin-bottom: 1rem; /* Adjust spacing as needed */
+}
+
+.prose pre {
+  white-space: pre-wrap; /* Ensure whitespace is preserved */
+}
+
+.prose blockquote {
+  font-style: italic;
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  margin-bottom: 1rem;
+}
+

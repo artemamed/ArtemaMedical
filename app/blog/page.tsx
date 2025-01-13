@@ -47,17 +47,17 @@ export default async function IndexPage() {
       <h1 className="text-4xl sm:text-5xl font-semibold mb-12 text-center text-[#004040]">Medical Insights & Innovations</h1>
 
       {/* Most Recent Post Section */}
-      <section className="w-full sm:w-3/4 mb-12 mx-auto md:mx-0">
+      <section className="w-full mb-12 mx-auto md:mx-0">
         {mostRecentPost && (
           <div className="flex flex-col sm:flex-row overflow-hidden transition-transform hover:scale-105 mb-8">
             <Link href={`/blog/${mostRecentPost.slug.current}`}>
               <div className="block relative overflow-hidden">
                 <Image
-                  src={urlFor(mostRecentPost.image)?.width(800).height(450).url() ?? "/placeholder-image.jpg"}
+                  src={urlFor(mostRecentPost.image)?.url() ?? "/placeholder-image.jpg"}
                   alt={mostRecentPost.title}
-                  className="object-cover rounded-lg"
-                  width={800}
-                  height={450}
+                  className="object-contain rounded-lg "
+                  width={2000}
+                  height={500}
                 />
               </div>
             </Link>
@@ -84,7 +84,7 @@ export default async function IndexPage() {
 
               <Link
                 href={`/blog/${mostRecentPost.slug.current}`}
-                className="mt-4 inline-block text-[#008080] underline"
+                className="mt-4 inline-block text-[#008080] hover:underline"
               >
                 Read More
               </Link>
@@ -111,7 +111,7 @@ export default async function IndexPage() {
                     <Image
                       src={postImageUrl}
                       alt={post.title}
-                      className="w-full h-52 object-cover rounded-lg"
+                      className="w-full h-auto object-contain rounded-lg"
                       width={400}
                       height={250}
                     />
@@ -135,7 +135,7 @@ export default async function IndexPage() {
 
                   <Link
                     href={`/blog/${mostRecentPost.slug.current}`}
-                    className="mt-4 inline-block text-[#008080] underline"
+                    className="mt-4 inline-block text-[#008080] hover:underline"
                   >
                     Read More
                   </Link>

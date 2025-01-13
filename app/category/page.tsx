@@ -4,7 +4,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { CircleArrowRight } from "lucide-react";
 import React, { useCallback } from "react";
 import { getCategories } from "@/lib/api";
@@ -99,14 +98,14 @@ const PrecisionDriven = () => {
                   className="p-4 sm:p-5 md:p-6 rounded-2xl border bg-white hover:bg-[#CFE7E7] transition-colors duration-300 hover:scale-105"
                 >
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold mb-2 sm:mb-3 md:mb-4 leading-snug cursor-pointer" onClick={() => navigateToSpecificCategories(category)}>
+                    <h2 className="text-lg sm:text-xl    font-semibold mb-2 sm:mb-3 md:mb-4 leading-snug cursor-pointer" onClick={() => navigateToSpecificCategories(category)}>
                       {category.name}
                     </h2>
                     <Link href={`/category/${category.slug}`}>
                       <CircleArrowRight className="text-[#008080] w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 cursor-pointer hover:scale-105" />
                     </Link>
                   </div>
-                  <ul className="space-y-2 sm:space-y-3 md:space-y-4 mt-[2rem] sm:mt-[3rem] md:mt-[5rem] cursor-pointer">
+                  <ul className="space-y-2 sm:space-y-3 md:space-y-4 mt-[2rem] sm:mt-[3rem] md:mt-[5rem] cursor-pointer p-1">
                     {category.subCategories.map((subCategory, idx) => (
                       <li key={idx} className="flex items-center space-x-2 text-gray-700" onClick={() => handleCategoryClick(subCategory.slug)}>
                         <span className="text-[#008080] text-lg sm:text-xl md:text-2xl lg:text-3xl">➜</span>
@@ -118,7 +117,7 @@ const PrecisionDriven = () => {
               ))}
             </div>
           )}
-          <Button className="mt-5 px-[2rem]">Load More</Button>
+          {/* <Button className="mt-5 px-[2rem]">Load More</Button> */}
         </div>
       </LayoutWrapper>
     </div>

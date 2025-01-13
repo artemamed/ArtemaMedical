@@ -16,35 +16,35 @@ const initialCards: Card[] = [
   },
   {
     imageSrc: "/images/slider/slide2.png",
-    title: "Orthopedic Instrument",
-    description: "Our orthopedic instruments hold special importance. They are known for their quality and design",
+    title: "Dental",
+    description: "Good-quality dental instruments are manufactured at Artema Medical at an affordable price. ",
   },
   {
     imageSrc: "/images/slider/slide3.png",
-    title: "Scissors",
-    description: "A wide array of scissors are designed at Artema Medical using stainless steel and tungsten carbide",
+    title: " ENT Instruments",
+    description: "We provide long, pointed, and thin ENT instruments diverse in design and size.",
   },
   {
     imageSrc: "/images/slider/slide4.png",
-    title: "Cardiovascular",
-    description: "It includes a range of instruments, from electronic devices to surgical instruments",
+    title: "Orthopedic",
+    description: "Our orthopedic instruments hold special importance. They are known for their quality and design. ",
   },
 
 
   {
     imageSrc: "/images/slider/slide5.png",
-    title: "Dental",
-    description: "Good-quality dental instruments are manufactured at Artema Medical at an affordable price",
+    title: "Gynecology",
+    description: "Gynecology instruments include a variety of retractors, measuring devices, and electronic instruments.",
   },
   {
     imageSrc: "/images/slider/slide6.png",
-    title: "ENT Instruments",
-    description: "We provide long, pointed, and thin ENT instruments diverse in design and size",
+    title: "Needle Holder",
+    description: "A wide variety of needle holders are available, which ensures precision and control.",
   },
   {
     imageSrc: "/images/slider/slide7.png",
-    title: "Gynecology",
-    description: "Gynecology instruments include a variety of retractors, measuring devices, and electronic instruments",
+    title: "Cardiovascular",
+    description: "It includes a range of instruments, from electronic devices to surgical instruments.",
   },
   {
     imageSrc: "/images/slider/slide8.png",
@@ -53,8 +53,8 @@ const initialCards: Card[] = [
   },
   {
     imageSrc: "/images/slider/slide9.png",
-    title: "Needle Holder",
-    description: "A wide variety of needle holders are available, which ensures precision and control",
+    title: "Scissors",
+    description: "A wide array of scissors are designed at Artema Medical using stainless steel and tungsten carbide.",
   },
 ];
 
