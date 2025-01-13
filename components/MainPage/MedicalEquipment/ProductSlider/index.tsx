@@ -10,7 +10,7 @@ interface Card {
 
 const initialCards: Card[] = [
   {
-    imageSrc: "/images/slider/slide11.png",
+    imageSrc: "/images/slider/slide4.png",
     title: "General Instrument",
     description: "Our general instruments are contain wide range of medical tools that are cover whole surgical process",
   },
@@ -25,7 +25,7 @@ const initialCards: Card[] = [
     description: "We provide long, pointed, and thin ENT instruments diverse in design and size.",
   },
   {
-    imageSrc: "/images/slider/slide4.png",
+    imageSrc: "/images/slider/slide7.png",
     title: "Orthopedic",
     description: "Our orthopedic instruments hold special importance. They are known for their quality and design. ",
   },
@@ -42,7 +42,7 @@ const initialCards: Card[] = [
     description: "A wide variety of needle holders are available, which ensures precision and control.",
   },
   {
-    imageSrc: "/images/slider/slide7.png",
+    imageSrc: "/images/slider/slide11.png",
     title: "Cardiovascular",
     description: "It includes a range of instruments, from electronic devices to surgical instruments.",
   },
