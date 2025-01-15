@@ -101,7 +101,7 @@ const SignupForm = () => {
       );
 
       toast.success("Account created successfully! Please sign in.");
-      router.push("/cart/checkOut");
+      router.push("/cart");
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => toast.error(err.message));

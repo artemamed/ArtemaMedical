@@ -74,7 +74,7 @@ const SigninForm = () => {
 
         // Show a success message and redirect the user
         toast.success(message || "Login successful!");
-        router.push("/cart/checkOut");
+        router.push("/cart");
       } else {
         throw new Error(message || "An error occurred during login");
       }

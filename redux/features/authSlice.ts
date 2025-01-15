@@ -14,10 +14,10 @@ const initialState: AuthState = {
   email: null,
   token: null,
   isAuthenticated: false,
-  avatarUrl: null,  // Changed to null for consistency
-  firstName: null,  // Changed to null for consistency
-  lastName: null,   // Changed to null for consistency
-  phoneNumber: null, // Changed to null for consistency
+  avatarUrl: null,
+  firstName: null,
+  lastName: null,
+  phoneNumber: null,
 };
 
 const authSlice = createSlice({
@@ -35,7 +35,8 @@ const authSlice = createSlice({
         phoneNumber: string;
       }>
     ) {
-      const { email, token, avatarUrl, firstName, lastName, phoneNumber } = action.payload;
+      const { email, token, avatarUrl, firstName, lastName, phoneNumber } =
+        action.payload;
       state.email = email;
       state.token = token;
       state.isAuthenticated = true;
@@ -52,6 +53,9 @@ const authSlice = createSlice({
       state.firstName = null;
       state.lastName = null;
       state.phoneNumber = null;
+
+      // Clear from localStorage if you persist state
+      localStorage.removeItem("auth"); // Assuming auth data is stored here
     },
   },
 });

@@ -11,8 +11,9 @@ import CartButton from "./CartButton";
 import Support from "./Support";
 import ProductDropDown from "./ProductDropDown";
 import LayoutWrapper from "../Wrapper/LayoutWrapper";
-import { clearAuth } from "@/redux/features/authSlice"; // Import the clearAuth action
+import { clearAuth } from "@/redux/features/authSlice";
 import { RootState } from "@/app/store";
+import { clearCart } from "@/redux/features/cartSlice";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,7 +32,8 @@ export default function Navbar() {
 
   // Handle logout
   const handleLogout = () => {
-    dispatch(clearAuth()); // Clear Redux state
+    dispatch(clearAuth());
+    dispatch(clearCart());
     router.push("/auth/signin"); // Redirect to sign-in page
   };
 

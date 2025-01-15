@@ -35,10 +35,16 @@ const cartSlice = createSlice({
         state.items.push(action.payload);
       }
     },
-    removeFromCart: (state, action: PayloadAction<{ slug: string; size: string }>) => {
+    removeFromCart: (
+      state,
+      action: PayloadAction<{ slug: string; size: string }>
+    ) => {
       state.items = state.items.filter(
         (item) =>
-          !(item.slug === action.payload.slug && item.size === action.payload.size)
+          !(
+            item.slug === action.payload.slug &&
+            item.size === action.payload.size
+          )
       );
     },
     updateQuantity: (
@@ -54,8 +60,15 @@ const cartSlice = createSlice({
         item.quantity = Math.max(action.payload.quantity, 1);
       }
     },
+    clearCart: (state) => {
+      state.items = [];
+
+      // Clear from localStorage if you persist state
+      localStorage.removeItem("cart"); // Assuming cart data is stored here
+    },
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity } = cartSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;
