@@ -133,7 +133,19 @@ const CheckOut: React.FC = () => {
                             <div className="flex items-center space-x-4">
                                 <Image src={getValidImageUrl(item.image)} alt={item.title} width={80} height={80} className="object-contain rounded-md w-full h-[5rem]" />
                                 <div className="flex-1 space-y-2 md:space-y-3">
-                                    <h3 className="font-semibold text-sm text-[#2B2B2B] md:w-[15rem] lg:w-[12.5rem] xl:w-[18.5rem]">{item.title}</h3>
+                                    <div className="relative group">
+                                        <h3
+                                            className="font-semibold text-sm text-[#2B2B2B] truncate overflow-hidden whitespace-nowrap w-[6rem] lg:w-[10rem] xl:w-[12.5rem]"
+                                        >
+                                            {item.title}
+                                        </h3>
+                                        <div
+                                            className="absolute hidden group-hover:block bg-white text-sm text-gray-800 px-2 py-1 rounded shadow-lg -top-8 left-0 z-10"
+                                        >
+                                            {item.title}
+                                        </div>
+                                    </div>
+
                                     <p className="text-xs text-gray-600">Size: {item.size}</p>
                                     <p className="text-xs text-gray-600">SKU: {item.sku}</p>
                                     <div className="flex items-center space-x-2 border border-[#008080] w-[6.5rem] rounded-md px-2">
@@ -153,12 +165,12 @@ const CheckOut: React.FC = () => {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="flex flex-col space-y-4 -mt-[4.5rem] md:mt-[4rem] lg:mt-auto ">
-                                    <p className="text-sm font-semibold text-[#2B2B2B] -ml-[2rem] md:-ml-[8rem] lg:-ml-[6rem]">
+                                <div className="flex flex-col space-y-4 -mt-[1rem] md:mt-[0rem]  ">
+                                    <p className="text-sm font-semibold text-[#2B2B2B] -ml-[2rem] md:-ml-[1rem] lg:-ml-[4.5rem]">
                                         ${(item.price * item.quantity).toFixed(2)}
                                     </p>
                                     <button
-                                        className="text-xs text-[#666666] hover:text-red-500 md:-ml-[6.5rem] lg:-ml-[4.5rem]"
+                                        className="text-xs text-[#666666] hover:text-red-500 md:-ml-[0rem] lg:-ml-[3rem]"
                                         onClick={() => handleRemoveItem(item.slug, item.size)}
                                     >
                                         <Trash2 className="w-4 h-4" />

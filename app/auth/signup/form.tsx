@@ -47,11 +47,11 @@ const SignupForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     try {
       signupSchema.parse(formData);
       setLoading(true);
-  
+
       const response = await fetch(`${API_URL}buyers/register`, {
         method: "POST",
         headers: {
@@ -66,26 +66,40 @@ const SignupForm = () => {
           password: formData.password,
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "An error occurred");
       }
-  
+
       const data = await response.json();
-  
+
+      // Send email after successful signup
+      await fetch("/api/sendSignupEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+        }),
+      });
+
       // Dispatch setAuth to update Redux store
       dispatch(
         setAuth({
           email: formData.email,
-          token: data.token, // Use the correct token field
-          avatarUrl: data.avatarUrl || "", // Use the correct avatar field
+          token: data.token,
+          avatarUrl: data.avatarUrl || "",
           firstName: formData.firstName,
           lastName: formData.lastName,
           phoneNumber: formData.phone,
         })
       );
-  
+
       toast.success("Account created successfully! Please sign in.");
       router.push("/cart/checkOut");
     } catch (error: unknown) {
@@ -100,7 +114,8 @@ const SignupForm = () => {
       setLoading(false);
     }
   };
-  
+
+
 
 
   return (

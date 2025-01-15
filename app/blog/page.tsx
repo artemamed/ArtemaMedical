@@ -89,6 +89,9 @@ export default async function IndexPage() {
                 Read More
               </Link>
             </div>
+
+
+
           </div>
         )}
       </section>
@@ -104,38 +107,41 @@ export default async function IndexPage() {
             return (
               <div
                 key={post._id}
-                className="overflow-hidden transition-transform hover:scale-105"
+                className="flex flex-col justify-between bg-white rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105"
+                style={{ height: "100%", width: "100%" }} // Fixed height for consistency
               >
                 <Link href={`/blog/${post.slug.current}`}>
-                  <div className="block relative overflow-hidden">
+                  <div className="relative overflow-hidden h-40">
                     <Image
                       src={postImageUrl}
                       alt={post.title}
-                      className="w-full h-auto object-contain rounded-lg"
+                      className="w-full h-full object-cover"
                       width={400}
                       height={250}
                     />
                   </div>
                 </Link>
 
-                <div className="p-2 sm:p-4">
-                  <p className="text-sm sm:text-base text-[#666666] mb-4">
-                    <CalendarDays className="inline-block mr-1 w-5 h-5 -mt-1 " />
-                    {new Date(post.publishedAt).toLocaleDateString()}
-                  </p>
-                  <Link href={`/blog/${post.slug.current}`}>
-                    <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 group-hover:text-blue-600">
-                      {post.title}
-                    </h2>
-                  </Link>
+                <div className="p-4 flex flex-col justify-between h-full">
+                  <div>
+                    <p className="text-sm sm:text-base text-[#666666] mb-2">
+                      <CalendarDays className="inline-block mr-1 w-5 h-5 -mt-1 " />
+                      {new Date(post.publishedAt).toLocaleDateString()}
+                    </p>
+                    <Link href={`/blog/${post.slug.current}`}>
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2 group-hover:text-blue-600">
+                        {post.title}
+                      </h2>
+                    </Link>
 
-                  <div className="text-[#6D6D6D] line-clamp-3">
-                    {Array.isArray(post.body) && <PortableText value={post.body} />}
+                    <div className="text-[#6D6D6D] line-clamp-3">
+                      {Array.isArray(post.body) && <PortableText value={post.body} />}
+                    </div>
                   </div>
 
                   <Link
-                    href={`/blog/${mostRecentPost.slug.current}`}
-                    className="mt-4 inline-block text-[#008080] hover:underline"
+                    href={`/blog/${post.slug.current}`}
+                    className="mt-4 text-[#008080] hover:underline self-start"
                   >
                     Read More
                   </Link>
@@ -145,6 +151,8 @@ export default async function IndexPage() {
           })}
         </div>
       </section>
+
+
     </LayoutWrapper>
   );
 }

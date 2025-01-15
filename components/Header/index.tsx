@@ -37,7 +37,7 @@ export default function Navbar() {
 
   return (
     <LayoutWrapper className="relative w-[100%]">
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-between py-4 mb-[1.75rem]">
         {/* Logo */}
         <div className="flex items-center space-x-2 flex-grow">
           <Link href="/">
@@ -86,10 +86,10 @@ export default function Navbar() {
 
           {/* User Avatar */}
           {isAuthenticated ? (
-            <div className="relative">
+            <div className="md:relative">
               <button
                 onClick={() => setShowAvatarMenu(!showAvatarMenu)}
-                className="relative w-7 h-7 rounded-full overflow-hidden border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="relative w-8 h-8 rounded-full overflow-hidden border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 <Image
                   src={avatarUrl || "/assets/avatar.jpg"} // Use avatarUrl or a placeholder
@@ -99,11 +99,12 @@ export default function Navbar() {
                 />
               </button>
               {showAvatarMenu && (
-                <div className="absolute right-0 w-48 mt-4 bg-[#F7F7F7] border border-gray-200 rounded-md shadow-lg z-50">
-                 
+                <div
+                  className="absolute right-0 mt-2 w-24 md:w-48 bg-white border border-gray-200 rounded-md shadow-md z-50 max-h-[200px]  transition-transform duration-200 ease-in-out transform origin-top-right"
+                >
                   <button
                     onClick={handleLogout}
-                    className="block fixed w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-teal-500"
+                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-teal-500"
                   >
                     Logout
                   </button>
@@ -111,6 +112,7 @@ export default function Navbar() {
               )}
             </div>
           ) : null}
+
 
           {/* Contact Us Button (Visible in Desktop) */}
           <Link
