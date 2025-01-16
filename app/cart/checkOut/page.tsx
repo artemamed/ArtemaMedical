@@ -1,7 +1,7 @@
 "use client";
 
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
-import { Trash2 } from "lucide-react";
+import { PackageCheck, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,6 +10,8 @@ import { RootState } from "@/app/store";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
+import { CircleLoader } from 'react-spinners';
+
 
 const CheckOut: React.FC = () => {
     const { firstName, lastName, phoneNumber, email } = useSelector(
@@ -17,10 +19,36 @@ const CheckOut: React.FC = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+
     const getValidImageUrl = (imageUrl: string | null) => {
         if (!imageUrl) return "/placeholder.png";
         const baseUrl = "https://medinven.api.artemamed.com";
         return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
+    };
+    const [shippingInfo, setShippingInfo] = useState({
+        street: "",
+        country: "",
+        city: "",
+        state: "",
+        zipCode: "",
+    });
+    const [isShippingFormSubmitted, setIsShippingFormSubmitted] = useState(false);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { id, value } = e.target;
+        setShippingInfo((prev) => ({ ...prev, [id]: value }));
+    };
+
+    const handleShippingFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const { street, country, city, state, zipCode } = shippingInfo;
+        if (!street || !country || !city || !state || !zipCode) {
+            toast.error("Please fill in all the required fields.");
+            return;
+        }
+
+        setIsShippingFormSubmitted(true);
+        toast.success("Shipping information submitted successfully!");
     };
 
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
@@ -35,6 +63,9 @@ const CheckOut: React.FC = () => {
         dispatch(removeFromCart({ slug, size }));
     };
 
+
+
+
     const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const tax = total * 0.062;
     const freightCharge = (() => {
@@ -44,41 +75,28 @@ const CheckOut: React.FC = () => {
         const hasMultipleCharges = cartItems.some(item => item.quantity > 1 || cartItems.length > 1);
         return hasMultipleCharges ? 75 : 0;
     })();
-    const subtotal = total + freightCharge + tax;
+    // const subtotal = total + freightCharge + tax;
+    const subtotal = Math.ceil(total + freightCharge + tax);
+
+    // const subtotal = 1;
+
 
     // Handle placing order and redirecting for payment
     const handlePlaceOrder = async () => {
         setLoading(true);
         try {
-            const orderId = `ORDER_${Date.now()}`;
-            const expiryDate = new Date();
-            expiryDate.setDate(expiryDate.getDate() + 7);
+            // Step 1: Create session
+            const createSessionResponse = await axios.post("/api/create-session");
+            const sessionId = createSessionResponse.data.session.id;
 
-            const payload = {
-                apiOperation: "INITIATE_CHECKOUT",
-                checkoutMode: "PAYMENT_LINK",
-                interaction: {
-                    operation: "PURCHASE",
-                    merchant: {
-                        name: "ARTEMAMEDICA",
-                        url: "http://localhost:3001/cart/checkOut/orderComplete",
-                    },
-                },
-                order: {
-                    currency: "USD",
-                    amount: subtotal.toFixed(2),
-                    id: orderId,
-                    description: "Payment Process",
-                },
-                paymentLink: {
-                    expiryDateTime: expiryDate.toISOString(),
-                    numberOfAllowedAttempts: "7",
-                },
-            };
+            // Step 2: Update session with calculated amount (no need to store the response)
+            await axios.post("/api/update-session", { sessionId, amount: subtotal });
 
-            const response = await axios.post("/api/payment", payload);
-            if (response.data.paymentLink?.url) {
-                window.location.href = response.data.paymentLink.url; // Redirect to the payment gateway
+            // Step 3: Redirect to payment URL
+            const paymentUrl = `${window.location.origin}/api/payment-form?sessionId=${sessionId}&amount=${subtotal}`;
+
+            if (paymentUrl) {
+                window.location.href = paymentUrl; // Redirect to the payment gateway
             } else {
                 throw new Error("Payment link not found");
             }
@@ -90,42 +108,140 @@ const CheckOut: React.FC = () => {
         }
     };
 
-
-
     return (
         <LayoutWrapper className="min-h-screen p-4">
             <button className="text-gray-500 mb-4">&lt; Back</button>
             <h1 className="text-3xl md:text-4xl font-bold text-teal-800 text-center mb-5">Check Out</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-                <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
-                    <div className="space-y-4">
-                        {/* Contact Details */}
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="text-gray-700 text-sm">
-                                <label className="block mb-2 font-medium">First Name</label>
-                                <div className="w-full p-3 border rounded-md ">
-                                    {firstName || "Not provided"}
+                <div className="space-y-10">
+                    {/* Contact Details */}
+                    <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Contact Information</h2>
+                        <div className="space-y-4">
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-gray-700 text-sm">
+                                    <label className="block mb-2 font-medium">First Name</label>
+                                    <div className="w-full p-3 border rounded-md ">
+                                        {firstName || "Not provided"}
+                                    </div>
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                    <label className="block mb-2 font-medium">Last Name</label>
+                                    <div className="w-full p-3 border rounded-md ">
+                                        {lastName || "Not provided"}
+                                    </div>
                                 </div>
                             </div>
                             <div className="text-gray-700 text-sm">
-                                <label className="block mb-2 font-medium">Last Name</label>
-                                <div className="w-full p-3 border rounded-md ">
-                                    {lastName || "Not provided"}
-                                </div>
+                                <label className="block mb-2 font-medium">Phone Number</label>
+                                <div className="w-full p-3 border rounded-md ">{phoneNumber || "Not provided"}</div>
                             </div>
-                        </div>
-                        <div className="text-gray-700 text-sm">
-                            <label className="block mb-2 font-medium">Phone Number</label>
-                            <div className="w-full p-3 border rounded-md ">{phoneNumber || "Not provided"}</div>
-                        </div>
-                        <div className="text-gray-700 text-sm">
-                            <label className="block mb-2 font-medium">Email Address</label>
-                            <div className="w-full p-3 border rounded-md ">{email || "Not provided"}</div>
+                            <div className="text-gray-700 text-sm">
+                                <label className="block mb-2 font-medium">Email Address</label>
+                                <div className="w-full p-3 border rounded-md ">{email || "Not provided"}</div>
+                            </div>
                         </div>
                     </div>
+
+                    {/* Shipping Address */}
+                    <div className="border p-6 rounded-xl h-auto bg-white 2xl:w-[55rem] md:w-[22rem] lg:w-[40rem] xl:w-[47rem]">
+                        <h2 className="text-2xl font-semibold mb-6 text-gray-800">Shipping Address</h2>
+                        <form className="space-y-4" onSubmit={handleShippingFormSubmit} >
+                            {/* Street Address */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="street" className="block mb-2 font-medium">
+                                    Street Address <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="street"
+                                    type="text"
+                                    className="w-full p-3 border rounded-md"
+                                    placeholder="Street Address"
+                                    value={shippingInfo.street}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+
+                            {/* Country */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="country" className="block mb-2 font-medium">
+                                    Country <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    id="country"
+                                    className="w-full p-3 border rounded-md"
+                                    value={shippingInfo.country}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select Country</option>
+                                    <option value="USA">USA</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="UK">UK</option>
+                                </select>
+
+                            </div>
+
+
+                            {/* Town / City */}
+                            <div className="text-gray-700 text-sm">
+                                <label htmlFor="city" className="block mb-2 font-medium">
+                                    Town / City <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    id="city"
+                                    type="text"
+                                    className="w-full p-3 border rounded-md"
+                                    placeholder="City"
+                                    value={shippingInfo.city}
+                                    onChange={handleInputChange}
+                                />
+
+                            </div>
+
+                            {/* State and Zip Code */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="text-gray-700 text-sm">
+                                    <label htmlFor="state" className="block mb-2 font-medium">
+                                        State <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="state"
+                                        type="text"
+                                        className="w-full p-3 border rounded-md"
+                                        placeholder="State"
+                                        value={shippingInfo.state}
+                                        onChange={handleInputChange}
+                                    />
+
+                                </div>
+                                <div className="text-gray-700 text-sm">
+                                    <label htmlFor="zipCode" className="block mb-2 font-medium">
+                                        Zip Code <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        id="zipCode"
+                                        type="text"
+                                        className="w-full p-3 border rounded-md"
+                                        placeholder="Zip Code"
+                                        value={shippingInfo.zipCode}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Place Order Button */}
+                            <Button
+                                type="submit"
+                                className="flex gap-2"
+                            >
+                                Submit
+                            </Button>
+                        </form>
+                    </div>
                 </div>
+
                 <div className="space-y-4 border p-[2rem] rounded-xl 2xl:ml-[10rem] lg:ml-[10rem] lg:w-[19rem] xl:w-[28rem] 2xl:w-[35rem] mb-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
                     <h2 className="text-2xl font-semibold text-center mb-5">Order Summary</h2>
                     {cartItems.map((item) => (
@@ -200,10 +316,12 @@ const CheckOut: React.FC = () => {
                         </tbody>
                     </table>
                     <Button
+                        type="submit"
+                        className="flex gap-2"
                         onClick={handlePlaceOrder}
-                        disabled={loading}
+                        disabled={!isShippingFormSubmitted || loading}
                     >
-                        {loading ? "Processing..." : "Place Order"}
+                        {loading ? <CircleLoader size={20} color="#ffffff" /> : <>Place Order <PackageCheck /></>}
                     </Button>
                 </div>
             </div>
