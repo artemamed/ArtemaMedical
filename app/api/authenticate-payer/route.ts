@@ -59,11 +59,6 @@ export async function POST(request: Request) {
       body: JSON.stringify(requestBody),
     });
 
-
-
-    console.log("auth-payer response", response);    
-    console.log("response is ok  api called ");
-    console.log("******************************************");
     // Handle the response
     if (!response.ok) {
       const error = await response.json();
@@ -71,9 +66,6 @@ export async function POST(request: Request) {
     }
 
     const data = await response.json();
-
-    console.log("auth-payer response", response);
-    console.log("auth-payer data: ",data);
     
     console.log("response is ok  api called ");
     console.log("******************************************");

@@ -108,6 +108,8 @@ const CheckOut: React.FC = () => {
         }
     };
 
+
+
     return (
         <LayoutWrapper className="min-h-screen p-4">
             <button className="text-gray-500 mb-4">&lt; Back</button>
@@ -169,18 +171,14 @@ const CheckOut: React.FC = () => {
                                 <label htmlFor="country" className="block mb-2 font-medium">
                                     Country <span className="text-red-500">*</span>
                                 </label>
-                                <select
+                                <input
                                     id="country"
+                                    type="text"
                                     className="w-full p-3 border rounded-md"
+                                    placeholder="Street Address"
                                     value={shippingInfo.country}
                                     onChange={handleInputChange}
-                                >
-                                    <option value="">Select Country</option>
-                                    <option value="USA">USA</option>
-                                    <option value="Canada">Canada</option>
-                                    <option value="UK">UK</option>
-                                </select>
-
+                                />
                             </div>
 
 

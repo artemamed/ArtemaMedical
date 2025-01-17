@@ -18,16 +18,11 @@ export async function POST() {
         body: JSON.stringify({}),
       }
     );
-    
     const data = await response.json();
     if (!response.ok) {
       return NextResponse.json(data, { status: response.status });
     }
 
-
-    
-
-    
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error creating session:', error);

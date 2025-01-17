@@ -79,7 +79,7 @@ export async function POST(request: Request) {
   <!-- Footer Section -->
   <div style="background: #008080; padding: 15px; text-align: center; color: #e0f7f7;">
     <p style="margin: 0; font-size: 14px;">
-      📍 371 J, Commercial Block EME Society DHA, Phase XII Canal Road, Lahore, Pakistan
+      📍 7901 4th St. N STE 10963, Saint Petersburg, Florida, 3370
     </p>
     <p style="margin: 5px 0 0; font-size: 12px;">
       <a href="#" style="color: #008080; text-decoration: none;">Visit Us</a> | <a href="#" style="color: #008080; text-decoration: none;">Contact Support</a>
@@ -116,7 +116,7 @@ export async function POST(request: Request) {
   <!-- Footer Section -->
   <div style="background-color: #f4f4f4; padding: 15px; text-align: center;">
     <p style="margin: 0; font-size: 12px; color: #807D83;">
-      📍 371 J, Commercial Block EME Society DHA, Phase XII Canal Road, Lahore, Pakistan
+      📍 7901 4th St. N STE 10963, Saint Petersburg, Florida, 3370
     </p>
   </div>
 </div>

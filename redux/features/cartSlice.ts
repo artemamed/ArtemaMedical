@@ -62,13 +62,11 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.items = [];
-
-      // Clear from localStorage if you persist state
-      localStorage.removeItem("cart"); // Assuming cart data is stored here
     },
   },
 });
 
 export const { addToCart, removeFromCart, updateQuantity, clearCart } =
   cartSlice.actions;
+
 export default cartSlice.reducer;
