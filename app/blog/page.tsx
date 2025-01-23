@@ -17,7 +17,7 @@ const OTHER_POSTS_QUERY = `*[
   _type == "post"
   && defined(slug.current)
   && publishedAt != $mostRecentDate
-]|order(publishedAt desc)[0...12]{_id, title, slug, publishedAt, image, body}`;
+]|order(publishedAt desc)[0...50]{_id, title, slug, publishedAt, image, body}`;
 
 const { projectId, dataset } = client.config();
 const urlFor = (source: string | Record<string, unknown>) =>

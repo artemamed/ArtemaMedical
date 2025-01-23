@@ -11,6 +11,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { CircleLoader } from 'react-spinners';
+import Cookies from 'js-cookie';
+import CryptoJS from 'crypto-js';
 
 
 const CheckOut: React.FC = () => {
@@ -38,6 +40,9 @@ const CheckOut: React.FC = () => {
         setShippingInfo((prev) => ({ ...prev, [id]: value }));
     };
 
+    // Encryption key
+    const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || 'default_key';
+
     const handleShippingFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -47,9 +52,33 @@ const CheckOut: React.FC = () => {
             return;
         }
 
+        const dataToStore = {
+            shippingInfo: {
+                street,
+                country,
+                city,
+                state,
+                zipCode,
+            },
+            contactInfo: {
+                firstName,
+                lastName,
+                phoneNumber,
+                email,
+            },
+        };
+
+        // Serialize and encrypt data
+        const serializedData = JSON.stringify(dataToStore);
+        const encryptedData = CryptoJS.AES.encrypt(serializedData, ENCRYPTION_KEY).toString();
+
+        // Store encrypted data in a cookie
+        Cookies.set('shipping_contact_info', encryptedData, { expires: 7, path: '/' });
+
         setIsShippingFormSubmitted(true);
-        toast.success("Shipping information submitted successfully!");
+        toast.success("Shipping information submitted and stored securely!");
     };
+
 
     const handleQuantityChange = (slug: string, size: string, increment: boolean) => {
         const item = cartItems.find(item => item.slug === slug && item.size === size);

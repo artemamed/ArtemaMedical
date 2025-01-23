@@ -17,11 +17,12 @@ const nextConfig: NextConfig = {
     EMAIL_HOST: "mail.artemamedical.com",
     EMAIL_PORT: "465",
     EMAIL_SECURE: "false",
-    MERCHANT_ID: "ARTEMAMEDICA",
-    MERCHANT_PASS: "5d245bae704ba8a34ee40ad35beac255",
-    URL: "https://bankalfalah",
-    CURRENCY: "USD",
-    NEXT_PUBLIC_BASE_URL: "https://artemamed.com",
+    NEXT_PUBLIC_ENCRYPTION_KEY: "11223344",
+    // MERCHANT_ID: "ARTEMAMEDICA",
+    // MERCHANT_PASS: "5d245bae704ba8a34ee40ad35beac255",
+    // URL: "https://bankalfalah",
+    // CURRENCY: "USD",
+    // NEXT_PUBLIC_BASE_URL: "https://artemamed.com",
   },
   images: {
     remotePatterns: [
