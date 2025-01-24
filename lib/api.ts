@@ -18,7 +18,7 @@ export const getCategories = async () => {
   throw new Error("Failed to fetch categories");
 };
 
-// Fetch categoris for Header
+// Fetch categories for Header
 export const fetchMenuData = async () => {
   const response = await api.get("categories/mine");
   if (response.data.success) {
@@ -26,6 +26,33 @@ export const fetchMenuData = async () => {
   }
   throw new Error("Failed to fetch categories from Menu");
 };
+
+export const fetchSubCategoriesURLS = async () => {
+  const response = await api.get("sub-categories/mine-slugs");
+  if (response.data.success) {
+    return response.data.data;
+  }
+  throw new Error("Failed to fetch sub categories Slugs");
+};
+
+export const fetchProductsURLS = async () => {
+  const response = await api.get("products/mine-slugs");
+  if (response.data.success) {
+    return response.data.data;
+  }
+  throw new Error("Failed to fetch products Slugs");
+};
+
+
+
+export const fetchCategoriesURLS = async () => {
+  const response = await api.get("categories/mine-slugs");
+  if (response.data.success) {
+    return response.data.data;
+  }
+  throw new Error("Failed to fetch Sub categories Slugs");
+};
+
 
 // Fetch subcategories by category slug
 export const getSubCategoriesByCategorySlug = async (
@@ -77,8 +104,6 @@ export const getProductsBySubCategorySlug = async (
       }
     );
 
-    console.log("API Response:", response.data);
-
     if (response.data.success) {
       return response.data;
     } else {
@@ -97,7 +122,6 @@ export const getProductsBySubCategorySlug = async (
     }
   }
 };
-
 
 // Fetch a single product by slug
 export const getProductBySlug = async (slug: string) => {
@@ -168,4 +192,3 @@ export const searchProducts = async (query: string | null, page: number) => {
     throw new Error("Failed to fetch products.");
   }
 };
-

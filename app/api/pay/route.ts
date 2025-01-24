@@ -6,17 +6,19 @@ export async function POST(req: Request) {
   try {
     // Extract cookies from the request
     const cookies = req.headers.get("cookie") || "";
+    console.log("Cookies:", cookies);
     const cookieData: Record<string, string> = Object.fromEntries(
       cookies.split(";").map((cookie) => {
         const [key, value] = cookie.trim().split("=");
         return [decodeURIComponent(key), decodeURIComponent(value)];
       })
     );
-
+    console.log("Cookie Data:", cookieData);
     // Parse the shipping_contact_info from cookies
     const shippingContactInfo = cookieData["shipping_contact_info"];
+    console.log("Shipping Contact Info:", shippingContactInfo);
     const parsedContactInfo = shippingContactInfo ? JSON.parse(shippingContactInfo) : {};
-
+    console.log("Parsed Contact Info:", parsedContactInfo);
     // Extracting required details
     const userEmail = parsedContactInfo?.email || "ubaidullah2305@gmail.com";
     const cardholderName = parsedContactInfo?.name || "Valued Customer";

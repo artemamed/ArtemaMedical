@@ -10,6 +10,7 @@ import { Product } from "@/lib/types";
 
 const fetchProducts = async (slug: string, page: number) => {
     const response = await getProductsBySubCategorySlug(slug, page);
+    console.log(response)
     if (!response.success) {
         throw new Error(response.message || "Failed to fetch products.");
     }

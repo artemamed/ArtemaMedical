@@ -11,11 +11,11 @@ export async function POST(request: Request) {
     const MID= process.env.MERCHANT_ID;
     const Pass = process.env.MERCHANT_PASS;
 
-      console.log(sessionId);
-      console.log(orderId);
-      console.log(MID);
-      console.log(Pass);
-      console.log("amount!!!!!!!!!!!!", amount);
+      // console.log(sessionId);
+      // console.log(orderId);
+      // console.log(MID);
+      // console.log(Pass);
+      // console.log("amount!!!!!!!!!!!!", amount);
       
     // Define the API URL
     const apiUrl = `${process.env.URL}.gateway.mastercard.com/api/rest/version/74/merchant/${MID}/order/${orderId}/transaction/${orderId}`;
@@ -67,10 +67,10 @@ export async function POST(request: Request) {
 
     const data = await response.json();
     
-    console.log("response is ok  api called ");
-    console.log("******************************************");
-    console.log(data);
-    console.log("******************************************");
+    // console.log("response is ok  api called ");
+    // console.log("******************************************");
+    // console.log(data);
+    // console.log("******************************************");
     return NextResponse.json(data, { status: 200 });
 
   } catch (error) {

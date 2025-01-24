@@ -65,7 +65,7 @@ const ThreeDSChallenge: React.FC = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      {/* <h1>3DS Challenge</h1> */}
+      {/* <h1>3DS Challenge</h1> */} 
       {renderHtmlContent()} {/* Conditionally show HTML or Unauthorized message */}
     </div>
   );
