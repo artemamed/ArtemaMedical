@@ -35,7 +35,7 @@ export default async function sitemap() {
         url: `https://artemamed.com/category/${category}`,
         lastModified: new Date(),
         changeFrequency: "daily",
-        priority: 0.8,
+        priority: 0.1,
       };
     });
     const subCategories: ISitemap[] = SubcategoriesSlug.map((subCategory) => {
@@ -43,7 +43,7 @@ export default async function sitemap() {
         url: `https://artemamed.com/sub-category/${subCategory}`,
         lastModified: new Date(),
         changeFrequency: "daily",
-        priority: 0.8,
+        priority: 0.1,
       };
     });
     // const products: ISitemap[] = ProductsSlug.map((product) => {
@@ -66,14 +66,86 @@ export default async function sitemap() {
     url: `https://artemamed.com/blog/${blog.slug.current}`,
     lastModified: new Date(),
     changeFrequency: "daily",
-    priority: 0.8,
+    priority: 0.1,
   }));
   return [
     {
       url: "https://artemamed.com/",
       lastModified: new Date(),
       changeFrequency: "daily",
-      priority: 0.8,
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/cart",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/ifu",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/faqs",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/distributors",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/about",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/certification",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/contact",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/biomedical",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/terms",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/privacy-policy",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/refund",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
+    },
+    {
+      url: "https://artemamed.com/shipping",
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.1,
     },
     ...blogsURls,
     ...categories,
