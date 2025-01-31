@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
     JC_P_CB_URL: "https://artemamed.com/api/jc-p/cb/",
     EXCHANGE_RATE_API_KEY: "ec0a4c61422f2f75b0730c39",
     JC_P_PAYMENT_API : "https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/",
+    JWT_SECRET : "secret",
     // MERCHANT_ID: "ARTEMAMEDICA",
     // MERCHANT_PASS: "5d245bae704ba8a34ee40ad35beac255",
     // URL: "https://bankalfalah",
