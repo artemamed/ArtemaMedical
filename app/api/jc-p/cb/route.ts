@@ -1,8 +1,13 @@
 import jwt from "jsonwebtoken";
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { pp_TxnRefNo, pp_ResponseCode } = body;
+    let body = await request.text();
+    body = JSON.parse(body);
+    const { pp_TxnRefNo, pp_ResponseCode } = body as unknown as {
+      pp_TxnRefNo: string;
+      pp_ResponseCode: string;
+    };
+    console.log(pp_TxnRefNo, pp_ResponseCode);
     if (!pp_ResponseCode) {
       return new Response(
         JSON.stringify({ error: "Please provide a complete value" }),
