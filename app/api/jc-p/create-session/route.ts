@@ -26,9 +26,9 @@ export async function POST(req: Request) {
       amount = data.conversion_result;
     }
 
-    amount = amount * 100;
-    amount = amount.toFixed(2);
-    amount = parseFloat(amount);
+    amount = Number(amount.toFixed(2));
+    amount = Math.round(amount * 100) as number;
+    amount = 200 as number;
     currency = "PKR";
     const billReference = `amg${Math.floor(Math.random() * 90 + 10)}`;
     const description = `${currency} ${amount}`;
@@ -51,22 +51,41 @@ export async function POST(req: Request) {
     const HashKey = process.env.JC_P_SV!;
 
     const hashArray = [
-      amount, "", billReference, description, "EN",
-      MerchantID, Password, "", ReturnURL, currency,
-      txnDateTime, txnExpiryDateTime, txnRefNumber, txnType, version, "", "", "", "", ""
+      amount,
+      "",
+      billReference,
+      description,
+      "EN",
+      MerchantID,
+      Password,
+      "",
+      ReturnURL,
+      currency,
+      txnDateTime,
+      txnExpiryDateTime,
+      txnRefNumber,
+      txnType,
+      version,
+      "",
+      "",
+      "",
+      "",
+      "",
     ];
 
     let sortedString = HashKey;
-    hashArray.forEach(value => {
+    hashArray.forEach((value) => {
       if (value) sortedString += `&${value}`;
     });
 
     // Generate Secure Hash
-    const secureHash = crypto.createHmac("sha256", HashKey).update(sortedString).digest("hex");
-
+    const secureHash = crypto
+      .createHmac("sha256", HashKey)
+      .update(sortedString)
+      .digest("hex");
 
     const response = {
-      PostURL : process.env.JC_P_PAYMENT_API,
+      PostURL: process.env.JC_P_PAYMENT_API as string,
       pp_Version: version,
       pp_TxnType: txnType,
       pp_Language: "EN",
@@ -93,6 +112,9 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify(response), { status: 200 });
   } catch (error) {
     console.error("JazzCash API Error:", error);
-    return new Response(JSON.stringify({ error: "JazzCash Session API Error" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "JazzCash Session API Error" }),
+      { status: 500 }
+    );
   }
 }
