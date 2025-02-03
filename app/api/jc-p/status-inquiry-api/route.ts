@@ -1,3 +1,5 @@
+// app/api/jc-p/status-inquiry-api/route.ts:
+
 import axios from "axios";
 import crypto from "crypto";
 

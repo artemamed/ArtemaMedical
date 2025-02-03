@@ -37,6 +37,8 @@
 //   }
 // }
 
+// app/api/jc-p/cb/route.ts:
+
 export async function POST(request: Request) {
   try {
     const contentType = request.headers.get("content-type") || "";
@@ -68,7 +70,6 @@ export async function POST(request: Request) {
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
-
 
     return Response.redirect(
       `https://artemamed.com/payment-status/${pp_TxnRefNo}`,
