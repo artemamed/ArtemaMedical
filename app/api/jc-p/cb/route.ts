@@ -64,7 +64,7 @@ export async function POST(request: Request) {
       pp_ResponseCode: string;
     };
 
-    if (!pp_ResponseCode) {
+    if (!pp_ResponseCode || !pp_TxnRefNo) {
       return new Response(
         JSON.stringify({ error: "Please provide a complete value" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     }
 
     return Response.redirect(
-      `https://artemamed.com/payment-status/${pp_TxnRefNo}`,
+      `https://localhost:3000/payment-status?pp_TxnRefNo=${pp_TxnRefNo}`,
       302
     );
   } catch (error) {

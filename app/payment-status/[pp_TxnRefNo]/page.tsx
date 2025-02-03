@@ -1,5 +1,3 @@
-// app/payment-status/[pp_TxnRefNo]/page.tsx:
-
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
