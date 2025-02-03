@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 const OrderComplete: React.FC = () => {
   const router = useRouter();
@@ -18,39 +17,41 @@ const OrderComplete: React.FC = () => {
   const [orderDate, setOrderDate] = useState("");
   const [orderTotal, setOrderTotal] = useState<number>(0);
   const [paymentStatus, setPaymentStatus] = useState<string>("Pending");
+
   const getValidImageUrl = (imageUrl: string | null) => {
     if (!imageUrl) return "/placeholder.png";
     const baseUrl = "https://medinven.api.artemamed.com";
     return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
-};
-
+  };
 
   useEffect(() => {
-    // Ideally, you would fetch this from the server based on a successful payment
-    const fetchOrderDetails = async () => {
-      try {
-        // Simulate fetching order details (e.g., from API or session)
-        const orderId = localStorage.getItem("orderId"); // Store order ID in localStorage or URL
-        if (!orderId) throw new Error("No order found.");
+    // Extract query parameters from the URL
+    const queryParams = new URLSearchParams(window.location.search);
+    const refNo = queryParams.get("refNo");
+    const status = queryParams.get("status");
 
-        const response = await axios.get(`/api/order/${orderId}`); // Your endpoint for fetching order data
-        const order = response.data;
+    if (refNo) {
+      setOrderCode(refNo);
+    }
 
-        setOrderCode(order.id);
-        setOrderDate(order.date);
-        setOrderTotal(order.total);
-        setPaymentStatus(order.paymentStatus);
+    if (status) {
+      setPaymentStatus(status);
+    }
 
-        if (order.paymentStatus !== "Paid") {
-          toast.error("Payment failed or pending. Please try again.");
-        }
-      } catch (error: unknown) {
-        toast.error("Failed to fetch order details.");
-        console.error("Error fetching order details:", error);
-      }
-    };
-    fetchOrderDetails();
-  }, []);
+    // Set the current date
+    setOrderDate(new Date().toLocaleDateString());
+
+    // Calculate the total from the cart items
+    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    setOrderTotal(total);
+
+    // Show a toast based on the payment status
+    if (status === "Failed") {
+      toast.error("Payment failed. Please try again.");
+    } else if (status === "Paid") {
+      toast.success("Payment successful!");
+    }
+  }, [cartItems]);
 
   const navigateToMoreProducts = () => {
     router.push("/category");
@@ -175,52 +176,3 @@ const OrderComplete: React.FC = () => {
 };
 
 export default OrderComplete;
-
-
-// "use client";
-
-// import { useRouter } from "next/navigation";
-// import { useEffect, useState } from "react";
-
-// const OrderComplete: React.FC = () => {
-//     const [status, setStatus] = useState<string | null>(null);
-//     const router = useRouter();
-
-//     useEffect(() => {
-//         const queryParams = new URLSearchParams(window.location.search);
-//         const paymentStatus = queryParams.get("status");
-//         setStatus(paymentStatus);
-
-//         if (!paymentStatus || paymentStatus === "failure" || paymentStatus === "canceled") {
-//             setTimeout(() => {
-//                 router.push("/cart/checkOut"); // Redirect to retry
-//             }, 5000);
-//         }
-//     }, [router]);
-
-//     return (
-//         <div className="min-h-screen flex flex-col items-center justify-center">
-//             {status === "success" && (
-//                 <>
-//                     <h1 className="text-3xl font-bold">Payment Successful!</h1>
-//                     <p>Thank you for your order. Your payment was processed successfully.</p>
-//                 </>
-//             )}
-//             {status === "failure" && (
-//                 <>
-//                     <h1 className="text-3xl font-bold text-red-500">Payment Failed</h1>
-//                     <p>Something went wrong. Please try again.</p>
-//                 </>
-//             )}
-//             {status === "canceled" && (
-//                 <>
-//                     <h1 className="text-3xl font-bold text-yellow-500">Payment Canceled</h1>
-//                     <p>You canceled the payment process. Please try again if needed.</p>
-//                 </>
-//             )}
-//         </div>
-//     );
-// };
-
-// export default OrderComplete;
-

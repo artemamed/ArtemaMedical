@@ -71,8 +71,12 @@ export async function POST(request: Request) {
       );
     }
 
+    // Determine the payment status based on the response code
+    const paymentStatus = pp_ResponseCode === "000" ? "Paid" : "Failed";
+
+    // Redirect to the orderComplete page with the necessary query parameters
     return Response.redirect(
-      `https://artemamed.com/payment-status?pp_TxnRefNo=${pp_TxnRefNo}`,
+      `https://artemamed.com/cart/checkOut/orderComplete?refNo=${pp_TxnRefNo}&status=${paymentStatus}`,
       302
     );
   } catch (error) {
