@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     }
 
     return Response.redirect(
-      `https://artemamed.com/payment-status/${pp_TxnRefNo}`,
+      `https://artemamed.com/payment-status?${pp_TxnRefNo}`,
       302
     );
   } catch (error) {
