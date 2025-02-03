@@ -93,7 +93,10 @@ export default function Footer() {
       <div className="bg-[#CFE7E7] p-4">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm">
           <p className="text-center sm:text-left">
-            Copyright © 2024 Arthema tech Inc. All rights reserved.
+            Copyright © 2024 Artema Medical LLC. All rights reserved.
+          </p>
+          <p className="text-center sm:text-left">
+            Powered by Artema Tech
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="flex items-center gap-2">
