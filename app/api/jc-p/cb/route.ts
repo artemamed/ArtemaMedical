@@ -57,7 +57,7 @@ export async function POST(request: Request) {
 
     console.log("Parsed Body:", body);
 
-    const { pp_ResponseCode } = body as {
+    const { pp_ResponseCode, pp_TxnRefNo } = body as {
       pp_TxnRefNo: string;
       pp_ResponseCode: string;
     };
@@ -69,10 +69,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const paymentStatus = pp_ResponseCode === "000" ? "success" : "failed";
 
     return Response.redirect(
-      `https://artemamed.com/payment-status/success?status=${paymentStatus}`,
+      `https://artemamed.com/payment-status/${pp_TxnRefNo}`,
       302
     );
   } catch (error) {
