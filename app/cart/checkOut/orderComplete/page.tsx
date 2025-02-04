@@ -43,7 +43,22 @@ const OrderComplete: React.FC = () => {
 
     // Calculate the total from the cart items
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    setOrderTotal(total);
+    console.log("Total amount in order complete page:", total);
+    const tax = total * 0.062;
+    const freightCharge = (() => {
+      if (cartItems.length === 1 && cartItems[0].quantity === 1) {
+        return 25;
+      }
+      const hasMultipleCharges = cartItems.some(
+        (item) => item.quantity > 1 || cartItems.length > 1
+      );
+      return hasMultipleCharges ? 75 : 0;
+    })();
+  
+    const subtotal = Math.ceil(total + freightCharge + tax);
+    console.error("Subtotal amount in order complete page:", subtotal);
+
+    setOrderTotal(subtotal);
 
     // Show a toast based on the payment status
     if (status === "Failed") {
