@@ -21,7 +21,7 @@ export default function Footer() {
                 className="w-auto h-auto max-w-[160px]"
               />
               <p className="text-gray-300 text-sm md:text-base mt-4 text-center md:text-left">
-                7901 4th St. N STE 10963, Saint Petersburg, Florida, 3370
+              371-J Commercial, 371-J DHA EME Sector, Lahore, 53710
               </p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
                 <Image src={image1} alt="image1" className="h-24 w-auto object-contain" />
@@ -105,7 +105,7 @@ export default function Footer() {
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              <span>+1 (210) 468-7779</span>
+              <span>042-32361469</span>
             </div>
           </div>
         </div>
