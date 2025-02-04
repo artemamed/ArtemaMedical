@@ -25,11 +25,12 @@ const CardWithStethoscope = () => {
               Reliable Instruments, Exceptional Care!
             </h2>
             <p className="mt-2 text-gray-600">Want to know more about us or have any queries? Feel free to contact us.</p>
+            <Link href="/contact">
             <Button className="mt-4">
-              <Link href="/contact">
                 Contact Us
-              </Link>
             </Button>
+            </Link>
+
           </div>
         </div>
       </div>

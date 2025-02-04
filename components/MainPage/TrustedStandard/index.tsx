@@ -2,6 +2,7 @@ import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const trusted = [
   {
@@ -27,16 +28,19 @@ const products = [
     title: "Rollator Walker",
     price: "55.64",
     imageUrl: "/images/slider/slide1.png",
+    location: "/product/rollator-walker-in-large-size",
   },
   {
     title: "Bone Rib Shear ",
     price: "158",
     imageUrl: "/images/slider/slide22.webp",
+    location: "/product/blumenthalangled",
   },
   {
     title: "TC needleholde",
     price: "110",
     imageUrl: "/images/slider/slide33.png",
+    location: "/product/martin-type",
   },
 ];
 
@@ -90,9 +94,11 @@ const TrustedStandard = () => {
             />
             <h3 className="text-lg mb-2">{product.title}</h3>
             <p className="text-xl font-bold mb-4">${product.price}</p>
-            <button className="border text-teal-500 border-teal-500 py-2 px-4 rounded hover:bg-teal-600 hover:text-white transition" onClick={handleProductClick}>
-              Buy Now
-            </button>
+            <Link key={index} href={product.location.startsWith("/") ? product.location : `/${product.location}`} passHref>
+              <button className="border text-teal-600 border-teal-600 py-2 px-4 rounded hover:bg-teal-800 hover:text-white transition" onClick={handleProductClick}>
+                Buy Now
+              </button>
+            </Link>
           </div>
         ))}
       </div>

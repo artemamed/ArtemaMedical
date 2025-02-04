@@ -1,11 +1,13 @@
 import { CircleArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 interface Card {
   imageSrc: string;
   title: string;
   description: string;
+  location: string;
 }
 
 const initialCards: Card[] = [
@@ -13,48 +15,55 @@ const initialCards: Card[] = [
     imageSrc: "/images/slider/slide4.png",
     title: "General Instrument",
     description: "Our general instruments are contain wide range of medical tools that are cover whole surgical process",
+    location: "/category/general-instruments",
   },
   {
     imageSrc: "/images/slider/slide2.png",
     title: "Dental",
     description: "Good-quality dental instruments are manufactured at Artema Medical at an affordable price. ",
+    location: "/category/dental-instruments",
   },
   {
     imageSrc: "/images/slider/slide3.png",
     title: " ENT Instruments",
     description: "We provide long, pointed, and thin ENT instruments diverse in design and size.",
+    location: "/category/ent-instruments",
   },
   {
     imageSrc: "/images/slider/slide7.png",
     title: "Orthopedic",
     description: "Our orthopedic instruments hold special importance. They are known for their quality and design. ",
+    location: "/category/orthopedic-instruments",
   },
-
-
   {
     imageSrc: "/images/slider/slide5.png",
     title: "Gynecology",
     description: "Gynecology instruments include a variety of retractors, measuring devices, and electronic instruments.",
+    location: "/category/gynaecology-tools",
   },
   {
     imageSrc: "/images/slider/slide6.png",
     title: "Needle Holder",
     description: "A wide variety of needle holders are available, which ensures precision and control.",
+    location: "/sub-category/needle-holder",
   },
   {
     imageSrc: "/images/slider/slide11.png",
     title: "Cardiovascular",
     description: "It includes a range of instruments, from electronic devices to surgical instruments.",
+    location: "/category/cardiovascular",
   },
   {
     imageSrc: "/images/slider/slide8.png",
     title: "Dermatology Tools",
     description: "Highly precise and durable dermatology tools are manufactured at Artema Medical. They are ergonomically designed in a variety of shapes and sizes.",
+    location: "/category/general-instrument",
   },
   {
     imageSrc: "/images/slider/slide9.png",
     title: "Scissors",
     description: "A wide array of scissors are designed at Artema Medical using stainless steel and tungsten carbide.",
+    location: "/sub-category/scissors",
   },
 ];
 
@@ -119,6 +128,7 @@ const MedicalCardSlider: React.FC = () => {
             key={index}
             className="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 sm:px-3 md:px-4"
           >
+            <Link key={index} href={card.location.startsWith("/") ? card.location : `/${card.location}`} passHref>
             <div
               className={`rounded-xl hover:shadow-lg ${currentIndex % initialCards.length === index % initialCards.length
                 ? "bg-[#CFE7E7] sm:py-6"
@@ -154,6 +164,7 @@ const MedicalCardSlider: React.FC = () => {
                 )}
               </div>
             </div>
+            </Link>
           </div>
         ))}
       </div>

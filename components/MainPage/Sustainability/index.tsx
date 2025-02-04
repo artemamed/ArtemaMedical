@@ -48,11 +48,12 @@ export default function Sustainability() {
                         )}
                     </div>
 
-                    <Button className="bg-[#008080] text-sm sm:text-base lg:text-lg mt-2 lg:mt-5 text-white  py-3 rounded-lg hover:bg-teal-700 transition">
-                        <Link href="/about">
+                    <Link href="/about">
+                        <Button className="bg-[#008080] text-sm sm:text-base lg:text-lg mt-2 lg:mt-5 text-white  py-3 rounded-lg hover:bg-teal-700 transition">
                             About Us →
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
+
                 </div>
 
                 <motion.div
