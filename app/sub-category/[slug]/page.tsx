@@ -117,7 +117,7 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                         </div>
                                         <div className="flex flex-col  mt-4 flex-1">
                                             <h3 className="text-xs text-gray-800">{product.name}</h3>
-                                            <h3 className="text-base sm:text-lg font-bold text-gray-800">
+                                            <h3 className="text-base sm:text-lg font-bold text-gray-800 line-clamp-1">
                                                 {product.title}
                                             </h3>
                                             <h3 className="text-base sm:text-xl font-semibold text-gray-800">

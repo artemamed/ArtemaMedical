@@ -74,7 +74,7 @@ const PrecisionDriven = () => {
             priority />
         </motion.div>
       </div>
-      <LayoutWrapper className="min-h-screen flex flex-col ">
+      <LayoutWrapper className="min-h-screen flex flex-col">
         {/* Surgical Catalog */}
         <div className="p-4 sm:p-6 md:p-8 mb-[3rem] sm:mb-[4rem] md:mb-[5rem] font-poppins  sm:mt-1">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-4 sm:mb-6 md:mb-8 leading-tight">
@@ -91,14 +91,14 @@ const PrecisionDriven = () => {
           ) : isError ? (
             <div className="text-red-500">{error.message}</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-14">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-8 md:gap-10 lg:gap-14 ">
               {categories.map((category, index) => (
                 <div
                   key={index}
-                  className="p-4 sm:p-5 md:p-6 rounded-2xl border bg-white hover:bg-[#CFE7E7] transition-colors duration-300 hover:scale-105"
+                  className="p-4 sm:p-5 md:p-6 rounded-2xl border bg-white hover:bg-[#CFE7E7] transition-colors duration-300 hover:scale-105 "
                 >
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg sm:text-xl    font-semibold mb-2 sm:mb-3 md:mb-4 leading-snug cursor-pointer" onClick={() => navigateToSpecificCategories(category)}>
+                    <h2 className="text-lg sm:text-xl    font-semibold mb-2 sm:mb-3 md:mb-4 leading-snug cursor-pointer line-clamp-1 hover:line-clamp-2" onClick={() => navigateToSpecificCategories(category)}>
                       {category.name}
                     </h2>
                     <Link href={`/category/${category.slug}`}>
@@ -109,7 +109,7 @@ const PrecisionDriven = () => {
                     {category.subCategories.map((subCategory, idx) => (
                       <li key={idx} className="flex items-center space-x-2 text-gray-700" onClick={() => handleCategoryClick(subCategory.slug)}>
                         <span className="text-[#008080] text-lg sm:text-xl md:text-2xl lg:text-3xl">➜</span>
-                        <span className="text-sm sm:text-base md:text-lg lg:text-xl">{subCategory.name}</span>
+                        <span className="text-sm sm:text-base md:text-lg lg:text-xl line-clamp-1 hover:line-clamp-2">{subCategory.name}</span>
                       </li>
                     ))}
                   </ul>
