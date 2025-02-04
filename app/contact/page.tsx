@@ -81,7 +81,7 @@ const Contact = () => {
 
       <div className="min-h-screen py-12">
         <div className="text-center">
-          <h2 className="text-4xl font-semibold text-[#004040]">Contact Us</h2>
+          <h1 className="text-4xl font-semibold text-[#004040]">Contact Us</h1>
           <p className="mt-2 text-gray-500">
             Any question or remarks? Just write us a message!
           </p>

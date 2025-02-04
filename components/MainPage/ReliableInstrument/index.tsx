@@ -21,9 +21,9 @@ const CardWithStethoscope = () => {
           </div>
 
           <div className="flex-1 text-center md:text-left lg:ml-[4rem] ">
-            <h1 className="text-2xl md:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-teal-900">
+            <h2 className="text-2xl md:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-teal-900">
               Reliable Instruments, Exceptional Care!
-            </h1>
+            </h2>
             <p className="mt-2 text-gray-600">Want to know more about us or have any queries? Feel free to contact us.</p>
             <Button className="mt-4">
               <Link href="/contact">

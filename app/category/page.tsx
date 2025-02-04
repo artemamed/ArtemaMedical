@@ -77,9 +77,9 @@ const PrecisionDriven = () => {
       <LayoutWrapper className="min-h-screen flex flex-col ">
         {/* Surgical Catalog */}
         <div className="p-4 sm:p-6 md:p-8 mb-[3rem] sm:mb-[4rem] md:mb-[5rem] font-poppins  sm:mt-1">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-4 sm:mb-6 md:mb-8 leading-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold mb-4 sm:mb-6 md:mb-8 leading-tight">
             Explore Our Complete Range of Surgical Tools
-          </h1>
+          </h2>
           {isLoading ? (
             <div className="flex justify-center items-center h-screen">
               <div

@@ -72,7 +72,24 @@ export async function POST(request: Request) {
     }
 
     // Determine the payment status based on the response code
-    const paymentStatus = pp_ResponseCode === "000" ? "Paid" : "Failed";
+    let paymentStatus;
+    switch (pp_ResponseCode) {
+      case "000":
+        paymentStatus = "Success";
+        break;
+      case "121":
+        paymentStatus = "Success";
+        break;
+      case "124":
+        paymentStatus = "Pending";
+        break;
+      case "157":
+        paymentStatus = "Pending";
+        break;
+      default:
+        paymentStatus = "Failed";
+        break;
+    }
 
     // Redirect to the orderComplete page with the necessary query parameters
     return Response.redirect(

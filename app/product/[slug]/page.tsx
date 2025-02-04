@@ -217,7 +217,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ params }) => {
                     </div>
 
                     <div className="lg:w-2/3 lg:pl-8">
-                        <h1 className="text-sm font-bold">{product.name}</h1>
+                        <h2 className="text-sm font-bold">{product.name}</h2>
                         <h1 className="text-xl sm:text-xl lg:text-2xl font-bold">{product.title}</h1>
                         <p className="text-gray-500 text-sm lg:text-base mt-2">{product.description}</p>
 

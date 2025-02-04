@@ -10,7 +10,6 @@ import { Product } from "@/lib/types";
 
 const fetchProducts = async (slug: string, page: number) => {
     const response = await getProductsBySubCategorySlug(slug, page);
-    console.log(response)
     if (!response.success) {
         throw new Error(response.message || "Failed to fetch products.");
     }
@@ -39,8 +38,7 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
     });
 
     const products: Product[] = useMemo(
-        () =>
-            productPages?.pages.flatMap((page) => page.products) || [],
+        () => productPages?.pages.flatMap((page) => page.products) || [],
         [productPages]
     );
 
@@ -49,10 +47,8 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
 
     const subCategoryMetadata = productPages?.pages?.[0]?.subCategory?.metadata?.[0];
 
-    // Set Meta title and description based on API data
     useEffect(() => {
         if (subCategoryMetadata) {
-            // Set the meta title and description dynamically
             document.title = subCategoryMetadata.title || "Default Title";
             const metaDescription = document.querySelector('meta[name="description"]');
             if (metaDescription) {
@@ -61,11 +57,10 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
         }
     }, [subCategoryMetadata]);
 
-    // Infinite Scroll Handler
     const handleScroll = useCallback(() => {
         if (
             window.innerHeight + document.documentElement.scrollTop >=
-            document.documentElement.offsetHeight - 300
+            document.documentElement.offsetHeight - 1500 // Adjust the threshold here
         ) {
             if (hasNextPage && !isFetchingNextPage) {
                 fetchNextPage();
@@ -73,9 +68,13 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
         }
     }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-    React.useEffect(() => {
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+    useEffect(() => {
+        const debouncedHandleScroll = () => {
+            handleScroll();
+        };
+
+        window.addEventListener("scroll", debouncedHandleScroll);
+        return () => window.removeEventListener("scroll", debouncedHandleScroll);
     }, [handleScroll]);
 
     if (isLoading)
@@ -121,9 +120,6 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                             <h3 className="text-base sm:text-lg font-bold text-gray-800">
                                                 {product.title}
                                             </h3>
-                                            {/* <h3 className="text-sm text-[#666666]">
-                                                {product.description}
-                                            </h3> */}
                                             <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                                                 ${product.attributes[0]?.price.toFixed(2)}
                                             </h3>
@@ -132,7 +128,6 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
                                 </Link>
                             );
                         })}
-
                     </div>
                     {isFetchingNextPage && <div className="text-center mt-4">Loading more...</div>}
                     {!hasNextPage && (
@@ -143,4 +138,5 @@ const SubCategoryListing = ({ params }: { params: Promise<{ slug: string }> }) =
         </LayoutWrapper>
     );
 };
+
 export default SubCategoryListing;

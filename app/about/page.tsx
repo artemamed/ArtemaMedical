@@ -96,9 +96,9 @@ const About: React.FC = () => {
                 </div>
 
                 <div className="md:w-3/6 mt-8 md:mt-0 text-center md:text-left">
-                    <h1 className="text-2xl md:text-4xl font-bold">
+                    <h2 className="text-2xl md:text-4xl font-bold">
                         Building a Legacy of Trust
-                    </h1>
+                    </h2>
                     <p className="mt-6 text-sm md:text-base text-gray-700 text-justify  ">
                         Founded over 40 years ago, our company set out with a singular vision: to raise the standard of the
                         healthcare industry with the invention of innovative and precise medical tools. Our hard work and
@@ -146,9 +146,9 @@ const About: React.FC = () => {
                 </div>
 
                 <div className="md:w-3/6 mt-8 md:mt-0 text-center md:text-left">
-                    <h1 className="text-2xl md:text-4xl font-bold">
+                    <h2 className="text-2xl md:text-4xl font-bold">
                         Transparency, Reliability, and Innovation
-                    </h1>
+                    </h2>
                     <p className="mt-6 text-sm md:text-base text-gray-700 text-justify">
                         Our core values are at the root of all that we do. We always show who we are and what we can do and
                         have never been dishonest with our work. We are a reliable agency that provides companies with high-

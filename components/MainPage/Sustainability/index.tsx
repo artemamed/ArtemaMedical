@@ -29,9 +29,9 @@ export default function Sustainability() {
         <LayoutWrapper className="mt-10">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-8">
                 <div className="xl:w-[50rem] 2xl:w-[60rem] md:w-[30rem] lg:w-[38rem]">
-                    <h1 className="text-xl sm:text-4xl lg:text-5xl  font-semibold mb-6">
+                    <h2 className="text-xl sm:text-4xl lg:text-5xl  font-semibold mb-6">
                         We work with Reliability and Commitment
-                    </h1>
+                    </h2>
 
                     <div className="relative">
                         <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 w-full text-justify">

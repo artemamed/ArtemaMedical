@@ -48,9 +48,9 @@ const TrustedStandard = () => {
   };
   return (
     <LayoutWrapper className="min-h-screen md:py-12">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-10">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 sm:mb-10">
         Trusted by Global Health Standards
-      </h1>
+      </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
         {trusted.map((product, index) => (
           <div
@@ -74,7 +74,7 @@ const TrustedStandard = () => {
           className="w-[150px] h-[80px] lg:h-[70px] lg:w-[300px] object-contain md:mt-[1rem] lg:mt-[2.5rem] ml-[1rem]"
         />
       </div>
-      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-10 mt-10 leading-tight">Best-Selling Products</h1>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold mb-10 mt-10 leading-tight">Best-Selling Products</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {products.map((product, index) => (
           <div
