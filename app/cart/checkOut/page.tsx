@@ -30,21 +30,21 @@ type SessionResponseType = {
   pp_Password: string;
   pp_TxnRefNo: string;
   pp_Amount: number;
-  pp_TxnCurrency: string,
-  pp_TxnDateTime: string,
-  pp_BillReference: string,
-  pp_Description: string,
-  pp_BankID: string,
-  pp_ProductID: string,
-  pp_TxnExpiryDateTime: string,
-  pp_ReturnURL: string,
-  pp_SecureHash: string,
-  ppmpf_1: string,
-  ppmpf_2: string,
-  ppmpf_3: string,
-  ppmpf_4: string,
-  ppmpf_5: string,
-}
+  pp_TxnCurrency: string;
+  pp_TxnDateTime: string;
+  pp_BillReference: string;
+  pp_Description: string;
+  pp_BankID: string;
+  pp_ProductID: string;
+  pp_TxnExpiryDateTime: string;
+  pp_ReturnURL: string;
+  pp_SecureHash: string;
+  ppmpf_1: string;
+  ppmpf_2: string;
+  ppmpf_3: string;
+  ppmpf_4: string;
+  ppmpf_5: string;
+};
 
 const Currencies = [
   {
@@ -426,10 +426,10 @@ const CheckOut: React.FC = () => {
               </tr>
             </tbody>
           </table>
-          <p className="text-xs text-gray-600">
-            Please change your currency according to your location. By default
-            all the prices are shown in USD.
-          </p>
+          <div className="text-sm text-gray-600 mt-2 gap-3">
+            <p className="text-red-600 inline-block mr-2">*</p>
+            The amounts are to be charged in PKR (Pakistani Rupees){" "}
+          </div>{" "}
           <Button
             type="submit"
             className="flex gap-2"
@@ -455,8 +455,11 @@ const CheckOut: React.FC = () => {
   );
 };
 
-const JazzCashPayment = ({ paymentData }: { paymentData: SessionResponseType }) => {
-
+const JazzCashPayment = ({
+  paymentData,
+}: {
+  paymentData: SessionResponseType;
+}) => {
   const formRef = React.useRef<HTMLFormElement>(null);
 
   React.useEffect(() => {
@@ -474,7 +477,11 @@ const JazzCashPayment = ({ paymentData }: { paymentData: SessionResponseType }) 
     >
       <input type="hidden" name="pp_Version" value={paymentData?.pp_Version} />
       <input type="hidden" name="pp_TxnType" value={paymentData?.pp_TxnType} />
-      <input type="hidden" name="pp_Language" value={paymentData?.pp_Language} />
+      <input
+        type="hidden"
+        name="pp_Language"
+        value={paymentData?.pp_Language}
+      />
       <input
         type="hidden"
         name="pp_MerchantID"
@@ -485,7 +492,11 @@ const JazzCashPayment = ({ paymentData }: { paymentData: SessionResponseType }) 
         name="pp_SubMerchantID"
         value={paymentData?.pp_SubMerchantID}
       />
-      <input type="hidden" name="pp_Password" value={paymentData?.pp_Password} />
+      <input
+        type="hidden"
+        name="pp_Password"
+        value={paymentData?.pp_Password}
+      />
       <input
         type="hidden"
         name="pp_TxnRefNo"
@@ -512,12 +523,8 @@ const JazzCashPayment = ({ paymentData }: { paymentData: SessionResponseType }) 
         name="pp_Description"
         value={paymentData?.pp_Description}
       />
-       <input
-        type="hidden"
-        name="pp_BankID"
-        value={paymentData?.pp_BankID}
-      />
-       <input
+      <input type="hidden" name="pp_BankID" value={paymentData?.pp_BankID} />
+      <input
         type="hidden"
         name="pp_ProductID"
         value={paymentData?.pp_ProductID}
@@ -537,32 +544,12 @@ const JazzCashPayment = ({ paymentData }: { paymentData: SessionResponseType }) 
         name="pp_SecureHash"
         value={paymentData?.pp_SecureHash}
       />
-      <input
-        type="hidden"
-        name="ppmpf_1"
-        value={paymentData?.ppmpf_1}
-      />
-      <input
-        type="hidden"
-        name="ppmpf_2"
-        value={paymentData?.ppmpf_2}
-      />
-      <input
-        type="hidden"
-        name="ppmpf_3"
-        value={paymentData?.ppmpf_3}
-      />
-      <input
-        type="hidden"
-        name="ppmpf_4"
-        value={paymentData?.ppmpf_4}
-      />
-      <input
-        type="hidden"
-        name="ppmpf_5"
-        value={paymentData?.ppmpf_5}
-      />
-      <button type="submit" onClick={() => formRef.current?.submit()} ></button>
+      <input type="hidden" name="ppmpf_1" value={paymentData?.ppmpf_1} />
+      <input type="hidden" name="ppmpf_2" value={paymentData?.ppmpf_2} />
+      <input type="hidden" name="ppmpf_3" value={paymentData?.ppmpf_3} />
+      <input type="hidden" name="ppmpf_4" value={paymentData?.ppmpf_4} />
+      <input type="hidden" name="ppmpf_5" value={paymentData?.ppmpf_5} />
+      <button type="submit" onClick={() => formRef.current?.submit()}></button>
     </form>
   );
 };
