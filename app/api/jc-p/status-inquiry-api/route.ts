@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     // Make API Request
     const apiResponse = await axios.post(
-      "https://sandbox.jazzcash.com.pk/ApplicationAPI/API/PaymentInquiry/Inquire",
+      "https://payments.jazzcash.com.pk/ApplicationAPI/API/PaymentInquiry/Inquire",
       requestBody,
       { headers: { "Content-Type": "application/json" } }
     );
