@@ -230,9 +230,11 @@ const CheckOut: React.FC = () => {
 
   const handleJazzCashPayment = async (amount: string) => {
     setLoading(true);
+    console.log(amount)
     try {
       const apiResponse = await axios.post("/api/jc-p/create-session", {
-        amount: Number(amount),
+        // amount: Number(amount),
+        amount: 1,
         currency: selectedCurrency,
       });
       const data = await apiResponse.data;
