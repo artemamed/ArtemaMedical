@@ -8,7 +8,7 @@ import { RootState } from "@/app/store";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-const OrderReject: React.FC = () => {
+const OrderPending: React.FC = () => {
     const router = useRouter();
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -17,7 +17,7 @@ const OrderReject: React.FC = () => {
     const [orderDate, setOrderDate] = useState("");
     const [orderTotal, setOrderTotal] = useState<number>(0);
     const [paymentStatus, setPaymentStatus] = useState<string>("Pending");
-    const [responseCode, setResponseCode] = useState<string>("");
+    const [statusDescription, setStatusDescription] = useState<string>("");
 
     const getValidImageUrl = (imageUrl: string | null) => {
         if (!imageUrl) return "/placeholder.png";
@@ -30,7 +30,7 @@ const OrderReject: React.FC = () => {
         const queryParams = new URLSearchParams(window.location.search);
         const refNo = queryParams.get("refNo");
         const status = queryParams.get("status");
-        const responseCode = queryParams.get("responseCode");
+        const description = queryParams.get("statusDescription");
 
         if (refNo) {
             setOrderCode(refNo);
@@ -40,8 +40,8 @@ const OrderReject: React.FC = () => {
             setPaymentStatus(status);
         }
 
-        if (responseCode) {
-            setResponseCode(responseCode);
+        if (description) {
+            setStatusDescription(description);
         }
 
         // Set the current date
@@ -49,7 +49,6 @@ const OrderReject: React.FC = () => {
 
         // Calculate the total from the cart items
         const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        console.log("Total amount in order complete page:", total);
         const tax = total * 0.062;
         const freightCharge = (() => {
             if (cartItems.length === 1 && cartItems[0].quantity === 1) {
@@ -62,15 +61,11 @@ const OrderReject: React.FC = () => {
         })();
 
         const subtotal = Math.ceil(total + freightCharge + tax);
-        console.error("Subtotal amount in order complete page:", subtotal);
-
         setOrderTotal(subtotal);
 
         // Show a toast based on the payment status
-        if (status === "Failed") {
-            toast.error(`Payment failed with response code: ${responseCode}. Please try again.`);
-        } else if (status === "Paid") {
-            toast.success("Payment successful!");
+        if (status === "Pending") {
+            toast.info("Your payment is pending. Please complete the transaction.");
         }
     }, [cartItems]);
 
@@ -115,10 +110,10 @@ const OrderReject: React.FC = () => {
                     <span className="ml-2 text-teal-800 text-sm md:text-base">Checkout details</span>
                 </div>
                 <div className="flex items-center">
-                    <div className="w-6 h-6 md:w-8 md:h-8 bg-red-600 text-white flex items-center justify-center rounded-full text-xs md:text-sm">
+                    <div className="w-6 h-6 md:w-8 md:h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full text-xs md:text-sm">
                         3
                     </div>
-                    <span className="ml-2 text-red-600 text-sm md:text-base">Order Rejected</span>
+                    <span className="ml-2 text-yellow-500 text-sm md:text-base">Order Pending</span>
                 </div>
             </motion.div>
 
@@ -130,8 +125,8 @@ const OrderReject: React.FC = () => {
                 transition={{ delay: 0.4 }}
             >
                 <div className="bg-white rounded-lg shadow-xl p-4 md:p-6 lg:p-8 max-w-[90%] md:max-w-[800px] text-center">
-                    <p className="text-xl md:text-2xl lg:text-3xl font-bold text-red-600">
-                        Your order has been Rejected !!!
+                    <p className="text-xl md:text-2xl lg:text-3xl font-bold text-yellow-500">
+                        Your order is pending !!!
                     </p>
 
                     {/* Products */}
@@ -176,11 +171,9 @@ const OrderReject: React.FC = () => {
                         <p>
                             <span className="font-medium text-[#6C7275]">Payment Status:</span> {paymentStatus}
                         </p>
-                        {responseCode && (
-                            <p>
-                                <span className="font-medium text-[#6C7275]">Response Code:</span> {responseCode}
-                            </p>
-                        )}
+                        <p>
+                            <span className="font-medium text-[#6C7275]">Status Description:</span> {statusDescription}
+                        </p>
                     </div>
 
                     {/* Button */}
@@ -198,4 +191,4 @@ const OrderReject: React.FC = () => {
     );
 };
 
-export default OrderReject;
+export default OrderPending;
