@@ -71,55 +71,44 @@ export async function POST(request: Request) {
       );
     }
 
-    // Mapping for response codes and their descriptions
-    const responseCodeMappings: {
-      [key: string]: { status: string; description: string };
-    } = {
-      "000": {
-        status: "Completed",
-        description:
-          "Thank you for Using JazzCash, your transaction was successful.",
-      },
-      "121": {
-        status: "Completed",
-        description: "Transaction has been marked confirmed by Merchant.",
-      },
-      "124": {
-        status: "Pending",
-        description:
-          "Order is placed and waiting for financials to be received over the counter.",
-      },
-      "157": {
-        status: "Pending",
-        description: "Transaction is pending (for Mwallet and MIgs).",
-      },
-    };
+    // Determine the payment status based on the response code
+    let paymentStatus;
+    let statusDescription = "";
+    switch (pp_ResponseCode) {
+      case "000":
+        paymentStatus = "Success";
+        statusDescription =
+          "Thank you for Using JazzCash, your transaction was successful.";
+        break;
+      case "121":
+        paymentStatus = "Success";
+        statusDescription =
+          "Transaction has been marked confirmed by Merchant.";
+        break;
+      case "124":
+        paymentStatus = "Pending";
+        statusDescription =
+          "Order is placed and waiting for financials to be received over the counter.";
+        break;
+      case "157":
+        paymentStatus = "Pending";
+        statusDescription = "Transaction is pending.(for Mwallet and MIgs)";
+        break;
+      default:
+        paymentStatus = "Failed";
+        statusDescription = "Transaction failed. Please try again.";
+        break;
+    }
 
-    // Determine the payment status and description based on the response code
-    const paymentStatusMapping = responseCodeMappings[pp_ResponseCode] || {
-      status: "Failed",
-      description: "Transaction failed due to an unknown error.",
-    };
-    const { status: paymentStatus, description: statusDescription } =
-      paymentStatusMapping;
-
-    // Redirect to the appropriate page with the necessary query parameters
-    if (paymentStatus === "Completed") {
+    // Redirect to the appropriate page based on the payment status
+    if (paymentStatus === "Success") {
       return Response.redirect(
         `https://artemamed.com/cart/checkOut/orderComplete?refNo=${pp_TxnRefNo}&status=${paymentStatus}`,
-        // `http://localhost:3000/cart/checkOut/orderComplete?refNo=${pp_TxnRefNo}&status=${paymentStatus}`,
-        302
-      );
-    } else if (paymentStatus === "Pending") {
-      return Response.redirect(
-        `https://artemamed.com/cart/checkOut/orderPending?refNo=${pp_TxnRefNo}&status=${paymentStatus}&statusDescription=${encodeURIComponent(statusDescription)}`,
-        // `http://localhost:3000/cart/checkOut/orderPending?refNo=${pp_TxnRefNo}&status=${paymentStatus}&statusDescription=${encodeURIComponent(statusDescription)}`,
         302
       );
     } else {
       return Response.redirect(
         `https://artemamed.com/cart/checkOut/orderReject?refNo=${pp_TxnRefNo}&status=${paymentStatus}&statusDescription=${encodeURIComponent(statusDescription)}`,
-        // `http://localhost:3000/cart/checkOut/orderReject?refNo=${pp_TxnRefNo}&status=${paymentStatus}&statusDescription=${encodeURIComponent(statusDescription)}`,
         302
       );
     }

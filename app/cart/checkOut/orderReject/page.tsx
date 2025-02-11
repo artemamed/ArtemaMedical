@@ -1,3 +1,5 @@
+// app/cart/checkOut/orderReject/page.tsx
+
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -8,7 +10,7 @@ import { RootState } from "@/app/store";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-const OrderPending: React.FC = () => {
+const OrderReject: React.FC = () => {
     const router = useRouter();
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
@@ -19,6 +21,7 @@ const OrderPending: React.FC = () => {
     const [paymentStatus, setPaymentStatus] = useState<string>("Pending");
     const [statusDescription, setStatusDescription] = useState<string>("");
 
+    // Function to get a valid image URL
     const getValidImageUrl = (imageUrl: string | null) => {
         if (!imageUrl) return "/placeholder.png";
         const baseUrl = "https://medinven.api.artemamed.com";
@@ -49,6 +52,7 @@ const OrderPending: React.FC = () => {
 
         // Calculate the total from the cart items
         const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        console.log("Total amount in order complete page:", total);
         const tax = total * 0.062;
         const freightCharge = (() => {
             if (cartItems.length === 1 && cartItems[0].quantity === 1) {
@@ -61,14 +65,19 @@ const OrderPending: React.FC = () => {
         })();
 
         const subtotal = Math.ceil(total + freightCharge + tax);
+        console.error("Subtotal amount in order complete page:", subtotal);
+
         setOrderTotal(subtotal);
 
         // Show a toast based on the payment status
-        if (status === "Pending") {
-            toast.info("Your payment is pending. Please complete the transaction.");
+        if (status === "Failed") {
+            toast.error("Payment failed. Please try again.");
+        } else if (status === "Paid") {
+            toast.success("Payment successful!");
         }
     }, [cartItems]);
 
+    // Function to navigate to the products page
     const navigateToMoreProducts = () => {
         router.push("/category");
     };
@@ -110,10 +119,10 @@ const OrderPending: React.FC = () => {
                     <span className="ml-2 text-teal-800 text-sm md:text-base">Checkout details</span>
                 </div>
                 <div className="flex items-center">
-                    <div className="w-6 h-6 md:w-8 md:h-8 bg-yellow-500 text-white flex items-center justify-center rounded-full text-xs md:text-sm">
+                    <div className="w-6 h-6 md:w-8 md:h-8 bg-red-600 text-white flex items-center justify-center rounded-full text-xs md:text-sm">
                         3
                     </div>
-                    <span className="ml-2 text-yellow-500 text-sm md:text-base">Order Pending</span>
+                    <span className="ml-2 text-red-600 text-sm md:text-base">Order Rejected</span>
                 </div>
             </motion.div>
 
@@ -125,8 +134,8 @@ const OrderPending: React.FC = () => {
                 transition={{ delay: 0.4 }}
             >
                 <div className="bg-white rounded-lg shadow-xl p-4 md:p-6 lg:p-8 max-w-[90%] md:max-w-[800px] text-center">
-                    <p className="text-xl md:text-2xl lg:text-3xl font-bold text-yellow-500">
-                        Your order is pending !!!
+                    <p className="text-xl md:text-2xl lg:text-3xl font-bold text-red-600">
+                        Your order has been Rejected !!!
                     </p>
 
                     {/* Products */}
@@ -149,7 +158,8 @@ const OrderPending: React.FC = () => {
                                         {product.quantity}
                                     </span>
                                 </motion.div>
-                            ))) : (
+                            ))
+                        ) : (
                             <p className="text-gray-500">No items in the cart</p>
                         )}
                     </div>
@@ -176,7 +186,7 @@ const OrderPending: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Button */}
+                    {/* Button to explore more products */}
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Button
                             className="mt-6 text-sm md:text-base px-6 py-2 md:py-3 bg-teal-800 text-white hover:bg-teal-700 transition-all"
@@ -191,4 +201,4 @@ const OrderPending: React.FC = () => {
     );
 };
 
-export default OrderPending;
+export default OrderReject;
