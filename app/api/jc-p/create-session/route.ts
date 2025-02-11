@@ -23,7 +23,8 @@ export async function POST(req: Request) {
         }
       );
       const data = await response.json();
-      amount = data.conversion_result;
+      // amount = data.conversion_result;
+      amount = Math.ceil(data.conversion_result);
     }
 
     amount = Number(amount.toFixed(2));
