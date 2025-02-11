@@ -26,9 +26,9 @@ export async function POST(req: Request) {
       amount = data.conversion_result;
     }
 
-    // amount = Number(amount.toFixed(2));
-    // amount = Math.round(amount * 100) as number;
-    amount = 10 as number;
+    amount = Number(amount.toFixed(2));
+    amount = Math.round(amount * 100) as number;
+    // amount = 200 as number;
     currency = "PKR";
     const billReference = `amg${Math.floor(Math.random() * 90 + 10)}`;
     const description = `${currency} ${amount}`;
