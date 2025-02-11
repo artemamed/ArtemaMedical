@@ -91,11 +91,18 @@ export async function POST(request: Request) {
         break;
     }
 
-    // Redirect to the orderComplete page with the necessary query parameters
-    return Response.redirect(
-      `https://artemamed.com/cart/checkOut/orderComplete?refNo=${pp_TxnRefNo}&status=${paymentStatus}`,
-      302
-    );
+    // Redirect based on payment status
+    if (paymentStatus === "Success") {
+      return Response.redirect(
+        `https://artemamed.com/cart/checkOut/orderComplete?refNo=${pp_TxnRefNo}&status=${paymentStatus}`,
+        302
+      );
+    } else {
+      return Response.redirect(
+        `https://artemamed.com/cart/checkOut/orderReject?refNo=${pp_TxnRefNo}&status=${paymentStatus}&responseCode=${pp_ResponseCode}`,
+        302
+      );
+    }
   } catch (error) {
     console.error("Error in Callback:", error);
     return new Response(

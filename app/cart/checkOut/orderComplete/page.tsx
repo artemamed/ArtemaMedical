@@ -1,3 +1,5 @@
+// app/cart/checkOut/orderComplete/page.tsx
+
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -168,7 +170,7 @@ const OrderComplete: React.FC = () => {
               <span className="font-medium text-[#6C7275]">Total:</span> ${orderTotal.toFixed(2) || "Loading..."}
             </p>
             <p>
-              <span className="font-medium text-[#6C7275]">Payment method:</span> Credit Card
+              <span className="font-medium text-[#6C7275]">Payment method:</span> Credit / Debit Card
             </p>
             <p>
               <span className="font-medium text-[#6C7275]">Payment Status:</span> {paymentStatus}
