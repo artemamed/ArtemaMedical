@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     // if the payment was not in the PKR currency convert into the PKR currency
     if (currency !== "PKR") {
       const response = await fetch(
-        `https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/${currency}/PKR/${10}`,
+        `https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/${currency}/PKR/${amount}`,
         {
           method: "GET",
         }
