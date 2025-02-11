@@ -94,6 +94,15 @@ export async function POST(request: Request) {
         paymentStatus = "Pending";
         statusDescription = "Transaction is pending.(for Mwallet and MIgs)";
         break;
+      case "405 || 453 || 004":
+        paymentStatus = "Failed";
+        statusDescription =
+          "Your transaction was declined because of insufficient balance in your card";
+        break;
+      case "002	 || 003":
+        paymentStatus = "Pending";
+        statusDescription = "Account not found";
+        break;
       default:
         paymentStatus = "Failed";
         statusDescription = "Transaction failed. Please try again.";
