@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     // if the payment was not in the PKR currency convert into the PKR currency
     if (currency !== "PKR") {
       const response = await fetch(
-        `https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/${currency}/PKR/${amount}`,
+        `https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/${currency}/PKR/${10}`,
         {
           method: "GET",
         }
@@ -26,9 +26,9 @@ export async function POST(req: Request) {
       amount = data.conversion_result;
     }
 
-    amount = Number(amount.toFixed(2));
-    amount = Math.round(amount * 100) as number;
-    // amount = 200 as number;
+    // amount = Number(amount.toFixed(2));
+    // amount = Math.round(amount * 100) as number;
+    amount = 10 as number;
     currency = "PKR";
     const billReference = `amg${Math.floor(Math.random() * 90 + 10)}`;
     const description = `${currency} ${amount}`;
