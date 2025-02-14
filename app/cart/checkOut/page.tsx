@@ -233,8 +233,8 @@ const CheckOut: React.FC = () => {
     console.log(amount)
     try {
       const apiResponse = await axios.post("/api/jc-p/create-session", {
-        amount: Number(amount),
-        // amount: 0.10,
+        // amount: Number(amount),
+        amount: 0.10,
         currency: selectedCurrency,
       });
       const data = await apiResponse.data;
