@@ -99,9 +99,9 @@ const OrderComplete: React.FC = () => {
       }
     }
 
-    if (status === "Failed") {
+    if (paymentStatus === "Failed") {
       toast.error("Payment failed. Please try again.");
-    } else if (status === "Paid") {
+    } else if (paymentStatus === "Success") {
       toast.success("Payment successful!");
       sendOrderConfirmationEmail();
     }
