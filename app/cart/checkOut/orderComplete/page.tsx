@@ -1,4 +1,4 @@
-// app/cart/checkOut/orderComplete/page.tsx
+// app/cart/checkOut/orderComplete/page.tsx:
 
 "use client";
 import { Button } from "@/components/ui/button";
@@ -9,16 +9,42 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
 
 const OrderComplete: React.FC = () => {
   const router = useRouter();
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const { firstName, lastName, phoneNumber, email } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  console.log("cartItems:", cartItems);
+  console.log("firstName:", firstName);
+  console.log("lastName:", lastName);
+  console.log("phoneNumber:", phoneNumber);
+  console.log("email:", email);
 
   // State for order details
   const [orderCode, setOrderCode] = useState("");
   const [orderDate, setOrderDate] = useState("");
   const [orderTotal, setOrderTotal] = useState<number>(0);
   const [paymentStatus, setPaymentStatus] = useState<string>("Pending");
+  const [shippingInfo, setShippingInfo] = useState<{
+    shippingInfo: {
+      street: string;
+      city: string;
+      state: string;
+      zipCode: string;
+      country: string;
+    };
+    contactInfo: {
+      firstName: string;
+      lastName: string;
+      phoneNumber: string;
+      email: string;
+    };
+  } | null>(null);
 
   const getValidImageUrl = (imageUrl: string | null) => {
     if (!imageUrl) return "/placeholder.png";
@@ -31,6 +57,8 @@ const OrderComplete: React.FC = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const refNo = queryParams.get("refNo");
     const status = queryParams.get("status");
+
+    console.log("Status :", status);
 
     if (refNo) {
       setOrderCode(refNo);
@@ -45,7 +73,6 @@ const OrderComplete: React.FC = () => {
 
     // Calculate the total from the cart items
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    console.log("Total amount in order complete page:", total);
     const tax = total * 0.062;
     const freightCharge = (() => {
       if (cartItems.length === 1 && cartItems[0].quantity === 1) {
@@ -56,22 +83,72 @@ const OrderComplete: React.FC = () => {
       );
       return hasMultipleCharges ? 75 : 0;
     })();
-  
-    const subtotal = Math.ceil(total + freightCharge + tax);
-    console.error("Subtotal amount in order complete page:", subtotal);
 
+    const subtotal = Math.ceil(total + freightCharge + tax);
     setOrderTotal(subtotal);
 
-    // Show a toast based on the payment status
+    // Retrieve and decrypt shipping info from cookies
+    
+    const encryptedData = Cookies.get("shipping_contact_info");
+    if (encryptedData) {
+      const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_key";
+      const bytes = CryptoJS.AES.decrypt(encryptedData, ENCRYPTION_KEY);
+      const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+      if (decryptedData) {
+        setShippingInfo(JSON.parse(decryptedData));
+      }
+    }
+
     if (status === "Failed") {
       toast.error("Payment failed. Please try again.");
     } else if (status === "Paid") {
       toast.success("Payment successful!");
+      sendOrderConfirmationEmail();
     }
   }, [cartItems]);
 
+  console.log("shippingInfo:", shippingInfo);
+  console.log("orderCode:", orderCode);
+  console.log("orderDate:", orderDate);
+  console.log("orderTotal:", orderTotal);
+  console.log("paymentStatus:", paymentStatus);
+
   const navigateToMoreProducts = () => {
     router.push("/category");
+  };
+
+  const sendOrderConfirmationEmail = async () => {
+    if (!shippingInfo) return;
+
+    const emailData = {
+      firstName,
+      lastName,
+      email,
+      orderCode,
+      orderDate,
+      orderTotal,
+      paymentStatus,
+      shippingInfo,
+    };
+
+    try {
+      const response = await fetch("/api/sendOrderConfirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send order confirmation email");
+      }
+
+      const result = await response.json();
+      console.log(result.message);
+    } catch (error) {
+      console.error("Error sending order confirmation email:", error);
+    }
   };
 
   return (
@@ -153,7 +230,7 @@ const OrderComplete: React.FC = () => {
                     {product.quantity}
                   </span>
                 </motion.div>
-              ))            ) : (
+              ))) : (
               <p className="text-gray-500">No items in the cart</p>
             )}
           </div>
@@ -177,6 +254,18 @@ const OrderComplete: React.FC = () => {
             </p>
           </div>
 
+          {/* Shipping and Contact Info */}
+          {shippingInfo && (
+            <div className="mt-6 space-y-2 text-gray-600 text-sm md:text-base">
+              <p>
+                <span className="font-medium text-[#6C7275]">Shipping Address:</span> {shippingInfo.shippingInfo.street}, {shippingInfo.shippingInfo.city}, {shippingInfo.shippingInfo.state}, {shippingInfo.shippingInfo.zipCode}, {shippingInfo.shippingInfo.country}
+              </p>
+              <p>
+                <span className="font-medium text-[#6C7275]">Contact Info:</span> {shippingInfo.contactInfo.firstName} {shippingInfo.contactInfo.lastName}, {shippingInfo.contactInfo.phoneNumber}, {shippingInfo.contactInfo.email}
+              </p>
+            </div>
+          )}
+
           {/* Button */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
@@ -191,5 +280,4 @@ const OrderComplete: React.FC = () => {
     </motion.div>
   );
 };
-
 export default OrderComplete;

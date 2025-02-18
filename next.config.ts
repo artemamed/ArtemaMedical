@@ -12,8 +12,10 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_API_URL: "https://medinven.api.artemamed.com/api/",
     NEXT_PUBLIC_API:
       "4ba26604e36749f2da838e4178c985f9bfe3bc964bc1066ac3487f8bc63903669bc97de9d78fbc66b359f46b0f9b7d561dd6d11661ce93c9ada353ed7a3c1281",
-    EMAIL_USER: "sales@artemamed.com",
-    EMAIL_PASS: "jjxk ygzq brkg nbxu",
+    // EMAIL_USER: "sales@artemamed.com",
+    // EMAIL_PASS: "jjxk ygzq brkg nbxu",
+    EMAIL_USER: "ubaidullah2305@gmail.com",
+    EMAIL_PASS: "eyee npyy ekpk qjfu",
     EMAIL_HOST: "mail.artemamedical.com",
     EMAIL_PORT: "465",
     EMAIL_SECURE: "false",
