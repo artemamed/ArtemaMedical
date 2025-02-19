@@ -57,20 +57,20 @@ const OrderComplete: React.FC = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const refNo = queryParams.get("refNo");
     const status = queryParams.get("status");
-
+  
     console.log("Status :", status);
-
+  
     if (refNo) {
       setOrderCode(refNo);
     }
-
+  
     if (status) {
       setPaymentStatus(status);
     }
-
+  
     // Set the current date
     setOrderDate(new Date().toLocaleDateString());
-
+  
     // Calculate the total from the cart items
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const tax = total * 0.062;
@@ -83,12 +83,11 @@ const OrderComplete: React.FC = () => {
       );
       return hasMultipleCharges ? 75 : 0;
     })();
-
+  
     const subtotal = Math.ceil(total + freightCharge + tax);
     setOrderTotal(subtotal);
-
+  
     // Retrieve and decrypt shipping info from cookies
-    
     const encryptedData = Cookies.get("shipping_contact_info");
     if (encryptedData) {
       const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_key";
@@ -98,14 +97,19 @@ const OrderComplete: React.FC = () => {
         setShippingInfo(JSON.parse(decryptedData));
       }
     }
-
+  
+    // Always send the email, regardless of payment status
+    sendOrderConfirmationEmail();
+  
+    // Display toast messages based on payment status
     if (paymentStatus === "Failed") {
       toast.error("Payment failed. Please try again.");
+    } else if (paymentStatus === "Pending") {
+      toast.error("Payment pending. Please wait for confirmation.");
     } else if (paymentStatus === "Success") {
       toast.success("Payment successful!");
-      sendOrderConfirmationEmail();
     }
-  }, [cartItems]);
+  }, [cartItems, paymentStatus]);
 
   console.log("shippingInfo:", shippingInfo);
   console.log("orderCode:", orderCode);
