@@ -53,25 +53,25 @@ const OrderComplete: React.FC = () => {
   };
 
   useEffect(() => {
-    // Extract query parameters from the URL
+    console.log("useEffect triggered");
+
     const queryParams = new URLSearchParams(window.location.search);
     const refNo = queryParams.get("refNo");
     const status = queryParams.get("status");
-  
-    console.log("Status :", status);
-  
+
+    console.log("refNo:", refNo);
+    console.log("status:", status);
+
     if (refNo) {
       setOrderCode(refNo);
     }
-  
+
     if (status) {
       setPaymentStatus(status);
     }
-  
-    // Set the current date
+
     setOrderDate(new Date().toLocaleDateString());
-  
-    // Calculate the total from the cart items
+
     const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const tax = total * 0.062;
     const freightCharge = (() => {
@@ -83,11 +83,10 @@ const OrderComplete: React.FC = () => {
       );
       return hasMultipleCharges ? 75 : 0;
     })();
-  
+
     const subtotal = Math.ceil(total + freightCharge + tax);
     setOrderTotal(subtotal);
-  
-    // Retrieve and decrypt shipping info from cookies
+
     const encryptedData = Cookies.get("shipping_contact_info");
     if (encryptedData) {
       const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_key";
@@ -97,11 +96,10 @@ const OrderComplete: React.FC = () => {
         setShippingInfo(JSON.parse(decryptedData));
       }
     }
-  
-    // Always send the email, regardless of payment status
+
+    // Send email after all data is set
     sendOrderConfirmationEmail();
-  
-    // Display toast messages based on payment status
+
     if (paymentStatus === "Failed") {
       toast.error("Payment failed. Please try again.");
     } else if (paymentStatus === "Pending") {
@@ -122,7 +120,10 @@ const OrderComplete: React.FC = () => {
   };
 
   const sendOrderConfirmationEmail = async () => {
-    if (!shippingInfo) return;
+    if (!shippingInfo) {
+      console.error("Shipping info is missing.");
+      return;
+    }
 
     const emailData = {
       firstName,
@@ -135,6 +136,8 @@ const OrderComplete: React.FC = () => {
       shippingInfo,
     };
 
+    console.log("Sending email with data:", emailData);
+
     try {
       const response = await fetch("/api/sendOrderConfirmation", {
         method: "POST",
@@ -145,11 +148,13 @@ const OrderComplete: React.FC = () => {
       });
 
       if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error("Failed to send email:", errorResponse);
         throw new Error("Failed to send order confirmation email");
       }
 
       const result = await response.json();
-      console.log(result.message);
+      console.log("Email sent successfully:", result.message);
     } catch (error) {
       console.error("Error sending order confirmation email:", error);
     }

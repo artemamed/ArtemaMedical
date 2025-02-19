@@ -1,3 +1,5 @@
+// app/payment-status/success/page.tsx:
+
 "use client";
 
 import { useEffect } from "react";

@@ -1,3 +1,5 @@
+// app/cart/checkOut/page.tsx
+
 "use client";
 
 import LayoutWrapper from "@/components/Wrapper/LayoutWrapper";

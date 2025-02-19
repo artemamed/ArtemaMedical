@@ -1,27 +1,84 @@
+// app/api/sendOrderConfirmation/route.ts:
+
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    console.log("Received request body:", body);
+
+    // Set CORS headers
+    const headers = new Headers();
+    headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Content-Type");
 
     const {
-      firstName,
-      lastName,
-      email,
-      orderCode,
-      orderDate,
-      orderTotal,
-      paymentStatus,
-      shippingInfo,
+      firstName = "Anas",
+      lastName = "Ansari",
+      email = "anas@artemamed.com",
+      orderCode = "0123456789",
+      orderDate = new Date().toLocaleDateString(),
+      paymentStatus = "Paid",
+      shippingInfo = {
+        shippingInfo: {
+          street: "House No.45, Street No.7, DHA",
+          city: "Lahore",
+          state: "Punjab",
+          zipCode: "54000",
+          country: "Pakistan",
+        },
+        contactInfo: {
+          firstName: "Anas",
+          lastName: "Ansari",
+          phoneNumber: "321 1234567",
+          email: "anas@artemamed.com",
+        },
+      },
+      items = [
+        {
+          name: "Universal Handle for laryngeal forceps acc to Huber",
+          size: "17.5 cm",
+          sku: "026-0581-01",
+          quantity: 2,
+          price: 155,
+        },
+        {
+          name: "Handle for laryngeal forceps acc to Huber",
+          size: "18 cm",
+          sku: "026-0581-01",
+          quantity: 1,
+          price: 245,
+        },
+      ],
     } = body;
 
-    if (!firstName || !lastName || !email || !orderCode || !orderDate || !orderTotal || !paymentStatus || !shippingInfo) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
+    // Calculate subtotal
+    const subTotal = items.reduce(
+      (acc: number, item: { price: number; quantity: number }) =>
+        acc + item.price * item.quantity,
+      0
+    );
+
+    // Calculate freight charges
+    const totalQuantity = items.reduce(
+      (acc: number, item: { price: number; quantity: number }) =>
+        acc + item.quantity,
+      0
+    );
+    const freight = totalQuantity === 1 ? 25 : 75;
+
+    // Calculate tax (6.2% of subtotal)
+    const tax = subTotal * 0.062;
+
+    // Calculate grand total
+    const grandTotal = subTotal + freight + tax;
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT || "465"),
+      secure: process.env.EMAIL_SECURE === "true", // true for 465, false for other ports
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -52,7 +109,7 @@ export async function POST(request: Request) {
               </tr>
               <tr style="background: #f0f0f0; border-bottom: 1px solid #ddd;">
                 <td style="padding: 15px; font-weight: bold; color: #008080; text-align: left;">Total</td>
-                <td style="padding: 15px; text-align: left;">$${orderTotal.toFixed(2)}</td>
+                <td style="padding: 15px; text-align: left;">$${grandTotal.toFixed(2)}</td>
               </tr>
               <tr style="background: #ffffff; border-bottom: 1px solid #ddd;">
                 <td style="padding: 15px; font-weight: bold; color: #008080; text-align: left;">Payment Status</td>
@@ -98,12 +155,18 @@ export async function POST(request: Request) {
     await transporter.sendMail(teamMailOptions);
     await transporter.sendMail(thankYouMailOptions);
 
-    return NextResponse.json({
-      success: true,
-      message: "Order confirmation emails sent successfully.",
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Order confirmation emails sent successfully.",
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Error sending email:", error);
-    return NextResponse.json({ error: "There was an error sending the order confirmation emails." }, { status: 500 });
+    console.error("Error in API route:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
