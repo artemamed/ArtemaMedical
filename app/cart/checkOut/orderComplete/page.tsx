@@ -2,6 +2,7 @@
 
 "use client";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -133,7 +134,7 @@ const OrderComplete: React.FC = () => {
       console.error("Shipping info is missing.");
       return;
     }
-
+  
     const emailData = {
       firstName,
       lastName,
@@ -144,26 +145,22 @@ const OrderComplete: React.FC = () => {
       paymentStatus,
       shippingInfo,
     };
-
+  
     console.log("Sending email with data:", emailData);
-
+  
     try {
-      const response = await fetch("/api/sendOrderConfirmation", {
-        method: "POST",
+      const response = await axios.post("/api/sendOrderConfirmation", emailData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(emailData),
       });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.error("Failed to send email:", errorResponse);
+  
+      if (response.status !== 200) {
+        console.error("Failed to send email:", response.data);
         throw new Error("Failed to send order confirmation email");
       }
-
-      const result = await response.json();
-      console.log("Email sent successfully:", result.message);
+  
+      console.log("Email sent successfully:", response.data.message);
     } catch (error) {
       console.error("Error sending order confirmation email:", error);
     }
