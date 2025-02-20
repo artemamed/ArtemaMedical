@@ -19,42 +19,51 @@ const Contact = () => {
     message: "",
   });
   const [selectedSubject, setSelectedSubject] = useState<string>("General Inquiry");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false); // New state variable
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true); // Disable the button
 
-    const response = await fetch("/api/sendEmail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...formData,
-        subject: selectedSubject,
-        termsAccepted: isAcceptTerms,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      toast.success("Your message has been sent successfully!", {
-        position: "top-right",
+    try {
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          subject: selectedSubject,
+          termsAccepted: isAcceptTerms,
+        }),
       });
 
-      // Reset form fields
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
-      setIsAcceptTerms(false);
-      setSelectedSubject("General Inquiry");
-    } else {
-      toast.error(`Error: ${data.error}`, { position: "top-right" });
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Your message has been sent successfully!", {
+          position: "top-right",
+        });
+
+        // Reset form fields
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+        setIsAcceptTerms(false);
+        setSelectedSubject("General Inquiry");
+      } else {
+        toast.error(`Error: ${data.error}`, { position: "top-right" });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("An error occurred while submitting the form.", { position: "top-right" });
+    } finally {
+      setIsSubmitting(false); // Re-enable the button
     }
   };
 
@@ -261,8 +270,12 @@ const Contact = () => {
                   className={`flex justify-center sm:justify-end ${!isAcceptTerms ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                 >
-                  <Button type="submit" className="text-sm md:text-base py-2 md:py-3" disabled={!isAcceptTerms}>
-                    Send Message
+                  <Button
+                    type="submit"
+                    className="text-sm md:text-base py-2 md:py-3"
+                    disabled={!isAcceptTerms || isSubmitting} // Disable button when submitting
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"} {/* Change button text */}
                   </Button>
                 </div>
               </form>

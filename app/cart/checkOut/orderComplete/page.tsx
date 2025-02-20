@@ -19,12 +19,6 @@ const OrderComplete: React.FC = () => {
     (state: RootState) => state.auth
   );
 
-  console.log("cartItems:", cartItems);
-  console.log("firstName:", firstName);
-  console.log("lastName:", lastName);
-  console.log("phoneNumber:", phoneNumber);
-  console.log("email:", email);
-
   // State for order details
   const [orderCode, setOrderCode] = useState("");
   const [orderDate, setOrderDate] = useState("");
@@ -52,15 +46,11 @@ const OrderComplete: React.FC = () => {
     return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
   };
 
+  // Fetch order details and payment status
   useEffect(() => {
-    console.log("useEffect triggered");
-
     const queryParams = new URLSearchParams(window.location.search);
     const refNo = queryParams.get("refNo");
     const status = queryParams.get("status");
-
-    console.log("refNo:", refNo);
-    console.log("status:", status);
 
     if (refNo) {
       setOrderCode(refNo);
@@ -96,10 +86,27 @@ const OrderComplete: React.FC = () => {
         setShippingInfo(JSON.parse(decryptedData));
       }
     }
+  }, [cartItems]);
 
-    // Send email after all data is set
-    sendOrderConfirmationEmail();
+  // Send email when all required data is ready
+  useEffect(() => {
+    if (
+      shippingInfo &&
+      orderCode &&
+      orderDate &&
+      orderTotal > 0 &&
+      paymentStatus &&
+      firstName &&
+      lastName &&
+      phoneNumber &&
+      email
+    ) {
+      sendOrderConfirmationEmail();
+    }
+  }, [shippingInfo, orderCode, orderDate, orderTotal, paymentStatus, firstName, lastName, phoneNumber, email]);
 
+  // Handle payment status toasts
+  useEffect(() => {
     if (paymentStatus === "Failed") {
       toast.error("Payment failed. Please try again.");
     } else if (paymentStatus === "Pending") {
@@ -107,13 +114,7 @@ const OrderComplete: React.FC = () => {
     } else if (paymentStatus === "Success") {
       toast.success("Payment successful!");
     }
-  }, [cartItems, paymentStatus]);
-
-  console.log("shippingInfo:", shippingInfo);
-  console.log("orderCode:", orderCode);
-  console.log("orderDate:", orderDate);
-  console.log("orderTotal:", orderTotal);
-  console.log("paymentStatus:", paymentStatus);
+  }, [paymentStatus]);
 
   const navigateToMoreProducts = () => {
     router.push("/category");
