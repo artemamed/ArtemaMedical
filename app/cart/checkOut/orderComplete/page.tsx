@@ -113,7 +113,7 @@ const OrderComplete: React.FC = () => {
     EMAIL_USER: process.env.EMAIL_USER,
     EMAIL_PASS: process.env.EMAIL_PASS,
   });
-  
+
 
   // Handle payment status toasts
   useEffect(() => {
@@ -131,36 +131,45 @@ const OrderComplete: React.FC = () => {
   };
 
   const sendOrderConfirmationEmail = async () => {
-    if (!shippingInfo) {
-      console.error("Shipping info is missing.");
-      return;
-    }
-  
     const emailData = {
-      firstName,
-      lastName,
-      email,
-      orderCode,
-      orderDate,
-      orderTotal,
-      paymentStatus,
-      shippingInfo,
+      firstName: firstName || "Customer",
+      lastName: lastName || "",
+      email: email || "no-reply@artemamed.com",
+      orderCode: orderCode || "N/A",
+      orderDate: orderDate || new Date().toLocaleDateString(),
+      orderTotal: orderTotal || 0,
+      paymentStatus: paymentStatus || "Pending",
+      shippingInfo: shippingInfo || {
+        shippingInfo: {
+          street: "N/A",
+          city: "N/A",
+          state: "N/A",
+          zipCode: "N/A",
+          country: "N/A",
+        },
+        contactInfo: {
+          firstName: "Customer",
+          lastName: "",
+          phoneNumber: "N/A",
+          email: "no-reply@artemamed.com",
+        },
+      },
     };
-  
+
     console.log("Sending email with data:", emailData);
-  
+
     try {
       const response = await axios.post("/api/sendOrderConfirmation", emailData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (response.status !== 200) {
         console.error("Failed to send email:", response.data);
         throw new Error("Failed to send order confirmation email");
       }
-  
+
       console.log("Email sent successfully:", response.data.message);
     } catch (error) {
       console.error("Error sending order confirmation email:", error);
