@@ -91,6 +91,7 @@ const OrderComplete: React.FC = () => {
 
   // Send email when all required data is ready
   useEffect(() => {
+    console.log("Sending order confirmation email...");
     if (
       shippingInfo &&
       orderCode &&
