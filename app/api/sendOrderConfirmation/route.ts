@@ -75,6 +75,16 @@ export async function POST(request: Request) {
       },
     });
 
+    console.log("Transporter Config:", {
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT || "465"),
+      secure: process.env.EMAIL_SECURE === "true",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
     const teamMailOptions = {
       from: email,
       to: process.env.EMAIL_USER,
@@ -99,7 +109,7 @@ export async function POST(request: Request) {
               </tr>
               <tr style="background: #f0f0f0; border-bottom: 1px solid #ddd;">
                 <td style="padding: 15px; font-weight: bold; color: #008080; text-align: left;">Total</td>
-                <td style="padding: 15px; text-align: left;">$${grandTotal.toFixed(2)}</td>
+                <td style="padding: 15px; text-align: left;">${grandTotal.toFixed(2)}</td>
               </tr>
               <tr style="background: #ffffff; border-bottom: 1px solid #ddd;">
                 <td style="padding: 15px; font-weight: bold; color: #008080; text-align: left;">Payment Status</td>
@@ -142,6 +152,9 @@ export async function POST(request: Request) {
       `,
     };
 
+    console.log("Team Mail Options:", teamMailOptions);
+    console.log("Thank You Mail Options:", thankYouMailOptions);
+
     await transporter.sendMail(teamMailOptions);
     await transporter.sendMail(thankYouMailOptions);
 
@@ -152,8 +165,11 @@ export async function POST(request: Request) {
       }),
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error sending email:", error);
+    if (error instanceof Error && 'response' in error) {
+      console.error("Server responded with:", (error as any).response);
+    }
     return new Response(
       JSON.stringify({ error: "There was an error sending your message." }),
       { status: 500 }
