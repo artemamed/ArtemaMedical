@@ -119,12 +119,21 @@ const OrderComplete: React.FC = () => {
   useEffect(() => {
     if (paymentStatus === "Failed") {
       toast.error("Payment failed. Please try again.");
-    } else if (paymentStatus === "Pending") {
-      toast.error("Payment pending. Please wait for confirmation.");
     } else if (paymentStatus === "Success") {
       toast.success("Payment successful!");
     }
   }, [paymentStatus]);
+
+  console.log("Email data:", {
+    firstName,
+    lastName,
+    email,
+    orderCode,
+    orderDate,
+    orderTotal,
+    paymentStatus,
+    shippingInfo,
+  });
 
   const navigateToMoreProducts = () => {
     router.push("/category");
