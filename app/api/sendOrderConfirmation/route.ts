@@ -4,78 +4,33 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Mock data (default values if not provided in the request)
+    // Ensure required fields are present
+    if (!body.firstName || !body.lastName || !body.email || !body.orderCode || !body.shippingInfo) {
+      return new Response(
+        JSON.stringify({ error: "Missing required fields in the request body." }),
+        { status: 400 }
+      );
+    }
+
     const {
-      firstName = "Anas",
-      lastName = "Ansari",
-      email = "anas@artemamed.com",
-      orderCode = "0123456789",
+      firstName,
+      lastName,
+      email,
+      orderCode,
       orderDate = new Date().toLocaleDateString(),
       paymentStatus = "Paid",
-      shippingInfo = {
-        shippingInfo: {
-          street: "House No.45, Street No.7, DHA",
-          city: "Lahore",
-          state: "Punjab",
-          zipCode: "54000",
-          country: "Pakistan",
-        },
-        contactInfo: {
-          firstName: "Anas",
-          lastName: "Ansari",
-          phoneNumber: "321 1234567",
-          email: "anas@artemamed.com",
-        },
-      },
-      items = [
-        {
-          name: "Universal Handle for laryngeal forceps acc to Huber",
-          size: "17.5 cm",
-          sku: "026-0581-01",
-          quantity: 2,
-          price: 155,
-        },
-        {
-          name: "Handle for laryngeal forceps acc to Huber",
-          size: "18 cm",
-          sku: "026-0581-01",
-          quantity: 1,
-          price: 245,
-        },
-      ],
+      shippingInfo,
+      items = [],
     } = body;
 
-    // Calculate subtotal
-    const subTotal = items.reduce(
-      (acc: number, item: { price: number; quantity: number }) =>
-        acc + item.price * item.quantity,
-      0
-    );
-
-    // Calculate freight charges
-    const totalQuantity = items.reduce(
-      (acc: number, item: { quantity: number }) => acc + item.quantity,
-      0
-    );
+    // Calculate subtotal, freight, tax, and grand total
+    const subTotal = items.reduce((acc: number, item: { price: number; quantity: number }) => acc + item.price * item.quantity, 0);
+    const totalQuantity = items.reduce((acc: number, item: { quantity: number }) => acc + item.quantity, 0);
     const freight = totalQuantity === 1 ? 25 : 75;
-
-    // Calculate tax (6.2% of subtotal)
     const tax = subTotal * 0.062;
-
-    // Calculate grand total
     const grandTotal = subTotal + freight + tax;
 
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: parseInt(process.env.EMAIL_PORT || "465"),
-      secure: process.env.EMAIL_SECURE === "true", // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    console.log("Transporter Config:", {
       host: process.env.EMAIL_HOST,
       port: parseInt(process.env.EMAIL_PORT || "465"),
       secure: process.env.EMAIL_SECURE === "true",
@@ -152,9 +107,6 @@ export async function POST(request: Request) {
       `,
     };
 
-    console.log("Team Mail Options:", teamMailOptions);
-    console.log("Thank You Mail Options:", thankYouMailOptions);
-
     await transporter.sendMail(teamMailOptions);
     await transporter.sendMail(thankYouMailOptions);
 
@@ -167,9 +119,6 @@ export async function POST(request: Request) {
     );
   } catch (error: unknown) {
     console.error("Error sending email:", error);
-    if (error instanceof Error && 'response' in error) {
-      console.error("Server responded with:", (error as Error & { response: unknown }).response);
-    }
     return new Response(
       JSON.stringify({ error: "There was an error sending your message." }),
       { status: 500 }
