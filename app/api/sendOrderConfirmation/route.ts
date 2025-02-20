@@ -168,7 +168,7 @@ export async function POST(request: Request) {
   } catch (error: unknown) {
     console.error("Error sending email:", error);
     if (error instanceof Error && 'response' in error) {
-      console.error("Server responded with:", (error as any).response);
+      console.error("Server responded with:", (error as Error & { response: unknown }).response);
     }
     return new Response(
       JSON.stringify({ error: "There was an error sending your message." }),
