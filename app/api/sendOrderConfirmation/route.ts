@@ -108,13 +108,13 @@ export async function POST(request: Request) {
     };
 
     const orderConfirmationMailOptions2 = {
-      from: process.env.EMAIL_USER,
-      to: email,
+      from: email,
+      to: process.env.EMAIL_USER,
       subject: "Your Order Confirmation",
       html: `
         <div style="font-family: 'Roboto', Arial, sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
           <!-- Header Section -->
-          <div style="background-color: #008080; color: #ffffff; padding: 30px; text-align: center;">
+          <div style="background-color: #109080; color: #ffffff; padding: 30px; text-align: center;">
             <h1 style="margin: 0; font-size: 26px; font-weight: bold;">Hello ${firstName} ${lastName}</h1>
           </div>
 
