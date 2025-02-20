@@ -1,19 +1,10 @@
-// app/api/sendOrderConfirmation/route.ts:
-
 import nodemailer from "nodemailer";
-import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log("Received request body:", body);
 
-    // Set CORS headers
-    const headers = new Headers();
-    headers.set("Access-Control-Allow-Origin", "*");
-    headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-    headers.set("Access-Control-Allow-Headers", "Content-Type");
-
+    // Mock data (default values if not provided in the request)
     const {
       firstName = "Anas",
       lastName = "Ansari",
@@ -63,8 +54,7 @@ export async function POST(request: Request) {
 
     // Calculate freight charges
     const totalQuantity = items.reduce(
-      (acc: number, item: { price: number; quantity: number }) =>
-        acc + item.quantity,
+      (acc: number, item: { quantity: number }) => acc + item.quantity,
       0
     );
     const freight = totalQuantity === 1 ? 25 : 75;
@@ -155,17 +145,17 @@ export async function POST(request: Request) {
     await transporter.sendMail(teamMailOptions);
     await transporter.sendMail(thankYouMailOptions);
 
-    return NextResponse.json(
-      {
+    return new Response(
+      JSON.stringify({
         success: true,
         message: "Order confirmation emails sent successfully.",
-      },
+      }),
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error in API route:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
+    console.error("Error sending email:", error);
+    return new Response(
+      JSON.stringify({ error: "There was an error sending your message." }),
       { status: 500 }
     );
   }
