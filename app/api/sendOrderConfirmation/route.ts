@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
-import OrderConfirmationEmail from "@/components/email"; // Adjust the import path as necessary
+import OrderConfirmationEmail from "@/components/email/client";
+import OrderConfirmationEmail1 from "@/components/email/user";
 
 export async function POST(request: Request) {
   try {
@@ -60,6 +61,18 @@ export async function POST(request: Request) {
       })
     );
 
+    const emailHtml1 = await render(
+      OrderConfirmationEmail1({
+        orderId: orderCode,
+        firstName: firstName,
+        lastName: lastName,
+        shippingAddress: shippingInfo.shippingInfo,
+        contactNumber: shippingInfo.contactInfo.phoneNumber,
+        emailAddress: shippingInfo.contactInfo.email,
+        items: items, // Pass the items from the request body
+      })
+    );
+
     // Email options for the customer
     const orderConfirmationMailOptions1 = {
       from: process.env.EMAIL_USER,
@@ -73,7 +86,7 @@ export async function POST(request: Request) {
       from: email,
       to: process.env.EMAIL_USER,
       subject: "New Order Received",
-      html: emailHtml,
+      html: emailHtml1,
     };
 
     // Send emails
