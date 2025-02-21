@@ -1,5 +1,3 @@
-// app/cart/checkOut/orderComplete/page.tsx:
-
 "use client";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
@@ -91,7 +89,6 @@ const OrderComplete: React.FC = () => {
 
   // Send email when all required data is ready
   useEffect(() => {
-    console.log("Sending order confirmation email...");
     if (
       shippingInfo &&
       orderCode &&
@@ -107,14 +104,6 @@ const OrderComplete: React.FC = () => {
     }
   }, [shippingInfo, orderCode, orderDate, orderTotal, paymentStatus, firstName, lastName, phoneNumber, email]);
 
-  console.log({
-    EMAIL_HOST: process.env.EMAIL_HOST,
-    EMAIL_PORT: process.env.EMAIL_PORT,
-    EMAIL_USER: process.env.EMAIL_USER,
-    EMAIL_PASS: process.env.EMAIL_PASS,
-  });
-
-
   // Handle payment status toasts
   useEffect(() => {
     if (paymentStatus === "Failed") {
@@ -123,17 +112,6 @@ const OrderComplete: React.FC = () => {
       toast.success("Payment successful!");
     }
   }, [paymentStatus]);
-
-  console.log("Email data:", {
-    firstName,
-    lastName,
-    email,
-    orderCode,
-    orderDate,
-    orderTotal,
-    paymentStatus,
-    shippingInfo,
-  });
 
   const navigateToMoreProducts = () => {
     router.push("/category");
@@ -163,9 +141,14 @@ const OrderComplete: React.FC = () => {
           email: "no-reply@artemamed.com",
         },
       },
+      items: cartItems.map((item) => ({
+        name: item.title,
+        size: item.size || "N/A",
+        sku: item.sku || "N/A",
+        quantity: item.quantity,
+        price: item.price,
+      })),
     };
-
-    console.log("Sending email with data:", emailData);
 
     try {
       const response = await axios.post("/api/sendOrderConfirmation", emailData, {
