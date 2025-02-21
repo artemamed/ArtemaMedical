@@ -69,9 +69,9 @@ const OrderConfirmationEmail = ({
     const grandTotal = subTotal + freight + tax;
 
     return (
-        <Container style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-            <Section style={{ marginBottom: '20px' }}>
-                <div style={{ textAlign: 'center', borderBottom: '2px solid #e2e8f0', width: '100%', margin: '0 auto' }}>
+        <Container style={{ width: '90%', maxWidth: '800px', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+            <Section style={{ width: '100%', maxWidth: '800px', marginBottom: '20px' }}>
+                <div style={{ textAlign: 'center', borderBottom: '2px solid #e2e8f0', width: '80%', margin: '0 auto' }}>
                     <Img src="/artema-logo.png" alt="Company Logo" style={{ height: '150px', width: '150px', objectFit: 'cover' }} />
                 </div>
                 <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#134e4a', marginTop: '15px', textAlign: 'center' }}>Your order has been confirmed</div>
@@ -85,7 +85,7 @@ const OrderConfirmationEmail = ({
                 </div>
             </Section>
 
-            <Section style={{ marginBottom: '20px' }}>
+            <Section style={{ width: '100%', maxWidth: '800px', marginBottom: '20px' }}>
                 <div style={{ fontSize: '16px', fontWeight: '600', color: '#1f2937', marginBottom: '8px' }}>👤 Client Info</div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                     <span style={{ fontSize: '14px', color: '#6b7280' }}>{firstName} {lastName}</span>
@@ -98,7 +98,7 @@ const OrderConfirmationEmail = ({
                 </div>
             </Section>
 
-            <Section style={{ marginBottom: '20px' }}>
+            <Section style={{ width: '100%', maxWidth: '800px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#f3f4f6', padding: '16px', borderLeft: '8px solid #0d9488', marginBottom: '16px' }}>
                     <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#1f2937' }}>Order Details</span>
                     <Img src="/package.png" alt="Package Icon" style={{ height: '80px', width: '80px', marginLeft: 'auto' }} />
