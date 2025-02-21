@@ -56,7 +56,7 @@ export async function POST(request: Request) {
         shippingAddress: shippingInfo.shippingInfo,
         contactNumber: shippingInfo.contactInfo.phoneNumber,
         emailAddress: shippingInfo.contactInfo.email,
-        items: items // Pass the items from the request body
+        items: items, // Pass the items from the request body
       })
     );
 
