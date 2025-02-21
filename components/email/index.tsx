@@ -71,8 +71,8 @@ const OrderConfirmationEmail = ({
     return (
         <Container style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
             <Section style={{ marginBottom: '20px' }}>
-                <div style={{ textAlign: 'center', borderBottom: '2px solid #e2e8f0', width: '80%', margin: '0 auto' }}>
-                    <Img src="https://example.com/artema-logo.png" alt="Company Logo" style={{ height: '150px', width: '150px', objectFit: 'cover' }} />
+                <div style={{ textAlign: 'center', borderBottom: '2px solid #e2e8f0', width: '100%', margin: '0 auto' }}>
+                    <Img src="/artema-logo.png" alt="Company Logo" style={{ height: '150px', width: '150px', objectFit: 'cover' }} />
                 </div>
                 <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#134e4a', marginTop: '15px', textAlign: 'center' }}>Your order has been confirmed</div>
                 <div style={{ fontSize: '14px', marginTop: '5px', color: '#115e59', fontWeight: '600', textAlign: 'center' }}>Order # {orderId}</div>
@@ -101,7 +101,7 @@ const OrderConfirmationEmail = ({
             <Section style={{ marginBottom: '20px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#f3f4f6', padding: '16px', borderLeft: '8px solid #0d9488', marginBottom: '16px' }}>
                     <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#1f2937' }}>Order Details</span>
-                    <Img src="https://example.com/package.png" alt="Package Icon" style={{ height: '80px', width: '80px', marginLeft: 'auto' }} />
+                    <Img src="/package.png" alt="Package Icon" style={{ height: '80px', width: '80px', marginLeft: 'auto' }} />
                 </div>
 
                 <Row style={{ padding: '8px', fontWeight: '500', fontSize: '14px' }}>
