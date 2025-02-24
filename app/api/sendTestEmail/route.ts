@@ -60,7 +60,7 @@ export async function GET() {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: mockData.email,
-      subject: "Test Order Confirmation Email",
+      subject: "Test Order Confirmation Email -> " + mockData.orderId,
       html: emailHtml,
     };
 

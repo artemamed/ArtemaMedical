@@ -77,7 +77,7 @@ export async function POST(request: Request) {
     const orderConfirmationMailOptions1 = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Your Order Confirmation",
+      subject: "Your Order Confirmation -> " + orderCode,
       html: emailHtml,
     };
 
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
     const orderConfirmationMailOptions2 = {
       from: email,
       to: process.env.EMAIL_USER,
-      subject: "New Order Received",
+      subject: "New Order Received -> " + orderCode,
       html: emailHtml1,
     };
 
