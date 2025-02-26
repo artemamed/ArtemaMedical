@@ -14,7 +14,7 @@ const Distributors = () => {
                 </div>
 
                 {/* Certification Cards Section */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-20 mb-16 px-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-20 mb-16 px-4">
                     {[
                         {
                             title: "ISO",
@@ -33,6 +33,12 @@ const Distributors = () => {
                             image: "/images/trusted/FDA.svg",
                             description:
                                 "We are pleased to inform our U.S. customers that our products meet the safety and efficacy criteria set by the U.S. Food and Drug Administration (FDA).",
+                        },
+                        {
+                            title: "D-U-N-S Registered",
+                            image: "/images/trusted/duns.png",
+                            description:
+                                "We display the D-U-N-S® Registered seal, showcasing our global credibility and commitment to transparency and trust.",
                         },
                     ].map((item, index) => (
                         <div
