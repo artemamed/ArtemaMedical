@@ -25,7 +25,7 @@ export default function HeroSection() {
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    const fullText = "We are proud of our 40 years of success in helping thousands of patients and healthcare industries around the world. Our artistic approach and generations of experience have enabled us to extend our services worldwide and introduce innovative Medical equipment in the healthcare industry. We commit to a promising future by serving every Surgeons, provider, and researcher with the finest quality of surgical instruments.";
+    const fullText = "As a trusted medical equipment manufacturer with 40 years of experience, we are improving healthcare by delivering reliable and precise instruments. Our artistic approach and generation of experience has enabled us to expand our services globally and introduce innovative solutions to the healthcare industry. We are committed to a promising future, dedicated to serving every patient, provider, and researcher with the finest medical equipment.";
 
     const shortText = fullText.slice(0, 145) + "...";
 
@@ -42,8 +42,9 @@ export default function HeroSection() {
                     <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8 ">
                         {/* Left Section - Text Content */}
                         <div className="text-left">
+                            {/* <div className="text-left 2xl:-mr-10"> */}
                             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-semibold mb-4 md:mb-6 mt-10 lg:-mt-[4rem]">
-                                Empowering <span className="text-[#008080]">Healthcare</span>, with Modern Medical Equipment
+                                Leading <span className="text-[#008080]">Medical Equipment</span> Manufacturers & Suppliers
                             </h1>
                             <div className="relative">
                                 <p className="text-sm sm:text-base md:text-lg 2xl:text-xl text-gray-600 w-full leading-6 lg:leading-8 text-justify">
