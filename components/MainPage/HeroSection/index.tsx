@@ -41,9 +41,9 @@ export default function HeroSection() {
                 <div className=" flex items-center">
                     <div className="grid grid-cols-1 md:grid-cols-2 items-center w-full gap-8 ">
                         {/* Left Section - Text Content */}
-                        <div className="text-left">
+                        <div className="text-left 2xl:-mr-[5rem]">
                             {/* <div className="text-left 2xl:-mr-10"> */}
-                            <h1 className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-semibold mb-4 md:mb-6 mt-10 lg:-mt-[4rem]">
+                            <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold mb-4 md:mb-6 mt-10 lg:-mt-[4rem]">
                                 Leading <span className="text-[#008080]">Medical Equipment</span> Manufacturers & Suppliers
                             </h1>
                             <div className="relative">
