@@ -43,7 +43,7 @@ export default function HeroSection() {
                         {/* Left Section - Text Content */}
                         <div className="text-left">
                             {/* <div className="text-left 2xl:-mr-10"> */}
-                            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-semibold mb-4 md:mb-6 mt-10 lg:-mt-[4rem]">
+                            <h1 className="text-2xl md:text-3xl lg:text-4xl 2xl:text-5xl font-semibold mb-4 md:mb-6 mt-10 lg:-mt-[4rem]">
                                 Leading <span className="text-[#008080]">Medical Equipment</span> Manufacturers & Suppliers
                             </h1>
                             <div className="relative">
