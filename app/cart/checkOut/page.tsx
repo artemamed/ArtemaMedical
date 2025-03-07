@@ -143,6 +143,9 @@ const CheckOut: React.FC = () => {
     setShippingInfo((prev) => ({ ...prev, [id]: value }));
   };
 
+  const hash = CryptoJS.SHA224('your message or word array');
+console.log(hash.toString());
+
   // Encryption key
   const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_key";
 
