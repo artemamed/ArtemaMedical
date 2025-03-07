@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { CircleLoader } from "react-spinners";
 import Cookies from "js-cookie";
-import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-js'; // Import CryptoJS
 import {
   Select,
   SelectContent,
@@ -103,6 +103,7 @@ const CheckOut: React.FC = () => {
     const baseUrl = "https://medinven.api.artemamed.com";
     return imageUrl.startsWith("http") ? imageUrl : `${baseUrl}${imageUrl}`;
   };
+
   const [shippingInfo, setShippingInfo] = useState({
     street: "",
     country: "",
@@ -110,9 +111,11 @@ const CheckOut: React.FC = () => {
     state: "",
     zipCode: "",
   });
+
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [PaymentData, setPaymentData] = useState(null);
+
   const handleCurrencyChange = async (currency: string, amount: string) => {
     console.log(currency, amount);
     if (currency == "USD") {
@@ -136,14 +139,13 @@ const CheckOut: React.FC = () => {
       return;
     }
   };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { id, value } = e.target;
     setShippingInfo((prev) => ({ ...prev, [id]: value }));
   };
-
-  console.log("Check this =>" , CryptoJS);  // Log the CryptoJS object to inspect its available functions
 
   // Encryption key
   const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "11223344";
@@ -169,15 +171,22 @@ const CheckOut: React.FC = () => {
       },
     };
 
-    // Serialize and encrypt data
+    // Serialize and encrypt data using AES
     const serializedData = JSON.stringify(dataToStore);
     const encryptedData = CryptoJS.AES.encrypt(
       serializedData,
       ENCRYPTION_KEY
     ).toString();
 
-    // Store encrypted data in a cookie
+    // Generate SHA-256 hash of the encrypted data
+    const hash = CryptoJS.SHA256(encryptedData).toString(CryptoJS.enc.Hex);
+
+    // Store encrypted data and its hash in cookies
     Cookies.set("shipping_contact_info", encryptedData, {
+      expires: 7,
+      path: "/",
+    });
+    Cookies.set("shipping_contact_info_hash", hash, {
       expires: 7,
       path: "/",
     });
@@ -204,44 +213,15 @@ const CheckOut: React.FC = () => {
 
   const subtotal = Math.ceil(total + freightCharge + tax);
 
-  // Handle placing order and redirecting for payment
-  // const handlePlaceOrder = async () => {
-  //   setLoading(true);
-  //   try {
-  //     // Step 1: Create session
-  //     const createSessionResponse = await axios.post("/api/create-session");
-  //     const sessionId = createSessionResponse.data.session.id;
-
-  //     // Step 2: Update session with calculated amount (no need to store the response)
-  //     await axios.post("/api/update-session", { sessionId, amount: subtotal });
-
-  //     // Step 3: Redirect to payment URL
-  //     const paymentUrl = `${window.location.origin}/api/payment-form?sessionId=${sessionId}&amount=${subtotal}`;
-
-  //     if (paymentUrl) {
-  //       window.location.href = paymentUrl; // Redirect to the payment gateway
-  //     } else {
-  //       throw new Error("Payment link not found");
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Payment process failed. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleJazzCashPayment = async (amount: string) => {
     setLoading(true);
-    console.log(amount)
+    console.log(amount);
     try {
       const apiResponse = await axios.post("/api/jc-p/create-session", {
         amount: Number(amount),
-        // amount: 0.10,
         currency: selectedCurrency,
       });
       const data = await apiResponse.data;
-      // console.log(data);
       setPaymentData(data);
     } catch (error) {
       console.log(error);
@@ -350,7 +330,7 @@ const CheckOut: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-4 border p-[2rem] rounded-md 2xl:ml-[10rem] lg:ml-[10rem] lg:w-[19rem] xl:w-[28rem] 2xl:w-[35rem] mb-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
+        <div className="space-y-4 border p-[2rem] rounded-md 2xl:ml-[10rem] lg:ml-[10rem] lg:w-[19rem] xl:w-[28rem] mb-[3rem] xl:ml-[9rem] xl:mr-[0.5rem]">
           <h2 className="text-2xl font-semibold text-center mb-5">
             Order Summary
           </h2>
