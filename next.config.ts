@@ -1,5 +1,6 @@
 // next.config.js
 import type { NextConfig } from "next";
+import TerserPlugin from "terser-webpack-plugin";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -25,8 +26,9 @@ const nextConfig: NextConfig = {
     JC_P_SV: "a3t94ez1d8",
     JC_P_CB_URL: "https://artemamed.com/api/jc-p/cb/",
     EXCHANGE_RATE_API_KEY: "ec0a4c61422f2f75b0730c39",
-    JC_P_PAYMENT_API : "https://payments.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/",
-    JWT_SECRET : "secret",
+    JC_P_PAYMENT_API:
+      "https://payments.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/",
+    JWT_SECRET: "secret",
     // MERCHANT_ID: "ARTEMAMEDICA",
     // MERCHANT_PASS: "5d245bae704ba8a34ee40ad35beac255",
     // URL: "https://bankalfalah",
@@ -51,6 +53,28 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        // fs: false,
+        // net: false,
+        // tls: false,
+        crypto: require.resolve("crypto-browserify"),
+        stream: false,
+        buffer: false,
+      };
+    }
+    config.optimization.minimizer = [
+      new TerserPlugin({
+        terserOptions: {
+          mangle: false,
+          keep_fnames: true,
+          keep_classnames: true,
+        },
+      }),
+    ];
+    return config;
   },
 };
 export default nextConfig;

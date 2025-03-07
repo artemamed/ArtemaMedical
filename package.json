@@ -36,6 +36,7 @@
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",
     "cookies": "^0.9.1",
+    "crypto-browserify": "^3.12.1",
     "crypto-js": "^4.2.0",
     "embla-carousel-react": "^8.5.1",
     "framer-motion": "^11.11.17",
@@ -63,7 +64,8 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "terser-webpack-plugin": "^5.3.14"
   },
   "devDependencies": {
     "@types/cookies": "^0.9.0",
