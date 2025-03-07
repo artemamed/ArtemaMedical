@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { CircleLoader } from "react-spinners";
 import Cookies from "js-cookie";
-import CryptoJS from "crypto-js";
+import CryptoJS from 'crypto-js';
 import {
   Select,
   SelectContent,
@@ -144,8 +144,7 @@ const CheckOut: React.FC = () => {
   };
 
   // Encryption key
-  const ENCRYPTION_KEY =
-    process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_key";
+  const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_key";
 
   const handleShippingFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
